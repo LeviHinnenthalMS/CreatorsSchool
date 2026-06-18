@@ -1,0 +1,663 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+	/* ============================================================
+	 * PRIMITIVES (Figma) — single source of truth.
+	 * Never reference hex values outside this block.
+	 * ============================================================ */
+
+	/* Neutrals */
+	--color-white: #fcfcfc;
+	--color-neutral-lightest: #f2f2f2;
+	--color-neutral-lighter: #d8d8d8;
+	--color-neutral-light: #b2b2b2;
+	--color-neutral: #7f7f7f;
+	--color-neutral-dark: #4c4c4c;
+	--color-neutral-darker: #191919;
+	--color-neutral-darkest: #0b0c0d;
+
+	/* Accents — currently mirror Neutrals; kept separate so a future
+	 * brand hue can be introduced without touching component code. */
+	--color-accent-lightest: #f2f2f2;
+	--color-accent-lighter: #d8d8d8;
+	--color-accent-light: #b2b2b2;
+	--color-accent-base: #7f7f7f;
+	--color-accent-dark: #4c4c4c;
+	--color-accent-darker: #191919;
+	--color-accent-darkest: #0b0c0d;
+
+	/* Brand */
+	--color-accent-button: #FFA051;
+
+	/* ============================================================
+	 * SEMANTIC ALIASES — what components should reference.
+	 * Change these to re-skin the site without touching primitives.
+	 * ============================================================ */
+
+	/* Surfaces */
+	--color-canvas: var(--color-white);
+	--color-canvas-muted: var(--color-neutral-lightest);
+
+	/* Text */
+	--color-ink: var(--color-neutral-darkest);
+	--color-ink-muted: var(--color-neutral);
+	--color-ink-inverse: var(--color-white);
+
+	/* Borders */
+	--color-border: var(--color-neutral-lighter);
+	--color-border-strong: var(--color-neutral-light);
+
+	/* Brand / interactive */
+	--color-accent: var(--color-accent-button);
+	--color-accent-fg: var(--color-neutral-darkest);
+
+	/* Status — placeholder values; replace with Figma equivalents
+	 * when the design system adds them. */
+	--color-info: #2563eb;
+	--color-success: #16a34a;
+	--color-warning: #d97706;
+	--color-danger: #dc2626;
+
+	--header-height: 5rem;
+	--max-height-fold: calc(100svh - var(--header-height));
+
+	/* Radii (Figma) */
+	--radius-xs: 4px;
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 20px;
+	--radius-button: 6px;
+	/* `rounded` (no modifier) is an alias for `rounded-xs` to keep
+	 * existing usage consistent with the token system. */
+	--radius: var(--radius-xs);
+
+	/* Buttons (Figma — small / medium / large) */
+	--btn-radius: var(--radius-button);
+	--btn-gap: 12px;
+	--btn-icon-size: 24px;
+	--btn-sm-px: 16px;
+	--btn-sm-py: 8px;
+	--btn-sm-text: 14px;
+	--btn-sm-leading: 20px;
+	--btn-sm-icon-size: 16px;
+	--btn-md-px: 24px;
+	--btn-md-py: 12px;
+	--btn-md-text: 16px;
+	--btn-md-leading: 24px;
+	--btn-lg-px: 32px;
+	--btn-lg-py: 16px;
+	--btn-lg-text: 18px;
+	--btn-lg-leading: 27px;
+	--btn-transition: 150ms ease;
+
+	/* Containers */
+	--container-large: 1280px;
+	--container-medium: 1024px;
+	--container-small: 768px;
+
+	/* Module section internal stack rhythm — vertical gap between a module's
+	 * header (title + intro), its content (grid/list/media), and its CTA.
+	 * Use via `mt-module-gap`, `gap-module-gap`, `my-module-gap`, etc. */
+	--spacing-module-gap: 3rem;
+
+	/* Fonts (wired via next/font in src/lib/fonts.ts) */
+	--font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+	--font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif,
+		system-ui, sans-serif;
+
+	/* Typography (desktop sizes; overridden below for mobile).
+	 * In rem so the UI scales with the user's browser base font-size (WCAG 2.2 AAA). */
+	--text-h1: 3.3rem;      
+	--text-h2: 2.8rem;    
+	--text-h3: 2.5rem;        
+	--text-h4: 2rem;          
+	--text-h5: 1.5rem;       
+	--text-h6: 1.25rem;       
+	--text-large: 1.25rem;   
+	--text-medium: 1.125rem;  
+	--text-regular: 1rem;     
+	--text-small: 0.875rem;  
+	--text-tiny: 0.75rem;    
+
+	--leading-tight: 1.1;
+}
+
+/* Figma values that aren't tied to a Tailwind utility namespace */
+:root {
+	--max-width-xxlarge: 1280px;
+	--max-width-xlarge: 1024px;
+	--max-width-large: 768px;
+	--max-width-medium: 560px;
+	--max-width-small: 480px;
+	--max-width-xsmall: 400px;
+	--max-width-xxsmall: 320px;
+
+	--padding-section-large: 6rem;      
+	--padding-section-medium: 4rem;  
+	--padding-section-small: 3rem;     
+}
+
+/* Mobile token overrides */
+@media (max-width: 767px) {
+	:root {
+		--text-h1: 3rem;     /* 55px */
+		--text-h2: 2.2rem;          /* 48px */
+		--text-h3: 2rem;          /* 32px */
+		--text-h4: 1.5rem;        /* 24px */
+		--text-h5: 1.25rem;       /* 20px */
+		--text-h6: 1.125rem;      /* 18px */
+		--text-large: 1rem;       /* 16px */
+		--text-medium: 0.875rem;  /* 14px */
+		--text-regular: 0.75rem;  /* 12px */
+		--text-small: 0.75rem;    /* 12px */
+		--text-tiny: 0.625rem;    /* 10px */
+
+		--padding-section-large: 2.5rem;   /* 40px */
+		--padding-section-medium: 2.5rem;  /* 40px */
+		--padding-section-small: 2.5rem;   /* 40px */
+
+		--spacing-module-gap: 1.8rem;        /* 16px */
+	}
+}
+
+/* Only apply hover styles on devices that actually support hover (skip touch). */
+@custom-variant hover {
+	@media (hover: hover) {
+		&:hover {
+			@slot;
+		}
+	}
+}
+
+@variant header-open (body:has(#header-toggle:checked) &);
+@variant header-closed (body:has(#header-toggle:not(:checked)) &);
+
+@variant headings (& :is(h1, h2, h3, h4, h5, h6));
+
+@layer base {
+	* {
+		min-width: 0;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		line-height: var(--leading-tight, 1.25);
+	}
+
+	h2 {
+		font-weight: 500;
+	}
+
+	@supports (interpolate-size: allow-keywords) {
+		:root {
+			interpolate-size: allow-keywords;
+		}
+
+		:open::details-content {
+			height: auto;
+		}
+	}
+
+	:target {
+		scroll-margin-top: var(--header-height);
+
+		&:is(h1, h2, h3, h4, h5, h6) {
+			animation: target 2s ease-in-out forwards;
+		}
+	}
+
+	@keyframes target {
+		0%,
+		50% {
+			background-color: color-mix(
+				in oklab,
+				var(--color-amber-400) 50%,
+				transparent
+			);
+		}
+	}
+
+	html {
+		accent-color: var(--color-accent);
+		caret-color: var(--color-accent);
+		scroll-behavior: smooth;
+		font-family: var(--font-sans);
+		overflow-x: clip;
+	}
+
+	body {
+		overflow-x: clip;
+	}
+
+	:where(h1, h2, h3, h4, h5, h6) {
+		font-family: var(--font-display);
+	}
+
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
+
+	label,
+	input[type='submit'],
+	select,
+	button,
+	summary {
+		cursor: pointer;
+	}
+
+	input {
+		background-color: transparent;
+	}
+
+	details {
+		&::details-content {
+			overflow: clip;
+			transition-duration: var(--default-transition-duration);
+			transition-property: content-visibility, block-size;
+			transition-behavior: allow-discrete;
+		}
+
+		&:not(:open)::details-content {
+			block-size: 0;
+		}
+	}
+
+	::-webkit-details-marker {
+		display: none;
+	}
+
+	hr {
+		@apply border-ink/10;
+	}
+}
+
+/* animations */
+
+@utility anim-fade {
+	--x: 0;
+	--y: 0;
+	animation: anim-fade-to var(--tw-duration, var(--default-transition-duration))
+		ease-in-out forwards;
+}
+@utility anim-fade-to-l {
+	@apply anim-fade;
+	--x: 1rem;
+}
+@utility anim-fade-to-r {
+	@apply anim-fade;
+	--x: -1rem;
+}
+@utility anim-fade-to-t {
+	@apply anim-fade;
+	--y: 1rem;
+}
+@utility anim-fade-to-b {
+	@apply anim-fade;
+	--y: -1rem;
+}
+
+@keyframes anim-fade-to {
+	from {
+		opacity: 0;
+		translate: var(--x, 0) var(--y, 0);
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@utility anim-marquee {
+	animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+@utility anim-hero-mockup-side {
+	--slide-x: 0;
+	animation: hero-mockup-slide 1100ms cubic-bezier(0.22, 1, 0.36, 1) 350ms both;
+}
+
+@keyframes hero-mockup-slide {
+	from {
+		opacity: 0;
+		translate: var(--slide-x, 0) 0;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+@utility anim-slide-from-r {
+	animation: anim-slide-from-r 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes anim-slide-from-r {
+	from {
+		opacity: 0;
+		translate: 6rem 0;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+/* typography */
+
+@utility h-base {
+	font-family: var(--font-display);
+	font-weight: bold;
+}
+
+@utility h1 {
+	@apply h-base text-h1;
+}
+@utility h2 {
+	@apply h-base text-h2 font-medium;
+}
+@utility h3 {
+	@apply h-base text-h3;
+}
+@utility h4 {
+	@apply h-base text-h4;
+}
+@utility h5 {
+	@apply h-base text-h5;
+}
+@utility h6 {
+	@apply h-base text-h6;
+}
+
+@utility technical {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: bold;
+}
+
+@utility text-shadow {
+	text-shadow: 0 0 0.2em color-mix(in oklab, var(--color-ink) 25%, transparent);
+}
+
+@utility text-gradient {
+	@apply from-accent/3 to-accent bg-linear-to-br bg-clip-text text-transparent;
+}
+
+/* ctas, links */
+
+@utility action-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.75em 1.5em;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: center;
+	text-shadow: none;
+	color: var(--color-ink);
+	border-radius: 6px;
+	transition:
+		background-color 150ms ease,
+		color 150ms ease,
+		border-color 150ms ease;
+}
+
+@utility action {
+	@apply action-base bg-accent text-ink-inverse hover:bg-accent/90 border border-transparent text-balance;
+}
+
+@utility action-outline {
+	@apply action-base border-border-strong bg-canvas hover:bg-canvas-muted border text-balance;
+}
+
+@utility ghost {
+	@apply action-base hover:bg-canvas-muted text-ink;
+}
+
+@utility link {
+	@apply font-semibold;
+}
+
+@utility input {
+	@apply border-ink/10 rounded border p-[.25em] text-start;
+}
+
+/* utilities */
+
+@utility sticky-below-header {
+	position: sticky;
+	top: calc(var(--header-height) + var(--offset, 0px));
+}
+
+@utility frosted-glass {
+	--tw-bg-opacity: 0.9;
+	@apply backdrop-blur-lg backdrop-saturate-200;
+}
+
+@utility full-bleed {
+	width: 100vw;
+	margin-inline: calc(50% - 50vw);
+}
+
+@utility no-scrollbar {
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@utility overflow-fade {
+	--offset: 4rem;
+	mask: linear-gradient(
+		to right,
+		transparent,
+		black var(--offset),
+		black calc(100% - var(--offset)),
+		transparent
+	);
+}
+
+@utility overflow-fade-r {
+	--offset: 4rem;
+	mask: linear-gradient(
+		to right,
+		black 50%,
+		black calc(100% - var(--offset)),
+		transparent
+	);
+}
+
+/* layout */
+
+@utility section {
+	@apply mx-auto max-w-screen-xl p-8 max-md:px-4 md:py-12;
+}
+
+/* Figma section padding utilities */
+@utility section-pad-large {
+	padding-block: var(--padding-section-large);
+}
+@utility section-pad-medium {
+	padding-block: var(--padding-section-medium);
+}
+@utility section-pad-small {
+	padding-block: var(--padding-section-small);
+}
+
+/* Figma max-width utilities */
+@utility max-w-xxlarge {
+	max-width: var(--max-width-xxlarge);
+}
+@utility max-w-xlarge {
+	max-width: var(--max-width-xlarge);
+}
+@utility max-w-large {
+	max-width: var(--max-width-large);
+}
+@utility max-w-medium {
+	max-width: var(--max-width-medium);
+}
+@utility max-w-small {
+	max-width: var(--max-width-small);
+}
+@utility max-w-xsmall {
+	max-width: var(--max-width-xsmall);
+}
+@utility max-w-xxsmall {
+	max-width: var(--max-width-xxsmall);
+}
+
+/* richtext */
+
+@utility richtext {
+	@apply space-y-2 leading-relaxed;
+
+
+	& h1 {
+		@apply h1;
+	}
+
+	& h2 {
+		@apply h2;
+	}
+
+	& h3 {
+		@apply h3;
+	}
+
+	& h4 {
+		@apply h4;
+	}
+
+	& h5 {
+		@apply h5;
+	}
+
+	& h6 {
+		@apply h6;
+	}
+
+	& :is(ul, ol) {
+		list-style: revert;
+		padding-left: 1.5em;
+
+		& > li > ol {
+			list-style: lower-alpha;
+		}
+	}
+
+	& a:not(:is(.action, .action-outline, .ghost)) {
+		@apply link;
+	}
+
+	& :not(pre) > code {
+		@apply bg-ink/10 rounded px-1;
+	}
+
+	& pre {
+		tab-size: 2;
+		@apply overflow-x-auto rounded bg-transparent p-3 text-xs/relaxed;
+	}
+
+	& blockquote {
+		@apply border-accent/10 border-s-2 ps-4;
+	}
+
+	& table {
+		display: block;
+		overflow-x: auto;
+		text-wrap: balance;
+		line-height: initial;
+
+		@apply max-md:full-bleed min-w-full;
+
+		& th,
+		td {
+			@apply p-3 text-center;
+		}
+
+		& tbody {
+			& tr:nth-child(odd) {
+				@apply bg-accent/3;
+			}
+
+			& tr th:first-child {
+				text-align: left;
+			}
+		}
+	}
+
+	& video {
+		width: 100%;
+	}
+}
+
+/* skeleton */
+
+@utility skeleton {
+	@apply bg-ink/3 h-[1lh];
+}
+@utility skeleton-2 {
+	@apply bg-ink/3 h-[2lh];
+}
+@utility skeleton-3 {
+	@apply bg-ink/3 h-[3lh];
+}
+
+/* components */
+
+@utility accordion {
+	& summary {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 1em;
+
+		&::after {
+			content: '+';
+			display: inline-block;
+			font-family: monospace;
+			font-size: 1.5em;
+		}
+	}
+
+	& ::-webkit-details-marker {
+		display: none;
+	}
+
+	&:open summary::after {
+		content: '-';
+	}
+}
+
+@utility carousel {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: min(var(--size, 300px), 80vw);
+	overflow-x: auto;
+	overflow-y: hidden;
+	scroll-snap-type: x mandatory;
+
+	& > * {
+		scroll-snap-align: center;
+	}
+}

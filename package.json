@@ -1,0 +1,58 @@
+{
+  "name": "base-project",
+  "version": "0.1.0",
+  "dependencies": {
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/asset-utils": "^2.3.0",
+    "@sanity/code-input": "^7.1.3",
+    "@sanity/dashboard": "^6.0.0",
+    "@sanity/document-internationalization": "^6.2.7",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/ui": "^3.2.0",
+    "@sanity/vision": "^6.0.0",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "clsx": "^2.1.1",
+    "feed": "^5.2.1",
+    "next": "^16.2.6",
+    "next-sanity": "^13.1.0",
+    "nuqs": "^2.8.9",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-icons": "^5.6.0",
+    "sanity": "^6.0.0",
+    "sanity-plugin-internationalized-array": "^5.1.8",
+    "sanity-plugin-media": "^4.3.1",
+    "shiki": "^4.1.0",
+    "styled-components": "^6.4.2",
+    "tailwind-merge": "^3.6.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "postcss": "^8.5.15",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  },
+  "description": "Base Project — Next.js 16 + Sanity starter",
+  "private": true,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "pnpm typegen && next dev --webpack",
+    "build": "pnpm typegen && next build --webpack",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "extract-schema": "sanity schema extract --path=./schema.json",
+    "typegen": "pnpm extract-schema && sanity typegen generate"
+  }
+}

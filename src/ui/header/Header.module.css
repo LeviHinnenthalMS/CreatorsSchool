@@ -1,0 +1,6 @@
+.header {
+	@media (width >= 64rem) {
+		display: grid;
+		grid-template: 'logo nav ctas' auto / auto 1fr auto;
+	}
+}

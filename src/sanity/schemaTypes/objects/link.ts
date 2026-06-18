@@ -1,0 +1,87 @@
+import { defineField, defineType } from 'sanity'
+import { VscLink } from 'react-icons/vsc'
+import resolveSlug from '@/sanity/lib/resolveSlug'
+import { byLanguage } from '@/sanity/lib/byLanguage'
+
+export default defineType({
+	name: 'link',
+	title: 'Link',
+	icon: VscLink,
+	type: 'object',
+	fields: [
+		defineField({
+			name: 'active',
+			title: 'Active',
+			description: 'Toggle off to hide this link without deleting it.',
+			type: 'boolean',
+			initialValue: true,
+		}),
+		defineField({
+			name: 'label',
+			type: 'string',
+		}),
+		defineField({
+			name: 'type',
+			type: 'string',
+			options: {
+				layout: 'radio',
+				list: [
+					{ title: 'internal', value: 'internal' },
+					{ title: 'external', value: 'external' },
+				],
+			},
+		}),
+		defineField({
+			name: 'internal',
+			type: 'reference',
+			to: [{ type: 'page' }],
+			options: { filter: byLanguage },
+			hidden: ({ parent }) => parent?.type !== 'internal',
+		}),
+		defineField({
+			name: 'external',
+			placeholder: 'https://example.com',
+			type: 'url',
+			validation: (Rule) =>
+				Rule.uri({
+					scheme: ['http', 'https', 'mailto', 'tel'],
+					allowRelative: true,
+				}),
+			hidden: ({ parent }) => parent?.type !== 'external',
+		}),
+		defineField({
+			name: 'params',
+			title: 'URL parameters',
+			placeholder: 'e.g. #jump-link or ?foo=bar',
+			type: 'string',
+			hidden: ({ parent }) => parent?.type !== 'internal',
+		}),
+	],
+	preview: {
+		select: {
+			label: 'label',
+			type: 'type',
+			_type: 'internal._type',
+			title: 'internal.title',
+			internal: 'internal.metadata.slug.current',
+			params: 'params',
+			external: 'external',
+			active: 'active',
+		},
+		prepare: ({
+			label,
+			type,
+			title,
+			_type,
+			internal,
+			params,
+			external,
+			active,
+		}) => ({
+			title: [active === false && '(inactive)', label || title]
+				.filter(Boolean)
+				.join(' '),
+			subtitle: resolveSlug({ _type, internal, params, external }),
+		}),
+	},
+})
