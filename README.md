@@ -1,6 +1,6 @@
-# Base Project
+# Creators School
 
-Next.js 16 + Sanity starter to build new websites from. Single default locale (German, `/`) with an i18n system that scales to N languages by adding entries to `supportedLanguages` in `src/lib/i18n.ts`.
+Next.js 16 + Sanity site. Single default locale (German, `/`) with an i18n system that scales to N languages by adding entries to `supportedLanguages` in `src/lib/i18n.ts`.
 
 For project conventions (i18n, Studio structure, SEO, accessibility), see [`CLAUDE.md`](./CLAUDE.md).
 

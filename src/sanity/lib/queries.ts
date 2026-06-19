@@ -187,6 +187,38 @@ export const MODULES_QUERY = `
 			_type == 'reference' => { 'items': [@->] }
 		}
 	},
+	_type == 'testimonial-cards' => {
+		testimonials[]{
+			_key,
+			_type,
+			_type == 'reference' => { 'items': [@->] }
+		}
+	},
+	_type == 'hero.creators' => {
+		image{ ${IMAGE_QUERY} }
+	},
+	_type == 'welten-split' => {
+		cards[]{
+			...,
+			link{ ${LINK_QUERY} }
+		}
+	},
+	_type == 'offering-list' => {
+		ctaTileLink{ ${LINK_QUERY} }
+	},
+	_type == 'schedule-preview' => {
+		link{ ${LINK_QUERY} }
+	},
+	_type == 'info-cards' => {
+		cards[]{
+			...,
+			link{ ${LINK_QUERY} }
+		}
+	},
+	_type == 'location-card' => {
+		mapImage{ ${IMAGE_QUERY} },
+		mapLink{ ${LINK_QUERY} }
+	},
 `
 
 export const GLOBAL_MODULE_PATH_QUERY = `

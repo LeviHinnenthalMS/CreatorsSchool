@@ -55,7 +55,7 @@ export default async function RootLayout({
 					<Announcement />
 					<Header />
 					<main id="main-content" tabIndex={-1}>
-						<div aria-hidden className="h-[var(--header-height)] shrink-0" />
+						<div aria-hidden className="h-[calc(var(--header-height)+14px)] shrink-0" />
 						{children}
 					</main>
 					<Footer />

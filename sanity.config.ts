@@ -22,7 +22,7 @@ import type { PageOrPost } from '@/sanity/typeHelpers'
 const singletonTypes = ['site']
 
 export default defineConfig({
-	title: 'Base Project',
+	title: 'Creators School',
 	icon,
 	projectId,
 	dataset,
@@ -50,6 +50,12 @@ export default defineConfig({
 				'logo',
 				'person',
 				'testimonial',
+				'offering',
+				'teacher',
+				'performance',
+				'scheduleSlot',
+				'galleryImage',
+				'job',
 			],
 		}),
 	],
@@ -73,6 +79,14 @@ export default defineConfig({
 		productionUrl: async (prev, { document }) => {
 			if (['page', 'blog.post'].includes(document?._type)) {
 				return resolveUrl(document as PageOrPost, { base: true })
+			}
+			if (document?._type === 'offering') {
+				const lang = (document as { language?: string }).language
+				const slug = (document as { slug?: { current?: string } }).slug?.current
+				if (slug)
+					return `${process.env.NEXT_PUBLIC_BASE_URL || ''}${
+						lang && lang !== 'de' ? `/${lang}` : ''
+					}/angebote/${slug}`
 			}
 			return prev
 		},

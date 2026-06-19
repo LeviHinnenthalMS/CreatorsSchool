@@ -1,7 +1,7 @@
 'use client'
 
 import useLang from '@/lib/useLang'
-import { inter, interTight } from '@/lib/fonts'
+import { fraunces, manrope } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import type { ComponentProps } from 'react'
 
@@ -11,7 +11,7 @@ export default function Root({ className, ...props }: ComponentProps<'html'>) {
 	return (
 		<html
 			lang={lang}
-			className={cn(inter.variable, interTight.variable, className)}
+			className={cn(fraunces.variable, manrope.variable, className)}
 			suppressHydrationWarning
 			{...props}
 		/>

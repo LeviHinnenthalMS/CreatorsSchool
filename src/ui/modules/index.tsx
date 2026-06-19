@@ -18,6 +18,10 @@ import StatsGrid from './StatsGrid'
 import TestimonialFeatured from './TestimonialFeatured'
 import VideoWithText from './VideoWithText'
 
+// Creators School modules (above-the-fold / stage)
+import HeroCreators from './HeroCreators'
+import PageHeader from './PageHeader'
+
 // Heavy / below-the-fold / page-specific modules: code-split with dynamic()
 // so each page only ships the client JS it actually uses.
 const AccordionList = dynamic(() => import('./AccordionList'))
@@ -30,6 +34,28 @@ const PersonList = dynamic(() => import('./PersonList'))
 const SearchModule = dynamic(() => import('./SearchModule'))
 const StyleGuide = dynamic(() => import('./StyleGuide'))
 const TestimonialGrid = dynamic(() => import('./TestimonialGrid'))
+
+// Creators School modules (lazy)
+const Marquee = dynamic(() => import('./Marquee'))
+const FeatureGrid = dynamic(() => import('./FeatureGrid'))
+const WeltenSplit = dynamic(() => import('./WeltenSplit'))
+const OfferingList = dynamic(() => import('./OfferingList'))
+const OfferingDetail = dynamic(() => import('./OfferingDetail'))
+const PerformanceBanner = dynamic(() => import('./PerformanceBanner'))
+const AboutStrip = dynamic(() => import('./AboutStrip'))
+const CTABand = dynamic(() => import('./CTABand'))
+const SchedulePreview = dynamic(() => import('./SchedulePreview'))
+const ScheduleFull = dynamic(() => import('./ScheduleFull'))
+const GalleryMasonry = dynamic(() => import('./GalleryMasonry'))
+const InfoCards = dynamic(() => import('./InfoCards'))
+const ContactForm = dynamic(() => import('./ContactForm'))
+const JobsList = dynamic(() => import('./JobsList'))
+const LocationCard = dynamic(() => import('./LocationCard'))
+const TestimonialCards = dynamic(() => import('./TestimonialCards'))
+const SvcSplit = dynamic(() => import('./SvcSplit'))
+const SvcLearn = dynamic(() => import('./SvcLearn'))
+const SvcFaq = dynamic(() => import('./SvcFaq'))
+const SvcPanel = dynamic(() => import('./SvcPanel'))
 
 import { createDataAttribute } from 'next-sanity'
 import type { Module } from '@/sanity/typeHelpers'
@@ -66,6 +92,30 @@ const MODULE_MAP = {
 	'testimonial.featured': TestimonialFeatured,
 	'testimonial.grid': TestimonialGrid,
 	'video-with-text': VideoWithText,
+
+	// Creators School modules
+	'hero.creators': HeroCreators,
+	'page-header': PageHeader,
+	marquee: Marquee,
+	'feature-grid': FeatureGrid,
+	'welten-split': WeltenSplit,
+	'offering-list': OfferingList,
+	'offering-detail': OfferingDetail,
+	'performance-banner': PerformanceBanner,
+	'about-strip': AboutStrip,
+	'cta-band': CTABand,
+	'schedule-preview': SchedulePreview,
+	'schedule-full': ScheduleFull,
+	'gallery-masonry': GalleryMasonry,
+	'info-cards': InfoCards,
+	'contact-form': ContactForm,
+	'jobs-list': JobsList,
+	'location-card': LocationCard,
+	'testimonial-cards': TestimonialCards,
+	'svc-split': SvcSplit,
+	'svc-learn': SvcLearn,
+	'svc-faq': SvcFaq,
+	'svc-panel': SvcPanel,
 } as const satisfies Record<string, ModuleComponent>
 
 type ModuleType = keyof typeof MODULE_MAP

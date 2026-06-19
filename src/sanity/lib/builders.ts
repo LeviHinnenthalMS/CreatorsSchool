@@ -79,6 +79,28 @@ export const languageList = (
 		.join(' && ')
 	const baseParams = { type: schemaType, ...(options.extraParams ?? {}) }
 
+	// Single-language project: skip the "All / per-language" sub-tree —
+	// open the document list directly. Keeps the Studio one click shorter.
+	if (supportedLanguages.length <= 1) {
+		const onlyLang = supportedLanguages[0]?.id
+		const filter = onlyLang ? `${baseFilter} && language == $lang` : baseFilter
+		const params = onlyLang ? { ...baseParams, lang: onlyLang } : baseParams
+
+		return S.listItem()
+			.id(`${idKey}.lang-root`)
+			.title(title || schemaType)
+			.schemaType(schemaType)
+			.child(
+				S.documentList()
+					.id(`${idKey}.list`)
+					.title(title || schemaType)
+					.schemaType(schemaType)
+					.apiVersion(apiVersion)
+					.filter(filter)
+					.params(params),
+			)
+	}
+
 	return S.listItem()
 		.id(`${idKey}.lang-root`)
 		.title(title || schemaType)

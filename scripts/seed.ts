@@ -41,7 +41,9 @@ for (const { id: lang } of supportedLanguages) {
 	})
 }
 
-for (const doc of docs) {
-	const res = await client.createIfNotExists(doc as never)
-	console.log(`✓ ${res._id}`)
-}
+;(async () => {
+	for (const doc of docs) {
+		const res = await client.createIfNotExists(doc as never)
+		console.log(`✓ ${res._id}`)
+	}
+})()

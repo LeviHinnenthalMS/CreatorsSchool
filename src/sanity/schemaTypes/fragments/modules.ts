@@ -1,6 +1,6 @@
 import { defineField } from 'sanity'
 
-const HERO_TYPES = ['hero.split'] as const
+const HERO_TYPES = ['hero.split', 'hero.creators'] as const
 
 const insertMenuViews = [
 	{
@@ -15,14 +15,20 @@ export const stage = defineField({
 	name: 'stage',
 	title: 'Stage',
 	description:
-		'Hero/banner section shown above page content. Choose one hero variant.',
+		'Hero/Banner-Sektion über dem Seiteninhalt. Wähle eine Hero-Variante oder einen Page-Header.',
 	type: 'array',
-	of: HERO_TYPES.map((type) => ({ type })),
+	of: [
+		...HERO_TYPES.map((type) => ({ type })),
+		{ type: 'page-header' },
+	],
 	validation: (Rule) => Rule.max(1),
 	options: {
 		insertMenu: {
 			views: insertMenuViews,
-			groups: [{ name: 'hero', title: 'Hero', of: [...HERO_TYPES] }],
+			groups: [
+				{ name: 'hero', title: 'Hero', of: [...HERO_TYPES] },
+				{ name: 'header', title: 'Page Header', of: ['page-header'] },
+			],
 		},
 	},
 })
@@ -30,9 +36,33 @@ export const stage = defineField({
 export default defineField({
 	name: 'modules',
 	title: 'Page builder',
-	description: 'Page content modules (heroes are configured in the Stage).',
+	description:
+		'Inhalts-Module der Seite (Hero/Header werden in der Stage konfiguriert).',
 	type: 'array',
 	of: [
+		// Creators-specific
+		{ type: 'marquee' },
+		{ type: 'feature-grid' },
+		{ type: 'welten-split' },
+		{ type: 'offering-list' },
+		{ type: 'offering-detail' },
+		{ type: 'performance-banner' },
+		{ type: 'about-strip' },
+		{ type: 'cta-band' },
+		{ type: 'schedule-preview' },
+		{ type: 'schedule-full' },
+		{ type: 'gallery-masonry' },
+		{ type: 'info-cards' },
+		{ type: 'contact-form' },
+		{ type: 'jobs-list' },
+		{ type: 'location-card' },
+		{ type: 'testimonial-cards' },
+		{ type: 'svc-split' },
+		{ type: 'svc-learn' },
+		{ type: 'svc-faq' },
+		{ type: 'svc-panel' },
+
+		// Generic page-builder modules from the base
 		{ type: 'about-story' },
 		{ type: 'accordion-list' },
 		{ type: 'blog-overview' },
@@ -63,8 +93,34 @@ export default defineField({
 			views: insertMenuViews,
 			groups: [
 				{
+					name: 'creators',
+					title: 'Creators School',
+					of: [
+						'marquee',
+						'feature-grid',
+						'welten-split',
+						'offering-list',
+						'offering-detail',
+						'performance-banner',
+						'about-strip',
+						'cta-band',
+						'schedule-preview',
+						'schedule-full',
+						'gallery-masonry',
+						'info-cards',
+						'contact-form',
+						'jobs-list',
+						'location-card',
+						'testimonial-cards',
+						'svc-split',
+						'svc-learn',
+						'svc-faq',
+						'svc-panel',
+					],
+				},
+				{
 					name: 'sections',
-					title: 'Sections',
+					title: 'Sections (generisch)',
 					of: [
 						'callout',
 						'centered-cta',
@@ -94,7 +150,7 @@ export default defineField({
 				},
 				{
 					name: 'people',
-					title: 'People & testimonials',
+					title: 'People & Testimonials',
 					of: [
 						'meet-the-founder',
 						'meet-the-team',

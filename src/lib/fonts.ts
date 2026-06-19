@@ -1,13 +1,45 @@
-import { Inter, Inter_Tight } from 'next/font/google'
+import localFont from 'next/font/local'
 
-export const inter = Inter({
-	subsets: ['latin', 'latin-ext'],
+export const fraunces = localFont({
+	variable: '--font-display',
 	display: 'swap',
-	variable: '--font-inter',
+	src: [
+		{
+			path: './fonts/files/fraunces-roman-latin.woff2',
+			weight: '400 700',
+			style: 'normal',
+		},
+		{
+			path: './fonts/files/fraunces-roman-latin-ext.woff2',
+			weight: '400 700',
+			style: 'normal',
+		},
+		{
+			path: './fonts/files/fraunces-it-latin.woff2',
+			weight: '400 700',
+			style: 'italic',
+		},
+		{
+			path: './fonts/files/fraunces-it-latin-ext.woff2',
+			weight: '400 700',
+			style: 'italic',
+		},
+	],
 })
 
-export const interTight = Inter_Tight({
-	subsets: ['latin', 'latin-ext'],
+export const manrope = localFont({
+	variable: '--font-body',
 	display: 'swap',
-	variable: '--font-inter-tight',
+	src: [
+		{
+			path: './fonts/files/manrope-roman-latin.woff2',
+			weight: '400 800',
+			style: 'normal',
+		},
+		{
+			path: './fonts/files/manrope-roman-latin-ext.woff2',
+			weight: '400 800',
+			style: 'normal',
+		},
+	],
 })

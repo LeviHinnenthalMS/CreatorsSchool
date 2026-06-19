@@ -1,5 +1,5 @@
 import { structureTool } from 'sanity/structure'
-import { singleton, group, directory, languageList } from './lib/builders'
+import { singleton, group, languageList } from './lib/builders'
 import {
 	VscFiles,
 	VscServerProcess,
@@ -10,8 +10,12 @@ import {
 	VscHome,
 	VscLayoutPanelLeft,
 	VscMail,
+	VscMegaphone,
+	VscCalendar,
+	VscBriefcase,
+	VscDeviceCamera,
 } from 'react-icons/vsc'
-import { GoPerson } from 'react-icons/go'
+import { GoPerson, GoNote } from 'react-icons/go'
 import { GrBlockQuote } from 'react-icons/gr'
 
 export const structure = structureTool({
@@ -33,12 +37,34 @@ export const structure = structureTool({
 					id: 'page.nonHome',
 					extraFilter: 'metadata.slug.current != "index"',
 				}).icon(VscFiles),
-				group(S, 'Directories', [
-					directory(S, 'docs', { maxLevel: 1 }).title('Docs'),
-					directory(S, 'docs/modules').title('Docs › Modules'),
-				]),
 
 				S.documentTypeListItem('global-module').title('Global modules'),
+				S.divider(),
+
+				// ── Creators School: domain content ───────────────────────
+				group(S, 'Creators School', [
+					languageList(S, 'offering', 'Angebote').icon(GoNote),
+					languageList(S, 'scheduleSlot', 'Stundenplan').icon(VscCalendar),
+					languageList(S, 'galleryImage', 'Galerie').icon(VscDeviceCamera),
+					languageList(S, 'performance', 'Aufführungen').icon(VscMegaphone),
+					languageList(S, 'teacher', 'Lehrkräfte').icon(GoPerson),
+					languageList(S, 'job', 'Stellen').icon(VscBriefcase),
+				]),
+
+				S.listItem()
+					.title('Kontakt-Anfragen')
+					.icon(VscMail)
+					.child(
+						S.documentList()
+							.id('contactSubmission.list')
+							.title('Kontakt-Anfragen')
+							.apiVersion('2024-12-01')
+							.filter('_type == "contactSubmission"')
+							.defaultOrdering([
+								{ field: 'submittedAt', direction: 'desc' },
+							]),
+					),
+
 				S.divider(),
 
 				languageList(S, 'blog.post', 'Blog Posts').icon(VscEdit),

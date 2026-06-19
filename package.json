@@ -1,5 +1,5 @@
 {
-  "name": "base-project",
+  "name": "creators-school",
   "version": "0.1.0",
   "dependencies": {
     "@portabletext/to-html": "^5.0.2",
@@ -41,7 +41,7 @@
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3"
   },
-  "description": "Base Project — Next.js 16 + Sanity starter",
+  "description": "Creators School",
   "private": true,
   "engines": {
     "node": ">=22.12"
