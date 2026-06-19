@@ -1,7 +1,7 @@
 import resolveUrl from './resolveUrl'
 import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
 import type { Metadata } from 'next'
-import { DEFAULT_LANG } from './i18n'
+import { DEFAULT_LANG, languages } from './i18n'
 import { getSite } from '@/sanity/lib/queries'
 
 type MetadataInput = {
@@ -34,6 +34,22 @@ export default async function processMetadata(
 		siteOgimage ||
 		`${BASE_URL}/api/og?title=${encodeURIComponent(title ?? '')}`
 
+	const pageLang = page.language ?? DEFAULT_LANG
+	const langMap = Object.fromEntries(
+		page.translations
+			?.filter(
+				(t): t is { slug: string; language: string } =>
+					!!t?.language && !!t?.slug,
+			)
+			?.map(({ language, slug }) => [
+				language,
+				[BASE_URL, language !== DEFAULT_LANG && language, slug]
+					.filter(Boolean)
+					.join('/'),
+			]) || [],
+	)
+	const xDefault = langMap[DEFAULT_LANG] ?? (pageLang === DEFAULT_LANG ? url : undefined)
+
 	return {
 		metadataBase: new URL(BASE_URL),
 		title: title ?? undefined,
@@ -44,25 +60,24 @@ export default async function processMetadata(
 			title: title ?? undefined,
 			description: description ?? undefined,
 			images: ogImageUrl,
+			locale: pageLang,
+			alternateLocale: languages.filter((l) => l !== pageLang),
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: title ?? undefined,
+			description: description ?? undefined,
+			images: ogImageUrl,
 		},
 		robots: {
 			index: noIndex || vercelPreview ? false : undefined,
 		},
 		alternates: {
 			canonical: url,
-			languages: Object.fromEntries(
-				page.translations
-					?.filter(
-						(t): t is { slug: string; language: string } =>
-							!!t?.language && !!t?.slug,
-					)
-					?.map(({ language, slug }) => [
-						language,
-						[BASE_URL, language !== DEFAULT_LANG && language, slug]
-							.filter(Boolean)
-							.join('/'),
-					]) || [],
-			),
+			languages: {
+				...langMap,
+				...(xDefault ? { 'x-default': xDefault } : {}),
+			},
 			types: {
 				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
 			},

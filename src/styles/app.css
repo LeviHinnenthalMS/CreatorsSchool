@@ -229,9 +229,14 @@
 	html {
 		accent-color: var(--color-accent);
 		caret-color: var(--color-accent);
-		scroll-behavior: smooth;
 		font-family: var(--font-sans);
 		overflow-x: clip;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
 	}
 
 	body {

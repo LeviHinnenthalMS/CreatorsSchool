@@ -2,7 +2,7 @@ import { createClient, groq } from 'next-sanity'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 // import { token } from '@/lib/sanity/token'
 import { BLOG_DIR } from '@/lib/env'
-import { supportedLanguages } from '@/lib/i18n'
+import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
 import type { NextConfig } from 'next'
 
 const client = createClient({
@@ -16,6 +16,7 @@ const client = createClient({
 export default {
 	images: {
 		dangerouslyAllowSVG: true,
+		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 		remotePatterns: [
 			{
 				protocol: 'https',
@@ -34,7 +35,7 @@ export default {
 			'destination': select(
 				destination.type == 'internal' =>
 					select(
-						destination.internal->.language != null && destination.internal->.language != 'de'
+						destination.internal->.language != null && destination.internal->.language != '${DEFAULT_LANG}'
 							=> '/' + destination.internal->.language,
 						''
 					) + select(

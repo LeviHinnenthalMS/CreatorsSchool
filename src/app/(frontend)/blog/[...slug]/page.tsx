@@ -3,6 +3,7 @@ import Modules from '@/ui/modules'
 import PostContent from '@/ui/modules/blog/PostContent'
 import processMetadata from '@/lib/processMetadata'
 import { processSlug } from '@/lib/processSlug'
+import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { BLOG_POST_QUERY, BLOG_POST_SLUGS_QUERY } from '@/sanity/lib/queries'
@@ -18,11 +19,35 @@ export default async function Page({ params }: Props) {
 
 	return (
 		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPostJsonLd(post)) }}
+			/>
 			<Modules modules={before} post={post} />
 			<PostContent post={post} />
 			<Modules modules={after} post={post} />
 		</>
 	)
+}
+
+function buildPostJsonLd(post: NonNullable<BLOG_POST_QUERY_RESULT>) {
+	const url = resolveUrl(post, { language: post.language ?? undefined })
+	const authors = (post.authors ?? [])
+		.filter((a): a is NonNullable<typeof a> => !!a?.name)
+		.map((a) => ({ '@type': 'Person' as const, name: a.name }))
+
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		mainEntityOfPage: url,
+		headline: post.metadata?.title,
+		description: post.metadata?.description,
+		image: post.metadata?.ogimage,
+		datePublished: post.publishDate,
+		dateModified: post._updatedAt,
+		inLanguage: post.language,
+		author: authors.length ? authors : undefined,
+	}
 }
 
 export async function generateMetadata({ params }: Props) {

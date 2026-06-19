@@ -412,6 +412,7 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 		!(metadata.slug.current in ['404']) &&
 		metadata.noIndex != true
 	]|order(metadata.slug.current){
+		language,
 		'url': (
 			$baseUrl
 			+ select(defined(language) && language != $defaultLang => language + '/', '')
@@ -425,8 +426,20 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 			metadata.slug.current == 'index' => 1,
 			0.5
 		),
+		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			language,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ select(
+					metadata.slug.current == 'index' => '',
+					metadata.slug.current
+				)
+			)
+		}
 	},
 	'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(name){
+		language,
 		'url': (
 			$baseUrl
 			+ select(defined(language) && language != $defaultLang => language + '/', '')
@@ -434,7 +447,16 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 			+ metadata.slug.current
 		),
 		'lastModified': _updatedAt,
-		'priority': 0.4
+		'priority': 0.4,
+		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			language,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ '${BLOG_DIR}/'
+				+ metadata.slug.current
+			)
+		}
 	}
 }`)
 

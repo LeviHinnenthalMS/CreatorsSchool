@@ -53,6 +53,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "extract-schema": "sanity schema extract --path=./schema.json",
-    "typegen": "pnpm extract-schema && sanity typegen generate"
+    "typegen": "pnpm extract-schema && sanity typegen generate",
+    "seed": "npx tsx --env-file=.env.local scripts/seed.ts"
   }
 }

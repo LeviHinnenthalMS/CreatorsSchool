@@ -94,7 +94,7 @@ export default defineType({
 			title: 'Generate schema.org schema',
 			type: 'boolean',
 			description: 'Recommended for FAQ content',
-			initialValue: false,
+			initialValue: true,
 			group: 'options',
 		}),
 	],
