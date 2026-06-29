@@ -8,11 +8,11 @@ import { getJobs } from '@/sanity/lib/creators'
 import { getSite } from '@/sanity/lib/queries'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	applyLabel?: string | null
 	emptyText?: string | null
 	tinted?: boolean | null
@@ -36,16 +36,11 @@ export default async function JobsList(props: Props) {
 			)}
 		>
 			<div className="wrap">
-				<SectionHead
-					eyebrow={props.eyebrow}
-					titleBefore={props.titleBefore}
-					titleAccent={props.titleAccent}
-					titleAfter={props.titleAfter}
-				/>
+				<SectionHead eyebrow={props.eyebrow} title={props.title} />
 
 				{jobs.length === 0 ? (
 					<p className="text-mute text-[15px]">
-						{props.emptyText || 'Aktuell keine offenen Stellen.'}
+						{props.emptyText || 'No open positions at the moment.'}
 					</p>
 				) : (
 					<div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -84,7 +79,7 @@ export default async function JobsList(props: Props) {
 											href={href}
 											className="text-coral-deep mt-4 inline-flex items-center gap-2 text-[13.5px] font-semibold no-underline"
 										>
-											{props.applyLabel || 'Bewerben'}
+											{props.applyLabel || 'Apply'}
 											<Icon name="arrow" size={14} strokeWidth={2.5} />
 										</a>
 									)}

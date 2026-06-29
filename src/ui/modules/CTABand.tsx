@@ -2,15 +2,15 @@ import moduleProps from '@/lib/moduleProps'
 import { getSite } from '@/sanity/lib/queries'
 import { Icon } from '@/ui/creators/Icon'
 import CTAs from '@/ui/creators/CTAs'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import Btn from '@/ui/creators/Btn'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	text?: string | null
 	showPhone?: boolean | null
 	showWhatsapp?: boolean | null
@@ -50,11 +50,9 @@ export default async function CTABand(props: Props) {
 							{props.eyebrow}
 						</span>
 					)}
-					<AccentTitle
+					<RichTitle
+						title={props.title}
 						as="h2"
-						before={props.titleBefore}
-						accent={props.titleAccent}
-						after={props.titleAfter}
 						tone="blush"
 						className="text-paper m-0 text-[clamp(32px,4.5vw,60px)] font-display font-bold leading-[1.02] -tracking-[0.03em]"
 					/>

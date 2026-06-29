@@ -2,14 +2,14 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'offering-detail',
-	title: 'Angebot-Detail (auto)',
+	title: 'Offering detail (auto)',
 	description:
-		'Komplettes Angebot-Layout: Page Header (Facts), Für wen, Das lernst du, Auf einen Blick, FAQ. Quelle: ein Angebot-Dokument.',
+		'Full offering layout: page header (facts), For whom, What you\'ll learn, At a glance, FAQ. Source: one Offering document.',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'offering',
-			title: 'Angebot',
+			title: 'Offering',
 			type: 'reference',
 			to: [{ type: 'offering' }],
 			validation: (Rule) => Rule.required(),
@@ -27,33 +27,33 @@ export default defineType({
 		}),
 		defineField({
 			name: 'breadcrumbParentLabel',
-			title: 'Breadcrumb · Angebote',
+			title: 'Breadcrumb · Offerings',
 			type: 'string',
 		}),
 		defineField({
 			name: 'breadcrumbParentHref',
-			title: 'Breadcrumb · Angebote-Link',
+			title: 'Breadcrumb · Offerings URL',
 			type: 'string',
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'CTAs im Page-Header',
+			title: 'CTAs in page header',
 			type: 'array',
 			of: [{ type: 'cta' }],
 		}),
 		defineField({
 			name: 'backLinkLabel',
-			title: 'Zurück-Link-Label',
+			title: 'Back-link label',
 			type: 'string',
 		}),
 		defineField({
 			name: 'backLinkHref',
-			title: 'Zurück-Link-URL',
+			title: 'Back-link URL',
 			type: 'string',
 		}),
 		defineField({
 			name: 'panelCtas',
-			title: 'Panel-CTAs (Preis-Box)',
+			title: 'Panel CTAs (price box)',
 			type: 'array',
 			of: [{ type: 'cta' }],
 		}),
@@ -62,7 +62,7 @@ export default defineType({
 	preview: {
 		select: { title: 'offering.title' },
 		prepare: ({ title }) => ({
-			title: title || 'Angebot-Detail',
+			title: title || 'Offering detail',
 			subtitle: 'offering-detail',
 		}),
 	},

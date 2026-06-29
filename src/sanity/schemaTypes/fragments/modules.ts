@@ -15,7 +15,7 @@ export const stage = defineField({
 	name: 'stage',
 	title: 'Stage',
 	description:
-		'Hero/Banner-Sektion über dem Seiteninhalt. Wähle eine Hero-Variante oder einen Page-Header.',
+		'Hero/banner section above the page content. Pick one hero variant or a page header.',
 	type: 'array',
 	of: [
 		...HERO_TYPES.map((type) => ({ type })),
@@ -27,7 +27,7 @@ export const stage = defineField({
 			views: insertMenuViews,
 			groups: [
 				{ name: 'hero', title: 'Hero', of: [...HERO_TYPES] },
-				{ name: 'header', title: 'Page Header', of: ['page-header'] },
+				{ name: 'header', title: 'Page header', of: ['page-header'] },
 			],
 		},
 	},
@@ -37,7 +37,7 @@ export default defineField({
 	name: 'modules',
 	title: 'Page builder',
 	description:
-		'Inhalts-Module der Seite (Hero/Header werden in der Stage konfiguriert).',
+		'Page content modules (hero/header are configured in the Stage above).',
 	type: 'array',
 	of: [
 		// Creators-specific
@@ -120,7 +120,7 @@ export default defineField({
 				},
 				{
 					name: 'sections',
-					title: 'Sections (generisch)',
+					title: 'Sections (generic)',
 					of: [
 						'callout',
 						'centered-cta',
@@ -150,7 +150,7 @@ export default defineField({
 				},
 				{
 					name: 'people',
-					title: 'People & Testimonials',
+					title: 'People & testimonials',
 					of: [
 						'meet-the-founder',
 						'meet-the-team',

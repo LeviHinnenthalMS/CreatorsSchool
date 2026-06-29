@@ -2,14 +2,14 @@ import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'marquee',
-	title: 'Marquee · Schlagwörter',
+	title: 'Marquee · scrolling words',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'items',
-			title: 'Wörter',
+			title: 'Words',
 			description:
-				'Eine Reihe Schlagwörter. Markiere einzelne als „kursiv (coral)" für den Akzent.',
+				'List of words to scroll. Mark individual words as accent for the coral italic emphasis.',
 			type: 'array',
 			of: [
 				defineArrayMember({
@@ -19,7 +19,7 @@ export default defineType({
 						defineField({ name: 'text', title: 'Text', type: 'string' }),
 						defineField({
 							name: 'accent',
-							title: 'Akzent (kursiv, coral)',
+							title: 'Accent (italic, coral)',
 							type: 'boolean',
 							initialValue: false,
 						}),
@@ -28,7 +28,7 @@ export default defineType({
 						select: { title: 'text', accent: 'accent' },
 						prepare: ({ title, accent }) => ({
 							title,
-							subtitle: accent ? 'kursiv (coral)' : undefined,
+							subtitle: accent ? 'accent (italic coral)' : undefined,
 						}),
 					},
 				}),
@@ -36,7 +36,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'durationSeconds',
-			title: 'Animationsdauer (Sekunden)',
+			title: 'Animation duration (seconds)',
 			type: 'number',
 			initialValue: 55,
 		}),

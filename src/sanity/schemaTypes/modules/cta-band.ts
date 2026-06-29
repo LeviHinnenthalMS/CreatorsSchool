@@ -1,64 +1,55 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'cta-band',
-	title: 'CTA-Band (coral)',
+	title: 'CTA band (coral)',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent (blush)',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
 		defineField({
 			name: 'showPhone',
-			title: 'Telefonnummer groß zeigen (aus Site-Settings)',
+			title: 'Show large phone number (from site settings)',
 			type: 'boolean',
 			initialValue: true,
 		}),
 		defineField({
 			name: 'showWhatsapp',
-			title: 'WhatsApp-Button zeigen',
+			title: 'Show WhatsApp button',
 			type: 'boolean',
 			initialValue: true,
 		}),
 		defineField({
 			name: 'showEmail',
-			title: 'E-Mail-Button zeigen',
+			title: 'Show email button',
 			type: 'boolean',
 			initialValue: true,
 		}),
 		defineField({
 			name: 'whatsappLabel',
-			title: 'WhatsApp-Label',
+			title: 'WhatsApp button label',
 			type: 'string',
 		}),
 		defineField({
 			name: 'emailLabel',
-			title: 'E-Mail-Label',
+			title: 'Email button label',
 			type: 'string',
 		}),
 		defineField({
 			name: 'extraCtas',
-			title: 'Weitere CTAs (Outline)',
+			title: 'Extra CTAs (outline)',
 			type: 'array',
 			of: [{ type: 'cta' }],
 		}),
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'CTA-Band' }),
+		prepare: () => ({ title: 'CTA band' }),
 	},
 })

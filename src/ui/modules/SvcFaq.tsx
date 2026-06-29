@@ -1,16 +1,15 @@
 import moduleProps from '@/lib/moduleProps'
 import Eyebrow from '@/ui/creators/Eyebrow'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type QA = { _key?: string; q?: string | null; a?: string | null; defaultOpen?: boolean | null }
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	lead?: string | null
 	ctas?: Array<SanityCTA | null> | null
 	items?: QA[] | null
@@ -27,11 +26,9 @@ export default function SvcFaq(props: Props) {
 			<div className="wrap grid gap-[clamp(32px,4vw,60px)] md:grid-cols-[1fr_1.4fr]">
 				<div>
 					{props.eyebrow && <Eyebrow>{props.eyebrow}</Eyebrow>}
-					<AccentTitle
+					<RichTitle
+						title={props.title}
 						as="h2"
-						before={props.titleBefore}
-						accent={props.titleAccent}
-						after={props.titleAfter}
 						className="text-ink h-sub mt-3"
 					/>
 					{props.lead && (

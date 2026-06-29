@@ -2,7 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import { stegaClean } from 'next-sanity'
 import Link from 'next/link'
 import Eyebrow from '@/ui/creators/Eyebrow'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import { Icon } from '@/ui/creators/Icon'
 import { getOfferingById } from '@/sanity/lib/creators'
@@ -110,10 +110,10 @@ export default async function OfferingDetail(props: Props) {
 				<section className="py-[clamp(50px,6vw,90px)]">
 					<div className="wrap grid gap-[clamp(32px,4vw,64px)] md:grid-cols-2">
 						<div>
-							<Eyebrow>{offering.forWhoTitle?.startsWith('Für') ? 'Für wen' : 'Für wen'}</Eyebrow>
-							<AccentTitle
+							<Eyebrow>Für wen</Eyebrow>
+							<RichTitle
+								title={offering.forWhoTitle as never}
 								as="h2"
-								before={offering.forWhoTitle}
 								className="text-ink h-sub mt-3"
 							/>
 							{offering.forWhoLead && (
@@ -147,14 +147,12 @@ export default async function OfferingDetail(props: Props) {
 			{offering.learn && offering.learn.length > 0 && (
 				<section className="bg-warm-white py-[clamp(50px,6vw,90px)]">
 					<div className="wrap">
-						<Eyebrow>{offering.learnTitle?.split(' ')[0] || 'Das lernst du'}</Eyebrow>
-						{offering.learnTitle && (
-							<AccentTitle
-								as="h2"
-								before={offering.learnTitle}
-								className="text-ink h-sub mt-3"
-							/>
-						)}
+						<Eyebrow>Das lernst du</Eyebrow>
+						<RichTitle
+							title={offering.learnTitle as never}
+							as="h2"
+							className="text-ink h-sub mt-3"
+						/>
 						<div className="mt-[clamp(36px,4vw,52px)] grid grid-cols-1 gap-4 md:grid-cols-3">
 							{offering.learn.map((c, i) => (
 								<article
@@ -187,13 +185,11 @@ export default async function OfferingDetail(props: Props) {
 					<div className="wrap grid items-start gap-[clamp(32px,4vw,64px)] md:grid-cols-2">
 						<div>
 							<Eyebrow>Auf einen Blick</Eyebrow>
-							{offering.detailsTitle && (
-								<AccentTitle
-									as="h2"
-									before={offering.detailsTitle}
-									className="text-ink h-sub mt-3"
-								/>
-							)}
+							<RichTitle
+								title={offering.detailsTitle as never}
+								as="h2"
+								className="text-ink h-sub mt-3"
+							/>
 							{offering.detailsLead && (
 								<p className="text-charcoal mt-5 max-w-[50ch] text-[16.5px] leading-relaxed">
 									{offering.detailsLead}
@@ -262,10 +258,12 @@ export default async function OfferingDetail(props: Props) {
 				<section className="pb-[clamp(70px,8vw,110px)] pt-[clamp(50px,6vw,90px)]">
 					<div className="wrap grid gap-[clamp(32px,4vw,60px)] md:grid-cols-[1fr_1.4fr]">
 						<div>
-							<Eyebrow>Häufige Fragen</Eyebrow>
-							{offering.faqTitle && (
-								<AccentTitle as="h2" before={offering.faqTitle} className="h-sub mt-3" />
-							)}
+							<Eyebrow>FAQ</Eyebrow>
+							<RichTitle
+								title={offering.faqTitle as never}
+								as="h2"
+								className="h-sub mt-3"
+							/>
 							{offering.faqLead && (
 								<p className="text-charcoal mt-5 max-w-[42ch] text-[16.5px]">
 									{offering.faqLead}

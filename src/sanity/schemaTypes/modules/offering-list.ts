@@ -1,25 +1,16 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'offering-list',
-	title: 'Angebote-Liste',
+	title: 'Offerings list',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'tagline',
@@ -29,13 +20,13 @@ export default defineType({
 		}),
 		defineField({
 			name: 'bereich',
-			title: 'Bereich-Filter',
+			title: 'Filter by category',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Alle', value: 'alle' },
-					{ title: 'Nur Musik', value: 'musik' },
-					{ title: 'Nur Tanz', value: 'tanz' },
+					{ title: 'All', value: 'alle' },
+					{ title: 'Music only', value: 'musik' },
+					{ title: 'Dance only', value: 'tanz' },
 				],
 				layout: 'radio',
 			},
@@ -47,9 +38,9 @@ export default defineType({
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Musik: 2 große Karten', value: 'musik-pair' },
-					{ title: 'Tanz: 3er-Grid mit CTA-Tile', value: 'tanz-grid' },
-					{ title: 'Übersicht (Prog-Cards 4er)', value: 'prog' },
+					{ title: 'Music: 2 large cards', value: 'musik-pair' },
+					{ title: 'Dance: 3-col grid with CTA tile', value: 'tanz-grid' },
+					{ title: 'Overview (4-col program cards)', value: 'prog' },
 				],
 				layout: 'radio',
 			},
@@ -57,38 +48,38 @@ export default defineType({
 		}),
 		defineField({
 			name: 'tinted',
-			title: 'Warm-White Hintergrund',
+			title: 'Warm-white background',
 			type: 'boolean',
 			initialValue: false,
 		}),
 		defineField({
 			name: 'ctaTileTitle',
-			title: 'CTA-Tile · Titel',
-			description: 'Nur sichtbar im Layout „Tanz: 3er-Grid mit CTA-Tile".',
+			title: 'CTA tile · title',
+			description: 'Only visible in the "Dance: 3-col grid with CTA tile" layout.',
 			type: 'string',
 		}),
 		defineField({
 			name: 'ctaTileText',
-			title: 'CTA-Tile · Text',
+			title: 'CTA tile · text',
 			type: 'string',
 		}),
 		defineField({
 			name: 'ctaTileLink',
-			title: 'CTA-Tile · Link',
+			title: 'CTA tile · link',
 			type: 'link',
 		}),
 		defineField({
 			name: 'ctaTileLinkLabel',
-			title: 'CTA-Tile · Link-Label',
+			title: 'CTA tile · link label',
 			type: 'string',
 		}),
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		select: { accent: 'titleAccent', bereich: 'bereich' },
-		prepare: ({ accent, bereich }) => ({
-			title: accent || 'Angebote-Liste',
-			subtitle: `Bereich: ${bereich || 'alle'}`,
+		select: { bereich: 'bereich' },
+		prepare: ({ bereich }) => ({
+			title: 'Offerings list',
+			subtitle: `Filter: ${bereich || 'all'}`,
 		}),
 	},
 })

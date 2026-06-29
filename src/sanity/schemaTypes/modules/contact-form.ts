@@ -1,19 +1,15 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'contact-form',
-	title: 'Kontakt-Formular',
+	title: 'Contact form',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'title',
 			title: 'Headline',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent (am Ende)',
-			type: 'string',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'lead',
@@ -23,80 +19,60 @@ export default defineType({
 		}),
 		defineField({
 			name: 'labels',
-			title: 'Feld-Beschriftungen',
+			title: 'Field labels',
 			type: 'object',
 			fields: [
-				defineField({ name: 'name', title: 'Name', type: 'string' }),
-				defineField({
-					name: 'child',
-					title: 'Name des Kindes',
-					type: 'string',
-				}),
-				defineField({ name: 'email', title: 'E-Mail', type: 'string' }),
-				defineField({ name: 'phone', title: 'Telefon', type: 'string' }),
+				defineField({ name: 'name', title: 'Your name', type: 'string' }),
+				defineField({ name: 'child', title: "Child's name", type: 'string' }),
+				defineField({ name: 'email', title: 'Email', type: 'string' }),
+				defineField({ name: 'phone', title: 'Phone', type: 'string' }),
 				defineField({
 					name: 'interest',
-					title: 'Welches Angebot interessiert dich?',
+					title: 'Which offering?',
 					type: 'string',
 				}),
-				defineField({
-					name: 'age',
-					title: 'Alter des Kindes',
-					type: 'string',
-				}),
-				defineField({
-					name: 'when',
-					title: 'Wann passt es?',
-					type: 'string',
-				}),
-				defineField({
-					name: 'message',
-					title: 'Nachricht',
-					type: 'string',
-				}),
-				defineField({
-					name: 'submit',
-					title: 'Submit-Button',
-					type: 'string',
-				}),
+				defineField({ name: 'age', title: "Child's age", type: 'string' }),
+				defineField({ name: 'when', title: 'When works for you?', type: 'string' }),
+				defineField({ name: 'message', title: 'Message', type: 'string' }),
+				defineField({ name: 'submit', title: 'Submit button', type: 'string' }),
 				defineField({
 					name: 'requiredHint',
-					title: 'Pflichtfeld-Hinweis (* erforderlich)',
+					title: 'Required-field hint (e.g. "* required")',
 					type: 'string',
 				}),
 				defineField({
 					name: 'privacy',
-					title: 'Datenschutz-Zustimmung',
+					title: 'Privacy consent',
 					type: 'text',
 					rows: 3,
 				}),
 				defineField({
 					name: 'successTitle',
-					title: 'Erfolg · Titel',
+					title: 'Success · title',
 					type: 'string',
 				}),
 				defineField({
 					name: 'successText',
-					title: 'Erfolg · Text',
+					title: 'Success · text',
 					type: 'string',
 				}),
 				defineField({
 					name: 'errorText',
-					title: 'Fehler · Text',
+					title: 'Error · text',
 					type: 'string',
 				}),
 			],
 		}),
 		defineField({
 			name: 'interests',
-			title: 'Interesse · Chip-Optionen',
+			title: 'Interest chips',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'option',
 					fields: [
-						defineField({ name: 'value', title: 'Wert (id)', type: 'string' }),
+						defineField({ name: 'value', title: 'Value (id)', type: 'string' }),
 						defineField({ name: 'label', title: 'Label', type: 'string' }),
 					],
 					preview: { select: { title: 'label', subtitle: 'value' } },
@@ -105,30 +81,30 @@ export default defineType({
 		}),
 		defineField({
 			name: 'ageOptions',
-			title: 'Alter · Dropdown-Optionen',
+			title: "Child's age · dropdown options",
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'option',
 					fields: [
-						defineField({ name: 'value', type: 'string' }),
-						defineField({ name: 'label', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
+						defineField({ name: 'label', title: 'Label', type: 'string' }),
 					],
 				}),
 			],
 		}),
 		defineField({
 			name: 'whenOptions',
-			title: 'Zeitwunsch · Dropdown-Optionen',
+			title: 'Time preference · dropdown options',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'option',
 					fields: [
-						defineField({ name: 'value', type: 'string' }),
-						defineField({ name: 'label', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
+						defineField({ name: 'label', title: 'Label', type: 'string' }),
 					],
 				}),
 			],
@@ -136,6 +112,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Kontakt-Formular' }),
+		prepare: () => ({ title: 'Contact form' }),
 	},
 })

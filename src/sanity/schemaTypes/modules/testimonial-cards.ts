@@ -1,27 +1,18 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'testimonial-cards',
-	title: 'Testimonial-Karten (Creators)',
+	title: 'Testimonial cards (Creators)',
 	description:
-		'Variante der Testimonial-Grid mit Stars + tönten Karten in der Creators-Optik.',
+		'Variant of the testimonial grid with stars and tinted cards in the Creators design.',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'tagline',
@@ -38,6 +29,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Testimonial-Karten' }),
+		prepare: () => ({ title: 'Testimonial cards' }),
 	},
 })

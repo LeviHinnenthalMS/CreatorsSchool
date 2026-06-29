@@ -1,33 +1,36 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { GoNote } from 'react-icons/go'
+import { richTitleField } from '../fragments/rich-title'
 
 const bereichList = [
-	{ title: 'Musik', value: 'musik' },
-	{ title: 'Tanz', value: 'tanz' },
+	{ title: 'Music', value: 'musik' },
+	{ title: 'Dance', value: 'tanz' },
 ]
 
 export default defineType({
 	name: 'offering',
-	title: 'Angebot',
+	title: 'Offering',
 	type: 'document',
 	icon: GoNote,
 	groups: [
-		{ name: 'overview', title: 'Übersicht', default: true },
-		{ name: 'forWho', title: 'Für wen' },
-		{ name: 'learn', title: 'Das lernst du' },
-		{ name: 'details', title: 'Auf einen Blick' },
+		{ name: 'overview', title: 'Overview', default: true },
+		{ name: 'forWho', title: 'For whom' },
+		{ name: 'learn', title: "What you'll learn" },
+		{ name: 'details', title: 'At a glance' },
 		{ name: 'faq', title: 'FAQ' },
 		{ name: 'seo', title: 'SEO / Metadata' },
 	],
 	fields: [
 		defineField({
 			name: 'title',
+			title: 'Title',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 			group: 'overview',
 		}),
 		defineField({
 			name: 'slug',
+			title: 'Slug',
 			type: 'slug',
 			options: { source: 'title' },
 			validation: (Rule) => Rule.required(),
@@ -35,7 +38,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'bereich',
-			title: 'Bereich',
+			title: 'Category',
 			type: 'string',
 			options: { list: bereichList, layout: 'radio' },
 			validation: (Rule) => Rule.required(),
@@ -44,44 +47,44 @@ export default defineType({
 		defineField({
 			name: 'eyebrow',
 			title: 'Eyebrow',
-			description: 'z. B. "Bereich Tanz · Klassik"',
+			description: 'e.g. "Dance area · Classical"',
 			type: 'string',
 			group: 'overview',
 		}),
 		defineField({
 			name: 'lede',
-			title: 'Intro-Text',
+			title: 'Intro text',
 			type: 'text',
 			rows: 3,
 			group: 'overview',
 		}),
 		defineField({
 			name: 'heroImage',
-			title: 'Hero-Bild',
+			title: 'Hero image',
 			type: 'image',
 			options: { hotspot: true, metadata: ['lqip'] },
 			fields: [
 				defineField({
 					name: 'alt',
-					title: 'Alt-Text',
+					title: 'Alt text',
 					type: 'string',
 					validation: (Rule) =>
-						Rule.required().error('Alt-Text wird für Barrierefreiheit benötigt.'),
+						Rule.required().error('Alt text is required for accessibility.'),
 				}),
 			],
 			group: 'overview',
 		}),
 		defineField({
 			name: 'order',
-			title: 'Sortierung',
+			title: 'Sort order',
 			type: 'number',
 			group: 'overview',
 		}),
 
 		defineField({
 			name: 'facts',
-			title: 'Fakten (Header-Chips)',
-			description: 'z. B. Alter · Dauer · Niveaus · Preis',
+			title: 'Facts (header chips)',
+			description: 'e.g. Age · Duration · Levels · Price',
 			type: 'array',
 			of: [
 				defineArrayMember({
@@ -89,7 +92,7 @@ export default defineType({
 					name: 'fact',
 					fields: [
 						defineField({ name: 'key', title: 'Label', type: 'string' }),
-						defineField({ name: 'value', title: 'Wert', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 					],
 					preview: { select: { title: 'key', subtitle: 'value' } },
 				}),
@@ -98,45 +101,45 @@ export default defineType({
 		}),
 
 		defineField({
+			name: 'forWhoTitle',
+			title: 'Section headline',
+			...richTitleField(),
+			group: 'forWho',
+		}),
+		defineField({
+			name: 'forWhoLead',
+			title: 'Section lead',
+			type: 'text',
+			rows: 2,
+			group: 'forWho',
+		}),
+		defineField({
 			name: 'forWho',
-			title: 'Für wen',
+			title: 'Audience list',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'audience',
 					fields: [
-						defineField({ name: 'title', type: 'string' }),
-						defineField({ name: 'text', type: 'text', rows: 2 }),
+						defineField({ name: 'title', title: 'Title', type: 'string' }),
+						defineField({ name: 'text', title: 'Text', type: 'text', rows: 2 }),
 					],
 					preview: { select: { title: 'title', subtitle: 'text' } },
 				}),
 			],
 			group: 'forWho',
 		}),
-		defineField({
-			name: 'forWhoTitle',
-			title: 'Sektions-Headline',
-			type: 'string',
-			group: 'forWho',
-		}),
-		defineField({
-			name: 'forWhoLead',
-			title: 'Sektions-Lead',
-			type: 'text',
-			rows: 2,
-			group: 'forWho',
-		}),
 
 		defineField({
 			name: 'learnTitle',
-			title: 'Sektions-Headline',
-			type: 'string',
+			title: 'Section headline',
+			...richTitleField(),
 			group: 'learn',
 		}),
 		defineField({
 			name: 'learn',
-			title: 'Das lernst du (3 Karten)',
+			title: "What you'll learn (3 cards)",
 			type: 'array',
 			validation: (Rule) => Rule.max(3),
 			of: [
@@ -149,10 +152,10 @@ export default defineType({
 							title: 'Icon',
 							type: 'string',
 							description:
-								'Ein Key des Icon-Sets (z. B. "sparkle", "music", "stage", "movement", "voice", "heart").',
+								'Key from the icon set (e.g. "sparkle", "music", "stage", "movement", "voice", "heart").',
 						}),
-						defineField({ name: 'title', type: 'string' }),
-						defineField({ name: 'text', type: 'text', rows: 2 }),
+						defineField({ name: 'title', title: 'Title', type: 'string' }),
+						defineField({ name: 'text', title: 'Text', type: 'text', rows: 2 }),
 					],
 					preview: { select: { title: 'title', subtitle: 'text' } },
 				}),
@@ -162,54 +165,54 @@ export default defineType({
 
 		defineField({
 			name: 'detailsTitle',
-			title: 'Sektions-Headline',
-			type: 'string',
+			title: 'Section headline',
+			...richTitleField(),
 			group: 'details',
 		}),
 		defineField({
 			name: 'detailsLead',
-			title: 'Sektions-Lead',
+			title: 'Section lead',
 			type: 'text',
 			rows: 2,
 			group: 'details',
 		}),
 		defineField({
 			name: 'priceLabel',
-			title: 'Preis-Label',
-			description: 'z. B. "Ab"',
+			title: 'Price label',
+			description: 'e.g. "From"',
 			type: 'string',
 			group: 'details',
 		}),
 		defineField({
 			name: 'priceCurrency',
-			title: 'Währung',
+			title: 'Currency',
 			type: 'string',
 			group: 'details',
 		}),
 		defineField({
 			name: 'priceValue',
-			title: 'Preis-Wert',
+			title: 'Price value',
 			type: 'string',
 			group: 'details',
 		}),
 		defineField({
 			name: 'priceUnit',
-			title: 'Preis-Einheit',
-			description: 'z. B. "/ Kind"',
+			title: 'Price unit',
+			description: 'e.g. "/ child"',
 			type: 'string',
 			group: 'details',
 		}),
 		defineField({
 			name: 'detailRows',
-			title: 'Detail-Zeilen',
+			title: 'Detail rows',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'detailRow',
 					fields: [
-						defineField({ name: 'key', type: 'string' }),
-						defineField({ name: 'value', type: 'string' }),
+						defineField({ name: 'key', title: 'Key', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 					],
 					preview: { select: { title: 'key', subtitle: 'value' } },
 				}),
@@ -219,13 +222,13 @@ export default defineType({
 
 		defineField({
 			name: 'faqTitle',
-			title: 'Sektions-Headline',
-			type: 'string',
+			title: 'Section headline',
+			...richTitleField(),
 			group: 'faq',
 		}),
 		defineField({
 			name: 'faqLead',
-			title: 'Sektions-Lead',
+			title: 'Section lead',
 			type: 'text',
 			rows: 2,
 			group: 'faq',
@@ -239,8 +242,8 @@ export default defineType({
 					type: 'object',
 					name: 'qa',
 					fields: [
-						defineField({ name: 'q', title: 'Frage', type: 'string' }),
-						defineField({ name: 'a', title: 'Antwort', type: 'text', rows: 4 }),
+						defineField({ name: 'q', title: 'Question', type: 'string' }),
+						defineField({ name: 'a', title: 'Answer', type: 'text', rows: 4 }),
 					],
 					preview: { select: { title: 'q' } },
 				}),
@@ -250,6 +253,7 @@ export default defineType({
 
 		defineField({
 			name: 'metadata',
+			title: 'Metadata',
 			type: 'metadata',
 			group: 'seo',
 		}),
@@ -264,7 +268,7 @@ export default defineType({
 	orderings: [
 		{
 			name: 'order',
-			title: 'Reihenfolge',
+			title: 'Sort order',
 			by: [{ field: 'order', direction: 'asc' }],
 		},
 	],

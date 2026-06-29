@@ -2,17 +2,16 @@ import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'
 import Eyebrow from '@/ui/creators/Eyebrow'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import { Icon } from '@/ui/creators/Icon'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
 type Item = { _key?: string; title?: string | null; text?: string | null }
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	lead?: string | null
 	tinted?: boolean | null
 	items?: Item[] | null
@@ -32,11 +31,9 @@ export default function SvcSplit(props: Props) {
 				<div className="grid gap-[clamp(32px,4vw,64px)] md:grid-cols-2">
 					<div>
 						{props.eyebrow && <Eyebrow>{props.eyebrow}</Eyebrow>}
-						<AccentTitle
+						<RichTitle
+							title={props.title}
 							as="h2"
-							before={props.titleBefore}
-							accent={props.titleAccent}
-							after={props.titleAfter}
 							className="text-ink h-sub mt-3"
 						/>
 						{props.lead && (

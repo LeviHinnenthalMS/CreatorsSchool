@@ -2,25 +2,25 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'gallery-masonry',
-	title: 'Galerie · Masonry',
+	title: 'Gallery · masonry',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'emptyText',
-			title: 'Hinweis bei leerer Galerie',
+			title: 'Empty-state text',
 			type: 'string',
 		}),
 		defineField({
 			name: 'bereich',
-			title: 'Filter nach Bereich',
+			title: 'Filter by category',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Alle', value: 'alle' },
-					{ title: 'Musik', value: 'musik' },
-					{ title: 'Tanz', value: 'tanz' },
-					{ title: 'Bühne', value: 'buehne' },
-					{ title: 'Schule', value: 'schule' },
+					{ title: 'All', value: 'alle' },
+					{ title: 'Music', value: 'musik' },
+					{ title: 'Dance', value: 'tanz' },
+					{ title: 'Stage', value: 'buehne' },
+					{ title: 'School', value: 'schule' },
 				],
 				layout: 'radio',
 			},
@@ -29,6 +29,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Galerie' }),
+		prepare: () => ({ title: 'Gallery' }),
 	},
 })

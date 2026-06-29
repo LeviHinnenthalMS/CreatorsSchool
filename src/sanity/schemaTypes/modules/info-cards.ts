@@ -2,12 +2,12 @@ import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
 	name: 'info-cards',
-	title: 'Info-Karten (Kontakt)',
+	title: 'Info cards (contact)',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'cards',
-			title: 'Karten',
+			title: 'Cards',
 			type: 'array',
 			of: [
 				defineArrayMember({
@@ -16,7 +16,7 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'variant',
-							title: 'Variante',
+							title: 'Variant',
 							type: 'string',
 							options: {
 								list: [
@@ -28,12 +28,12 @@ export default defineType({
 							},
 							initialValue: 'neutral',
 						}),
-						defineField({ name: 'icon', title: 'Icon-Key', type: 'string' }),
+						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
 						defineField({ name: 'label', title: 'Label', type: 'string' }),
-						defineField({ name: 'value', title: 'Wert', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 						defineField({
 							name: 'small',
-							title: 'Zusatz-Zeile (kleiner)',
+							title: 'Small (extra line)',
 							type: 'string',
 						}),
 						defineField({ name: 'link', title: 'Link', type: 'link' }),
@@ -45,6 +45,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Info-Karten' }),
+		prepare: () => ({ title: 'Info cards' }),
 	},
 })

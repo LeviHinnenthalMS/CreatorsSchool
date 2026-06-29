@@ -2,13 +2,13 @@ import { defineField, defineType } from 'sanity'
 import { VscCalendar } from 'react-icons/vsc'
 
 const WEEKDAYS = [
-	{ title: 'Montag', value: 'mo' },
-	{ title: 'Dienstag', value: 'di' },
-	{ title: 'Mittwoch', value: 'mi' },
-	{ title: 'Donnerstag', value: 'do' },
-	{ title: 'Freitag', value: 'fr' },
-	{ title: 'Samstag', value: 'sa' },
-	{ title: 'Sonntag', value: 'so' },
+	{ title: 'Monday', value: 'mo' },
+	{ title: 'Tuesday', value: 'di' },
+	{ title: 'Wednesday', value: 'mi' },
+	{ title: 'Thursday', value: 'do' },
+	{ title: 'Friday', value: 'fr' },
+	{ title: 'Saturday', value: 'sa' },
+	{ title: 'Sunday', value: 'so' },
 ]
 
 const WEEKDAY_ORDER: Record<string, number> = {
@@ -23,70 +23,70 @@ const WEEKDAY_ORDER: Record<string, number> = {
 
 export default defineType({
 	name: 'scheduleSlot',
-	title: 'Stundenplan-Termin',
+	title: 'Schedule slot',
 	type: 'document',
 	icon: VscCalendar,
 	fields: [
 		defineField({
 			name: 'weekday',
-			title: 'Wochentag',
+			title: 'Weekday',
 			type: 'string',
 			options: { list: WEEKDAYS, layout: 'dropdown' },
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'weekdayOrder',
-			title: 'Wochentag-Reihenfolge',
+			title: 'Weekday order',
 			type: 'number',
 			hidden: true,
 			readOnly: true,
 		}),
 		defineField({
 			name: 'time',
-			title: 'Uhrzeit',
-			description: 'z. B. "16:45"',
+			title: 'Time',
+			description: 'e.g. "16:45"',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'duration',
-			title: 'Dauer',
-			description: 'z. B. "60 Min."',
+			title: 'Duration',
+			description: 'e.g. "60 min"',
 			type: 'string',
 		}),
 		defineField({
 			name: 'name',
-			title: 'Kursname',
+			title: 'Class name',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'ageRange',
-			title: 'Altersbereich',
-			description: 'z. B. "ab 6 J."',
+			title: 'Age range',
+			description: 'e.g. "from 6 y."',
 			type: 'string',
 		}),
 		defineField({
 			name: 'subInfo',
-			title: 'Zusatz-Info',
+			title: 'Additional info',
 			description:
-				'Komma-getrennte Tags wie „Eltern-Kind, Max. 6 Kinder, Kleingruppe".',
+				'Comma-separated tags like "Parent–child, max 6 children, small group".',
 			type: 'string',
 		}),
 		defineField({
 			name: 'room',
-			title: 'Saal / Raum',
+			title: 'Room',
 			type: 'string',
 		}),
 		defineField({
 			name: 'floor',
-			title: 'Etage',
-			description: 'z. B. "EG", "1. OG"',
+			title: 'Floor',
+			description: 'e.g. "GF", "1F"',
 			type: 'string',
 		}),
 		defineField({
 			name: 'teacher',
-			title: 'Lehrkraft',
+			title: 'Teacher',
 			type: 'reference',
 			to: [{ type: 'teacher' }],
 			options: {
@@ -98,13 +98,13 @@ export default defineType({
 		}),
 		defineField({
 			name: 'status',
-			title: 'Verfügbarkeit',
+			title: 'Availability',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Plätze frei', value: 'open' },
-					{ title: 'Wenige Plätze', value: 'few' },
-					{ title: 'Warteliste', value: 'full' },
+					{ title: 'Available', value: 'open' },
+					{ title: 'Few left', value: 'few' },
+					{ title: 'Waitlist', value: 'full' },
 				],
 				layout: 'radio',
 			},
@@ -112,25 +112,25 @@ export default defineType({
 		}),
 		defineField({
 			name: 'statusLabel',
-			title: 'Status-Label (Override)',
+			title: 'Status label (override)',
 			description:
-				'Optional: ersetzt das Standard-Label, z. B. "3 Plätze", "Voll", "Quereinstieg".',
+				'Optional: replaces the default label, e.g. "3 spots", "Full", "Open enrollment".',
 			type: 'string',
 		}),
 		defineField({
 			name: 'capacity',
-			title: 'Kapazität',
-			description: 'z. B. "von 8"',
+			title: 'Capacity',
+			description: 'e.g. "of 8"',
 			type: 'string',
 		}),
 		defineField({
 			name: 'bereich',
-			title: 'Bereich',
+			title: 'Category',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Musik', value: 'musik' },
-					{ title: 'Tanz', value: 'tanz' },
+					{ title: 'Music', value: 'musik' },
+					{ title: 'Dance', value: 'tanz' },
 					{ title: 'Instrument', value: 'instrument' },
 				],
 				layout: 'radio',
@@ -138,15 +138,15 @@ export default defineType({
 		}),
 		defineField({
 			name: 'categories',
-			title: 'Filter-Kategorien',
+			title: 'Filter categories',
 			description:
-				'Zusatz-Filter neben dem Bereich. Verfügbare Schlüssel: frueh, erwachsene.',
+				'Extra filters besides category. Available keys: early, adults.',
 			type: 'array',
 			of: [{ type: 'string' }],
 			options: {
 				list: [
-					{ title: 'Frühförderung', value: 'frueh' },
-					{ title: 'Erwachsene', value: 'erwachsene' },
+					{ title: 'Early education', value: 'frueh' },
+					{ title: 'Adults', value: 'erwachsene' },
 				],
 			},
 		}),
@@ -160,7 +160,7 @@ export default defineType({
 	orderings: [
 		{
 			name: 'weekday',
-			title: 'Wochentag · Uhrzeit',
+			title: 'Weekday · time',
 			by: [
 				{ field: 'weekdayOrder', direction: 'asc' },
 				{ field: 'time', direction: 'asc' },

@@ -1,15 +1,16 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'performance-banner',
-	title: 'Aufführungs-Banner (plum)',
+	title: 'Performance banner (plum)',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'performance',
-			title: 'Aufführung',
+			title: 'Performance',
 			description:
-				'Wenn leer: nutzt die hervorgehobene Aufführung („featured") der aktuellen Sprache.',
+				'If empty: uses the featured performance for the current language.',
 			type: 'reference',
 			to: [{ type: 'performance' }],
 			options: {
@@ -21,19 +22,10 @@ export default defineType({
 		}),
 		defineField({ name: 'eyebrow', title: 'Eyebrow (override)', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent (override)',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent (override)',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent (override)',
-			type: 'string',
+			name: 'title',
+			title: 'Headline (override)',
+			description: 'If empty: uses the performance title.',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'ctas',
@@ -44,6 +36,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Aufführungs-Banner' }),
+		prepare: () => ({ title: 'Performance banner' }),
 	},
 })

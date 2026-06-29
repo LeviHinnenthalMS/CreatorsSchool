@@ -10,11 +10,11 @@ import { DEFAULT_LANG } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
 
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	tagline?: string | null
 	bereich?: 'alle' | 'musik' | 'tanz' | null
 	layout?: 'musik-pair' | 'tanz-grid' | 'prog' | null
@@ -43,16 +43,6 @@ export default async function OfferingList(props: Props) {
 
 	if (!items.length) return null
 
-	const head = (
-		<SectionHead
-			eyebrow={props.eyebrow}
-			titleBefore={props.titleBefore}
-			titleAccent={props.titleAccent}
-			titleAfter={props.titleAfter}
-			tagline={props.tagline}
-		/>
-	)
-
 	const ctaTileHref =
 		props.ctaTileLink?.type === 'internal' && props.ctaTileLink.internal
 			? resolveUrl(props.ctaTileLink.internal)
@@ -67,7 +57,11 @@ export default async function OfferingList(props: Props) {
 			)}
 		>
 			<div className="wrap">
-				{head}
+				<SectionHead
+					eyebrow={props.eyebrow}
+					title={props.title}
+					tagline={props.tagline}
+				/>
 
 				{layout === 'musik-pair' && (
 					<div className="grid grid-cols-1 gap-[18px] md:grid-cols-2">
@@ -192,7 +186,7 @@ export default async function OfferingList(props: Props) {
 								)}
 								<div className="border-line-2 mt-auto flex items-center justify-between border-t border-dashed pt-4">
 									<span className="text-mute text-[12.5px] font-semibold">
-										{o.bereich === 'musik' ? 'Musik' : 'Tanz'}
+										{o.bereich === 'musik' ? 'Music' : 'Dance'}
 									</span>
 									<span
 										aria-hidden

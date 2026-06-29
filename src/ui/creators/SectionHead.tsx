@@ -1,13 +1,16 @@
 import { cn } from '@/lib/utils'
 import Eyebrow from './Eyebrow'
-import AccentTitle from './AccentTitle'
+import RichTitle from './RichTitle'
+
+type Block = {
+	_type?: string
+	_key?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 export default function SectionHead({
 	eyebrow,
-	titleBefore,
-	titleAccent,
-	titleAfter,
-	titlePill,
+	title,
 	tagline,
 	tone = 'coral',
 	className,
@@ -16,10 +19,7 @@ export default function SectionHead({
 	taglineClassName,
 }: {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
-	titlePill?: string | null
+	title?: Block[] | null
 	tagline?: string | null
 	tone?: 'coral' | 'blush' | 'paper'
 	className?: string
@@ -27,9 +27,10 @@ export default function SectionHead({
 	titleClassName?: string
 	taglineClassName?: string
 }) {
-	const hasHead =
-		titleBefore || titleAccent || titleAfter || titlePill || eyebrow
-	if (!hasHead && !tagline) return null
+	const hasTitle = title?.some((b) =>
+		b.children?.some((c) => c.text && c.text.trim() !== ''),
+	)
+	if (!hasTitle && !eyebrow && !tagline) return null
 
 	return (
 		<div
@@ -40,15 +41,12 @@ export default function SectionHead({
 		>
 			<div>
 				{eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
-				{hasHead && (
-					<AccentTitle
-						as={as}
-						before={titleBefore}
-						accent={titleAccent}
-						after={titleAfter}
-						pill={titlePill}
-						className={cn('mt-3 h-section', titleClassName)}
+				{hasTitle && (
+					<RichTitle
+						title={title}
 						tone={tone}
+						as={as}
+						className={cn('mt-3 h-section', titleClassName)}
 					/>
 				)}
 			</div>

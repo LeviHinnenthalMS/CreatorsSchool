@@ -18,11 +18,11 @@ type Card = {
 	linkLabel?: string | null
 }
 
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	tagline?: string | null
 	cards?: Card[] | null
 }
@@ -45,9 +45,7 @@ export default function WeltenSplit(props: Props) {
 			<div className="wrap">
 				<SectionHead
 					eyebrow={props.eyebrow}
-					titleBefore={props.titleBefore}
-					titleAccent={props.titleAccent}
-					titleAfter={props.titleAfter}
+					title={props.title}
 					tagline={props.tagline}
 				/>
 

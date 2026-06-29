@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { Icon } from '@/ui/creators/Icon'
 import { submitContact } from './contactSubmit'
 import moduleProps from '@/lib/moduleProps'
+import RichTitle from '@/ui/creators/RichTitle'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
 type Option = { value?: string | null; label?: string | null }
@@ -27,9 +28,10 @@ type Labels = {
 	errorText?: string | null
 }
 
+type TitleBlock = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
-	title?: string | null
-	titleAccent?: string | null
+	title?: TitleBlock[] | null
 	lead?: string | null
 	labels?: Labels | null
 	interests?: Option[] | null
@@ -114,19 +116,13 @@ export default function ContactForm(props: Props) {
 						className="bg-coral-tint pointer-events-none absolute -right-24 -top-24 size-[280px] rounded-full opacity-60 blur-[20px]"
 					/>
 
-					{(props.title || props.titleAccent) && (
+					{(props.title?.length || props.lead) && (
 						<header className="relative z-10">
-							<h2 className="text-ink font-display m-0 text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.05] -tracking-[0.025em]">
-								{props.title}
-								{props.titleAccent && (
-									<>
-										{' '}
-										<span className="text-coral font-medium italic">
-											{props.titleAccent}
-										</span>
-									</>
-								)}
-							</h2>
+							<RichTitle
+								title={props.title}
+								as="h2"
+								className="text-ink font-display m-0 text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.05] -tracking-[0.025em]"
+							/>
 							{props.lead && (
 								<p className="text-ink-2 mt-3.5 max-w-[42ch] text-[15.5px]">
 									{props.lead}

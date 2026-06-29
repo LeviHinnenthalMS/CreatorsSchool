@@ -1,58 +1,49 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'svc-panel',
-	title: 'Service · Preis-Panel (zwei-spaltig)',
+	title: 'Service · price panel (two columns)',
 	description:
-		'Links Headline+Text, rechts dunkles Panel mit Preis, Detail-Zeilen und CTAs.',
+		'Left: headline + lead. Right: dark panel with price, detail rows and CTAs.',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'lead',
-			title: 'Lead-Text',
+			title: 'Lead text',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'panel',
-			title: 'Panel-Inhalt',
+			title: 'Panel contents',
 			type: 'object',
 			fields: [
-				defineField({ name: 'label', title: 'Top-Label', type: 'string' }),
-				defineField({ name: 'currency', title: 'Währung', type: 'string' }),
+				defineField({ name: 'label', title: 'Top label', type: 'string' }),
+				defineField({ name: 'currency', title: 'Currency', type: 'string' }),
 				defineField({
 					name: 'value',
-					title: 'Wert (Preis oder Text)',
+					title: 'Value (price or text)',
 					type: 'string',
 				}),
-				defineField({ name: 'unit', title: 'Einheit', type: 'string' }),
+				defineField({ name: 'unit', title: 'Unit', type: 'string' }),
 				defineField({
 					name: 'rows',
-					title: 'Detail-Zeilen',
+					title: 'Detail rows',
 					type: 'array',
 					of: [
 						defineArrayMember({
 							type: 'object',
 							name: 'row',
 							fields: [
-								defineField({ name: 'key', type: 'string' }),
-								defineField({ name: 'value', type: 'string' }),
+								defineField({ name: 'key', title: 'Key', type: 'string' }),
+								defineField({ name: 'value', title: 'Value', type: 'string' }),
 							],
 							preview: { select: { title: 'key', subtitle: 'value' } },
 						}),
@@ -69,6 +60,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Service-Panel' }),
+		prepare: () => ({ title: 'Service panel' }),
 	},
 })

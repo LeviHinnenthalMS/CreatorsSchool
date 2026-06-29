@@ -2,25 +2,17 @@ import moduleProps from '@/lib/moduleProps'
 import getServerLang from '@/lib/getServerLang'
 import { getFeaturedPerformance, getPerformanceById } from '@/sanity/lib/creators'
 import Eyebrow from '@/ui/creators/Eyebrow'
+import RichTitle, { richTitlePlainText } from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
+
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
 	performance?: { _ref?: string } | { _id?: string } | null
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	ctas?: Array<SanityCTA | null> | null
-}
-
-function splitDate(dates?: string | null) {
-	if (!dates) return { big: null as string | null, mon: null as string | null }
-	// expects "5.–6. September 2026" or similar — show the leading day(s) big
-	const match = dates.match(/^([\d.,\s–-]+?)([A-Za-zÄÖÜäöüß]+\s*\d*)?$/)
-	const big = match?.[1]?.trim().replace(/\.$/, '').trim() || null
-	const mon = (match?.[2] || dates.replace(big ?? '', '')).trim() || null
-	return { big, mon }
 }
 
 export default async function PerformanceBanner(props: Props) {
@@ -35,9 +27,8 @@ export default async function PerformanceBanner(props: Props) {
 
 	if (!perf) return null
 
-	const eyebrow = props.eyebrow ?? 'Bühne frei'
-	const titleAccent = props.titleAccent ?? perf.title
-	const { big, mon } = splitDate(perf.dates)
+	const overrideText = richTitlePlainText(props.title)
+	const hasTitleOverride = overrideText.length > 0
 
 	return (
 		<section
@@ -55,16 +46,16 @@ export default async function PerformanceBanner(props: Props) {
 				/>
 
 				<div className="relative z-10 grid items-center gap-[clamp(36px,4vw,64px)] md:grid-cols-[0.85fr_1.15fr]">
-					{(big || mon || perf.venue) && (
+					{(perf.bigNumber || perf.monthLabel || perf.venue) && (
 						<div className="rounded-[28px] border border-white/15 bg-white/[0.04] p-[clamp(28px,3vw,44px)] text-center">
-							{big && (
+							{perf.bigNumber && (
 								<div className="text-paper font-display text-[clamp(64px,8vw,116px)] font-semibold leading-[0.9] -tracking-[0.02em]">
-									{big}
+									{perf.bigNumber}
 								</div>
 							)}
-							{mon && (
+							{perf.monthLabel && (
 								<div className="text-blush mt-3.5 text-[14px] font-semibold uppercase tracking-[0.24em]">
-									{mon}
+									{perf.monthLabel}
 								</div>
 							)}
 							{perf.venue && (
@@ -76,20 +67,20 @@ export default async function PerformanceBanner(props: Props) {
 					)}
 
 					<div>
-						{eyebrow && <Eyebrow tone="blush">{eyebrow}</Eyebrow>}
+						{props.eyebrow && <Eyebrow tone="blush">{props.eyebrow}</Eyebrow>}
 
-						<h2 className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] font-semibold leading-[1.04] -tracking-[0.02em]">
-							{props.titleBefore}
-							{titleAccent && (
-								<>
-									{props.titleBefore ? ' ' : ''}
-									<span className="text-blush font-medium italic">
-										{titleAccent}
-									</span>
-								</>
-							)}
-							{props.titleAfter}
-						</h2>
+						{hasTitleOverride ? (
+							<RichTitle
+								title={props.title}
+								as="h2"
+								tone="blush"
+								className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] font-semibold leading-[1.04] -tracking-[0.02em]"
+							/>
+						) : perf.title ? (
+							<h2 className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] font-semibold leading-[1.04] -tracking-[0.02em]">
+								{perf.title}
+							</h2>
+						) : null}
 
 						{perf.lead && (
 							<p className="text-paper/90 font-display mt-4 text-[clamp(18px,1.7vw,23px)] font-medium italic">

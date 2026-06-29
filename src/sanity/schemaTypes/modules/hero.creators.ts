@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'hero.creators',
@@ -7,44 +8,27 @@ export default defineType({
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'pretitle',
-			title: 'Headline · Anfang',
-			description: 'z. B. „Wo Musik & Tanz"',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor dem Akzent',
-			description: 'z. B. „zu "',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent (kursiv, coral)',
-			description: 'z. B. „Ausdruck"',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach dem Akzent',
-			description: 'z. B. „ werden."',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			description:
+				'Press Enter for a new line. Select text and mark it as Accent or Pill for the coloured/styled emphasis.',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'sub',
-			title: 'Subline',
+			title: 'Sub-headline',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'image',
-			title: 'Hero-Foto',
+			title: 'Hero photo',
 			type: 'image',
 			options: { hotspot: true, metadata: ['lqip'] },
 			fields: [
 				defineField({
 					name: 'alt',
-					title: 'Alt-Text',
+					title: 'Alt text',
 					type: 'string',
 					validation: (Rule) => Rule.required(),
 				}),
@@ -52,7 +36,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'tags',
-			title: 'Schwebende Tags (max. 3)',
+			title: 'Floating tags (max 3)',
 			type: 'array',
 			validation: (Rule) => Rule.max(3),
 			of: [
@@ -66,9 +50,9 @@ export default defineType({
 							type: 'string',
 							options: {
 								list: [
-									{ title: 'Oben rechts', value: 't1' },
-									{ title: 'Mitte links', value: 't2' },
-									{ title: 'Unten rechts', value: 't3' },
+									{ title: 'Top right', value: 't1' },
+									{ title: 'Middle left', value: 't2' },
+									{ title: 'Bottom right', value: 't3' },
 								],
 								layout: 'radio',
 							},
@@ -87,13 +71,9 @@ export default defineType({
 							},
 							initialValue: 'neutral',
 						}),
-						defineField({
-							name: 'icon',
-							title: 'Icon-Key',
-							type: 'string',
-						}),
-						defineField({ name: 'label', type: 'string' }),
-						defineField({ name: 'value', type: 'string' }),
+						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField({ name: 'label', title: 'Label', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 					],
 					preview: {
 						select: { title: 'label', subtitle: 'value' },
@@ -109,17 +89,17 @@ export default defineType({
 		}),
 		defineField({
 			name: 'reviewTitle',
-			title: 'Review-Zeile · Headline',
+			title: 'Review row · headline',
 			type: 'string',
 		}),
 		defineField({
 			name: 'reviewSubtitle',
-			title: 'Review-Zeile · Unterzeile',
+			title: 'Review row · subtitle',
 			type: 'string',
 		}),
 		defineField({
 			name: 'reviewAvatars',
-			title: 'Review-Avatare (max. 3 Initialen)',
+			title: 'Review avatars (max 3 initials)',
 			type: 'array',
 			of: [{ type: 'string' }],
 			validation: (Rule) => Rule.max(3),
@@ -127,9 +107,9 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		select: { eyebrow: 'eyebrow', title: 'titleAccent' },
-		prepare: ({ eyebrow, title }) => ({
-			title: title || 'Hero',
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({
+			title: 'Hero',
 			subtitle: eyebrow || 'hero.creators',
 		}),
 	},

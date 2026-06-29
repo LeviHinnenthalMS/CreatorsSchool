@@ -1,25 +1,16 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'schedule-preview',
-	title: 'Stundenplan · Preview',
+	title: 'Schedule · preview',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'tagline',
@@ -29,59 +20,42 @@ export default defineType({
 		}),
 		defineField({
 			name: 'limit',
-			title: 'Max. Anzahl an Terminen',
+			title: 'Max slots shown',
 			type: 'number',
 			initialValue: 7,
 		}),
-		defineField({
-			name: 'footnote',
-			title: 'Fußzeile',
-			type: 'string',
-		}),
+		defineField({ name: 'footnote', title: 'Footnote', type: 'string' }),
 		defineField({
 			name: 'link',
-			title: 'Link zum vollen Stundenplan',
+			title: 'Link to full schedule',
 			type: 'link',
 		}),
-		defineField({
-			name: 'linkLabel',
-			title: 'Link-Label',
-			type: 'string',
-		}),
+		defineField({ name: 'linkLabel', title: 'Link label', type: 'string' }),
 		defineField({
 			name: 'filterLabels',
-			title: 'Filter-Beschriftungen',
-			description: 'Beschriftung der 5 Filter-Buttons.',
+			title: 'Filter button labels',
 			type: 'object',
 			fields: [
-				defineField({ name: 'all', title: 'Alle', type: 'string' }),
-				defineField({ name: 'musik', title: 'Musik', type: 'string' }),
-				defineField({ name: 'tanz', title: 'Tanz', type: 'string' }),
-				defineField({
-					name: 'frueh',
-					title: 'Frühförderung',
-					type: 'string',
-				}),
-				defineField({
-					name: 'erwachsene',
-					title: 'Erwachsene',
-					type: 'string',
-				}),
+				defineField({ name: 'all', title: 'All', type: 'string' }),
+				defineField({ name: 'musik', title: 'Music', type: 'string' }),
+				defineField({ name: 'tanz', title: 'Dance', type: 'string' }),
+				defineField({ name: 'frueh', title: 'Early education', type: 'string' }),
+				defineField({ name: 'erwachsene', title: 'Adults', type: 'string' }),
 			],
 		}),
 		defineField({
 			name: 'statusLabels',
-			title: 'Status-Beschriftungen',
+			title: 'Status badge labels',
 			type: 'object',
 			fields: [
-				defineField({ name: 'open', title: 'Plätze frei', type: 'string' }),
-				defineField({ name: 'few', title: 'Wenige Plätze', type: 'string' }),
-				defineField({ name: 'full', title: 'Warteliste', type: 'string' }),
+				defineField({ name: 'open', title: 'Available', type: 'string' }),
+				defineField({ name: 'few', title: 'Few left', type: 'string' }),
+				defineField({ name: 'full', title: 'Waitlist', type: 'string' }),
 			],
 		}),
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Stundenplan-Preview' }),
+		prepare: () => ({ title: 'Schedule preview' }),
 	},
 })

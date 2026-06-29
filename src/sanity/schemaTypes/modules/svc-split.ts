@@ -1,51 +1,42 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'svc-split',
-	title: 'Service-Split (Text + Bullets)',
+	title: 'Service split (text + bullets)',
 	description:
-		'Zwei-Spalten-Layout aus den Service-Detail-Seiten: links Headline+Text, rechts Bullet-Liste mit Check-Icons.',
+		'Two-column layout: left = headline + lead, right = bulleted check-list.',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'lead',
-			title: 'Lead-Text',
+			title: 'Lead text',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'tinted',
-			title: 'Warm-White Hintergrund',
+			title: 'Warm-white background',
 			type: 'boolean',
 			initialValue: false,
 		}),
 		defineField({
 			name: 'items',
-			title: 'Liste (rechte Spalte)',
+			title: 'List (right column)',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'svcItem',
 					fields: [
-						defineField({ name: 'title', type: 'string' }),
-						defineField({ name: 'text', type: 'string' }),
+						defineField({ name: 'title', title: 'Title', type: 'string' }),
+						defineField({ name: 'text', title: 'Text', type: 'string' }),
 					],
 					preview: { select: { title: 'title', subtitle: 'text' } },
 				}),
@@ -54,6 +45,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Service-Split' }),
+		prepare: () => ({ title: 'Service split' }),
 	},
 })

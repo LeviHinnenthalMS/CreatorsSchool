@@ -43,21 +43,21 @@ export const structure = structureTool({
 
 				// ── Creators School: domain content ───────────────────────
 				group(S, 'Creators School', [
-					languageList(S, 'offering', 'Angebote').icon(GoNote),
-					languageList(S, 'scheduleSlot', 'Stundenplan').icon(VscCalendar),
-					languageList(S, 'galleryImage', 'Galerie').icon(VscDeviceCamera),
-					languageList(S, 'performance', 'Aufführungen').icon(VscMegaphone),
-					languageList(S, 'teacher', 'Lehrkräfte').icon(GoPerson),
-					languageList(S, 'job', 'Stellen').icon(VscBriefcase),
+					languageList(S, 'offering', 'Offerings').icon(GoNote),
+					languageList(S, 'scheduleSlot', 'Schedule').icon(VscCalendar),
+					languageList(S, 'galleryImage', 'Gallery').icon(VscDeviceCamera),
+					languageList(S, 'performance', 'Performances').icon(VscMegaphone),
+					languageList(S, 'teacher', 'Teachers').icon(GoPerson),
+					languageList(S, 'job', 'Jobs').icon(VscBriefcase),
 				]),
 
 				S.listItem()
-					.title('Kontakt-Anfragen')
+					.title('Contact submissions')
 					.icon(VscMail)
 					.child(
 						S.documentList()
 							.id('contactSubmission.list')
-							.title('Kontakt-Anfragen')
+							.title('Contact submissions')
 							.apiVersion('2024-12-01')
 							.filter('_type == "contactSubmission"')
 							.defaultOrdering([

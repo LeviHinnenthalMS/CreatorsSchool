@@ -1,53 +1,44 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'svc-faq',
 	title: 'Service · FAQ',
-	description: 'FAQ-Block im Service-Layout: links Headline+CTA, rechts Accordion.',
+	description: 'FAQ block: left = headline + CTA, right = accordion items.',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'lead',
-			title: 'Lead-Text',
+			title: 'Lead text',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'CTAs (linke Spalte)',
+			title: 'CTAs (left column)',
 			type: 'array',
 			of: [{ type: 'cta' }],
 		}),
 		defineField({
 			name: 'items',
-			title: 'FAQ-Einträge',
+			title: 'FAQ items',
 			type: 'array',
 			of: [
 				defineArrayMember({
 					type: 'object',
 					name: 'qa',
 					fields: [
-						defineField({ name: 'q', title: 'Frage', type: 'string' }),
-						defineField({ name: 'a', title: 'Antwort', type: 'text', rows: 4 }),
+						defineField({ name: 'q', title: 'Question', type: 'string' }),
+						defineField({ name: 'a', title: 'Answer', type: 'text', rows: 4 }),
 						defineField({
 							name: 'defaultOpen',
-							title: 'Standard offen',
+							title: 'Open by default',
 							type: 'boolean',
 							initialValue: false,
 						}),
@@ -59,6 +50,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Service-FAQ' }),
+		prepare: () => ({ title: 'Service FAQ' }),
 	},
 })

@@ -62,20 +62,26 @@ export type OfferingListItem = {
 	facts?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
 }
 
+type TitleBlock = {
+	_type?: string
+	_key?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
+
 export type OfferingDetail = OfferingListItem & {
-	forWhoTitle?: string | null
+	forWhoTitle?: TitleBlock[] | null
 	forWhoLead?: string | null
 	forWho?: Array<{ _key?: string; title?: string | null; text?: string | null }> | null
-	learnTitle?: string | null
+	learnTitle?: TitleBlock[] | null
 	learn?: Array<{ _key?: string; icon?: string | null; title?: string | null; text?: string | null }> | null
-	detailsTitle?: string | null
+	detailsTitle?: TitleBlock[] | null
 	detailsLead?: string | null
 	priceLabel?: string | null
 	priceCurrency?: string | null
 	priceValue?: string | null
 	priceUnit?: string | null
 	detailRows?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
-	faqTitle?: string | null
+	faqTitle?: TitleBlock[] | null
 	faqLead?: string | null
 	faq?: Array<{ _key?: string; q?: string | null; a?: string | null }> | null
 }
@@ -179,7 +185,7 @@ export const FEATURED_PERFORMANCE_QUERY = groq`
 	*[_type == 'performance' && language == $lang && featured == true]
 		| order(startDate desc)[0]{
 		_id, title, year, dates, startDate, venue, description, lead,
-		ticketInfo, badgeLabel, badgeSub, featured,
+		ticketInfo, badgeLabel, badgeSub, featured, bigNumber, monthLabel,
 		image{ ${IMAGE_QUERY} }
 	}
 `
@@ -187,7 +193,7 @@ export const FEATURED_PERFORMANCE_QUERY = groq`
 export const PERFORMANCE_BY_ID_QUERY = groq`
 	*[_type == 'performance' && _id == $id][0]{
 		_id, title, year, dates, startDate, venue, description, lead,
-		ticketInfo, badgeLabel, badgeSub, featured,
+		ticketInfo, badgeLabel, badgeSub, featured, bigNumber, monthLabel,
 		image{ ${IMAGE_QUERY} }
 	}
 `
@@ -205,6 +211,8 @@ export type PerformanceDoc = {
 	badgeLabel?: string | null
 	badgeSub?: string | null
 	featured?: boolean | null
+	bigNumber?: string | null
+	monthLabel?: string | null
 	image?: { asset?: unknown; alt?: string | null; lqip?: string | null } | null
 }
 

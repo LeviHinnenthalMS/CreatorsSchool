@@ -3,12 +3,13 @@ import { VscBriefcase } from 'react-icons/vsc'
 
 export default defineType({
 	name: 'job',
-	title: 'Stelle',
+	title: 'Job',
 	type: 'document',
 	icon: VscBriefcase,
 	fields: [
 		defineField({
 			name: 'title',
+			title: 'Title',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 		}),
@@ -16,48 +17,48 @@ export default defineType({
 			name: 'icon',
 			title: 'Icon',
 			description:
-				'Icon-Key, der zur Stellen-Karte passt (z. B. "dance", "music", "star").',
+				'Icon key matching the job card (e.g. "dance", "music", "star").',
 			type: 'string',
 		}),
 		defineField({
 			name: 'type',
-			title: 'Anstellungsart',
-			description: 'z. B. Teilzeit, Honorarbasis',
+			title: 'Employment type',
+			description: 'e.g. Part-time, Freelance',
 			type: 'string',
 		}),
 		defineField({
 			name: 'location',
-			title: 'Ort',
+			title: 'Location',
 			type: 'string',
 		}),
 		defineField({
 			name: 'summary',
-			title: 'Kurzbeschreibung',
+			title: 'Summary',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'description',
-			title: 'Volltext',
+			title: 'Full description',
 			type: 'array',
 			of: [{ type: 'block' }],
 		}),
 		defineField({
 			name: 'applyEmailSubject',
-			title: 'Mail-Betreff für Bewerbung',
+			title: 'Mail subject for application',
 			description:
-				'Wird in den mailto-Link eingesetzt. z. B. „Bewerbung Tanzlehrer:in".',
+				'Inserted into the mailto link. e.g. "Application for Dance teacher".',
 			type: 'string',
 		}),
 		defineField({
 			name: 'active',
-			title: 'Aktiv (anzeigen)',
+			title: 'Active (show on site)',
 			type: 'boolean',
 			initialValue: true,
 		}),
 		defineField({
 			name: 'order',
-			title: 'Sortierung',
+			title: 'Sort order',
 			type: 'number',
 		}),
 		defineField({

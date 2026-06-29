@@ -1,17 +1,16 @@
 import moduleProps from '@/lib/moduleProps'
 import Eyebrow from '@/ui/creators/Eyebrow'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import { stegaClean } from 'next-sanity'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type Stat = { _key?: string; value?: string | null; label?: string | null }
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	body?: string | null
 	stats?: Stat[] | null
 	ctas?: Array<SanityCTA | null> | null
@@ -39,11 +38,9 @@ export default function AboutStrip(props: Props) {
 				<div className="grid items-center gap-14 md:grid-cols-2">
 					<div>
 						{props.eyebrow && <Eyebrow tone="blush">{props.eyebrow}</Eyebrow>}
-						<AccentTitle
+						<RichTitle
+							title={props.title}
 							as="h2"
-							before={props.titleBefore}
-							accent={props.titleAccent}
-							after={props.titleAfter}
 							tone="blush"
 							className="text-paper mt-4 font-display text-[clamp(34px,4.2vw,58px)] font-semibold leading-[1.04] -tracking-[0.02em]"
 						/>

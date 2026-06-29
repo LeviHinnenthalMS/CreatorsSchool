@@ -1,32 +1,21 @@
 import moduleProps from '@/lib/moduleProps'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type Fact = { _key?: string; key?: string | null; value?: string | null }
+type TitleBlock = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
-	titlePill?: string | null
+	title?: TitleBlock[] | null
 	lede?: string | null
 	facts?: Fact[] | null
 	ctas?: Array<SanityCTA | null> | null
 }
 
 export default function PageHeader(props: Props) {
-	const {
-		eyebrow,
-		titleBefore,
-		titleAccent,
-		titleAfter,
-		titlePill,
-		lede,
-		facts,
-		ctas,
-	} = props
+	const { eyebrow, title, lede, facts, ctas } = props
 
 	return (
 		<section
@@ -45,14 +34,7 @@ export default function PageHeader(props: Props) {
 					</span>
 				)}
 
-				<AccentTitle
-					as="h1"
-					before={titleBefore}
-					accent={titleAccent}
-					after={titleAfter}
-					pill={titlePill}
-					className="h-display max-w-[18ch]"
-				/>
+				<RichTitle title={title} as="h1" className="h-display max-w-[18ch]" />
 
 				{lede && (
 					<p className="text-ink-2 mt-8 max-w-[54ch] text-[clamp(17px,1.4vw,19px)] leading-relaxed">

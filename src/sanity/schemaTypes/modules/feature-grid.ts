@@ -1,29 +1,20 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'feature-grid',
-	title: 'Feature-Grid · 4 Karten',
+	title: 'Feature grid · 4 cards',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'tagline',
-			title: 'Tagline (rechts neben Headline)',
+			title: 'Tagline (next to headline)',
 			type: 'text',
 			rows: 3,
 		}),
@@ -38,20 +29,20 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'tint',
-							title: 'Tönung',
+							title: 'Tint',
 							type: 'string',
 							options: {
 								list: [
-									{ title: 'Coral (Blush)', value: 'coral' },
-									{ title: 'Warm-White', value: 'soft' },
+									{ title: 'Coral (blush)', value: 'coral' },
+									{ title: 'Warm white', value: 'soft' },
 								],
 								layout: 'radio',
 							},
 							initialValue: 'soft',
 						}),
-						defineField({ name: 'icon', title: 'Icon-Key', type: 'string' }),
-						defineField({ name: 'title', type: 'string' }),
-						defineField({ name: 'text', type: 'text', rows: 3 }),
+						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField({ name: 'title', title: 'Title', type: 'string' }),
+						defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
 					],
 					preview: { select: { title: 'title', subtitle: 'text' } },
 				}),
@@ -60,6 +51,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Feature-Grid' }),
+		prepare: () => ({ title: 'Feature grid' }),
 	},
 })

@@ -4,6 +4,7 @@ import { Img } from '@/ui/Img'
 import { stegaClean } from 'next-sanity'
 import { Icon } from '@/ui/creators/Icon'
 import CTAs from '@/ui/creators/CTAs'
+import RichTitle from '@/ui/creators/RichTitle'
 import type { SanityImage, SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type Tag = {
@@ -15,12 +16,15 @@ type Tag = {
 	value?: string | null
 }
 
+type TitleBlock = {
+	_type?: string
+	_key?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	pretitle?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: TitleBlock[] | null
 	sub?: string | null
 	image?: SanityImage | null
 	tags?: Tag[] | null
@@ -45,10 +49,7 @@ const tagBg: Record<NonNullable<Tag['style']>, string> = {
 export default function HeroCreators(props: Props) {
 	const {
 		eyebrow,
-		pretitle,
-		titleBefore,
-		titleAccent,
-		titleAfter,
+		title,
 		sub,
 		image,
 		tags,
@@ -82,26 +83,11 @@ export default function HeroCreators(props: Props) {
 							</span>
 						)}
 
-						{(pretitle ||
-							titleBefore ||
-							titleAccent ||
-							titleAfter) && (
-							<h1 className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(46px,6.2vw,92px)]">
-								{pretitle && (
-									<>
-										{pretitle}
-										<br />
-									</>
-								)}
-								{titleBefore}
-								{titleAccent && (
-									<span className="text-coral font-medium italic">
-										{titleAccent}
-									</span>
-								)}
-								{titleAfter}
-							</h1>
-						)}
+						<RichTitle
+							title={title}
+							as="h1"
+							className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(46px,6.2vw,92px)]"
+						/>
 
 						{sub && (
 							<p className="text-charcoal mt-7 max-w-[48ch] text-[clamp(16px,1.3vw,18.5px)] leading-relaxed">

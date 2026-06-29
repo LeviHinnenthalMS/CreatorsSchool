@@ -1,41 +1,29 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'page-header',
-	title: 'Page Header (Innenseiten)',
+	title: 'Page header (inner pages)',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor dem Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent (kursiv, coral)',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach dem Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titlePill',
-			title: 'Headline · Pill (Butter-Pille)',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			description:
+				'Press Enter for a new line. Mark inline text as Accent or Pill for emphasis.',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'lede',
-			title: 'Lead-Text',
+			title: 'Lead text',
 			type: 'text',
 			rows: 3,
 		}),
 		defineField({
 			name: 'facts',
-			title: 'Fakten-Chips',
-			description: 'Optional. Zeigt z. B. Alter, Dauer, Niveau, Preis als Chips.',
+			title: 'Fact chips',
+			description: 'Optional. Shows e.g. age, duration, level, price as chips.',
 			type: 'array',
 			of: [
 				defineArrayMember({
@@ -43,7 +31,7 @@ export default defineType({
 					name: 'fact',
 					fields: [
 						defineField({ name: 'key', title: 'Label', type: 'string' }),
-						defineField({ name: 'value', title: 'Wert', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 					],
 					preview: { select: { title: 'key', subtitle: 'value' } },
 				}),
@@ -58,9 +46,9 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		select: { eyebrow: 'eyebrow', accent: 'titleAccent' },
-		prepare: ({ eyebrow, accent }) => ({
-			title: accent || 'Page Header',
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({
+			title: 'Page header',
 			subtitle: eyebrow || 'page-header',
 		}),
 	},

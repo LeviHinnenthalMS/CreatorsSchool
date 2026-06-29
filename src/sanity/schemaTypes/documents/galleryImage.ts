@@ -3,49 +3,49 @@ import { VscDeviceCamera } from 'react-icons/vsc'
 
 export default defineType({
 	name: 'galleryImage',
-	title: 'Galerie-Bild',
+	title: 'Gallery image',
 	type: 'document',
 	icon: VscDeviceCamera,
 	fields: [
 		defineField({
 			name: 'image',
-			title: 'Bild',
+			title: 'Image',
 			type: 'image',
 			options: { hotspot: true, metadata: ['lqip'] },
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'caption',
-			title: 'Bildunterschrift / Alt-Text',
+			title: 'Caption / Alt text',
 			type: 'string',
 			validation: (Rule) =>
-				Rule.required().error('Bildunterschrift wird für Barrierefreiheit benötigt.'),
+				Rule.required().error('Caption is required for accessibility.'),
 		}),
 		defineField({
 			name: 'bereich',
-			title: 'Bereich',
+			title: 'Category',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Musik', value: 'musik' },
-					{ title: 'Tanz', value: 'tanz' },
-					{ title: 'Bühne', value: 'buehne' },
-					{ title: 'Schule', value: 'schule' },
+					{ title: 'Music', value: 'musik' },
+					{ title: 'Dance', value: 'tanz' },
+					{ title: 'Stage', value: 'buehne' },
+					{ title: 'School', value: 'schule' },
 				],
 			},
 		}),
 		defineField({
 			name: 'span',
-			title: 'Grid-Größe',
+			title: 'Grid span',
 			description:
-				'Steuert die Kachelgröße im dichten Masonry-Grid (grid-auto-flow: dense).',
+				'Tile size in the dense masonry grid (grid-auto-flow: dense).',
 			type: 'string',
 			options: {
 				list: [
 					{ title: 'Normal', value: 'normal' },
-					{ title: 'Breit (2 Spalten)', value: 'wide' },
-					{ title: 'Hoch (2 Zeilen)', value: 'tall' },
-					{ title: 'Groß (2×2)', value: 'big' },
+					{ title: 'Wide (2 columns)', value: 'wide' },
+					{ title: 'Tall (2 rows)', value: 'tall' },
+					{ title: 'Big (2×2)', value: 'big' },
 				],
 				layout: 'radio',
 			},
@@ -53,7 +53,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'order',
-			title: 'Sortierung',
+			title: 'Sort order',
 			type: 'number',
 		}),
 		defineField({

@@ -1,35 +1,26 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'about-strip',
-	title: 'About-Strip (dark)',
+	title: 'About strip (dark)',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
-			name: 'titleBefore',
-			title: 'Headline · vor Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAccent',
-			title: 'Headline · Akzent',
-			type: 'string',
-		}),
-		defineField({
-			name: 'titleAfter',
-			title: 'Headline · nach Akzent',
-			type: 'string',
+			name: 'title',
+			title: 'Headline',
+			...richTitleField(),
 		}),
 		defineField({
 			name: 'body',
-			title: 'Fließtext',
+			title: 'Body text',
 			type: 'text',
 			rows: 4,
 		}),
 		defineField({
 			name: 'stats',
-			title: 'Stat-Karten (max. 3)',
+			title: 'Stat cards (max 3)',
 			validation: (Rule) => Rule.max(3),
 			type: 'array',
 			of: [
@@ -37,7 +28,7 @@ export default defineType({
 					type: 'object',
 					name: 'stat',
 					fields: [
-						defineField({ name: 'value', title: 'Wert', type: 'string' }),
+						defineField({ name: 'value', title: 'Value', type: 'string' }),
 						defineField({ name: 'label', title: 'Label', type: 'string' }),
 					],
 					preview: { select: { title: 'value', subtitle: 'label' } },
@@ -52,7 +43,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'profile',
-			title: 'Profil-Karte (Miriam)',
+			title: 'Profile card (Miriam)',
 			type: 'object',
 			fields: [
 				defineField({
@@ -63,18 +54,18 @@ export default defineType({
 				}),
 				defineField({
 					name: 'firstName',
-					title: 'Vorname',
+					title: 'First name',
 					type: 'string',
 				}),
 				defineField({
 					name: 'lastName',
-					title: 'Nachname (kursiv, blush)',
+					title: 'Last name (italic, blush)',
 					type: 'string',
 				}),
-				defineField({ name: 'role', title: 'Rolle', type: 'string' }),
+				defineField({ name: 'role', title: 'Role', type: 'string' }),
 				defineField({
 					name: 'quote',
-					title: 'Zitat',
+					title: 'Quote',
 					type: 'text',
 					rows: 3,
 				}),
@@ -83,6 +74,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'About-Strip' }),
+		prepare: () => ({ title: 'About strip' }),
 	},
 })

@@ -1,7 +1,7 @@
 import moduleProps from '@/lib/moduleProps'
 import { Img } from '@/ui/Img'
 import { Icon } from '@/ui/creators/Icon'
-import AccentTitle from '@/ui/creators/AccentTitle'
+import RichTitle from '@/ui/creators/RichTitle'
 import Btn from '@/ui/creators/Btn'
 import resolveUrl from '@/lib/resolveUrl'
 import type { SanityImage, SanityLink, SanityModule } from '@/sanity/typeHelpers'
@@ -12,10 +12,10 @@ type Direction = {
 	title?: string | null
 	text?: string | null
 }
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
-	titleBefore?: string | null
-	titleAccent?: string | null
+	title?: Block[] | null
 	text?: string | null
 	directions?: Direction[] | null
 	mapImage?: SanityImage | null
@@ -39,10 +39,9 @@ export default function LocationCard(props: Props) {
 		>
 			<div className="bg-paper-2 border-line overflow-hidden rounded-band border md:grid md:grid-cols-[1fr_1.2fr]">
 				<div className="flex flex-col justify-center p-[clamp(40px,5vw,70px)]">
-					<AccentTitle
+					<RichTitle
+						title={props.title}
 						as="h2"
-						before={props.titleBefore}
-						accent={props.titleAccent}
 						className="text-ink font-display m-0 text-[clamp(32px,4vw,52px)] font-bold leading-[1.02] -tracking-[0.025em]"
 					/>
 					{props.text && (
@@ -74,7 +73,7 @@ export default function LocationCard(props: Props) {
 					)}
 					{mapHref && (
 						<Btn href={mapHref} variant="coral" target="_blank">
-							{props.mapLinkLabel || 'Auf der Karte ansehen'}
+							{props.mapLinkLabel || 'Open in Maps'}
 						</Btn>
 					)}
 				</div>

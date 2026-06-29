@@ -8,11 +8,11 @@ import { Icon } from '@/ui/creators/Icon'
 import Link from 'next/link'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
 
+type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+
 type Props = SanityModule & {
 	eyebrow?: string | null
-	titleBefore?: string | null
-	titleAccent?: string | null
-	titleAfter?: string | null
+	title?: Block[] | null
 	tagline?: string | null
 	limit?: number | null
 	footnote?: string | null
@@ -67,9 +67,7 @@ export default async function SchedulePreview(props: Props) {
 			<div className="wrap">
 				<SectionHead
 					eyebrow={props.eyebrow}
-					titleBefore={props.titleBefore}
-					titleAccent={props.titleAccent}
-					titleAfter={props.titleAfter}
+					title={props.title}
 					tagline={props.tagline}
 				/>
 
