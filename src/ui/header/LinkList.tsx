@@ -12,7 +12,6 @@ type LinkListInput = {
 		| (SanityLink & {
 				icon?: string | null
 				description?: string | null
-				active?: boolean | null
 			})
 		| null
 	> | null
@@ -71,7 +70,7 @@ export default function LinkList({
 						'max-lg:my-2 max-lg:gap-2',
 					)}
 				>
-					{links?.map((sublink, key) => sublink?.active === false ? null : (
+					{links?.map((sublink, key) => (
 						<li key={key} role="none">
 							<CTA
 								role="menuitem"

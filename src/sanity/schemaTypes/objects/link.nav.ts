@@ -10,14 +10,6 @@ export default defineType({
 	type: 'object',
 	fields: [
 		defineField({
-			name: 'active',
-			title: 'Active',
-			description:
-				'Toggle off to hide this sublink in the header dropdown without deleting it.',
-			type: 'boolean',
-			initialValue: true,
-		}),
-		defineField({
 			name: 'label',
 			type: 'string',
 		}),
@@ -79,12 +71,9 @@ export default defineType({
 			internal: 'internal.metadata.slug.current',
 			params: 'params',
 			external: 'external',
-			active: 'active',
 		},
-		prepare: ({ label, title, _type, internal, params, external, active }) => ({
-			title: [active === false && '(inactive)', label || title]
-				.filter(Boolean)
-				.join(' '),
+		prepare: ({ label, title, _type, internal, params, external }) => ({
+			title: label || title || '',
 			subtitle: resolveSlug({ _type, internal, params, external }),
 		}),
 	},

@@ -9,14 +9,6 @@ export default defineType({
 	type: 'object',
 	fields: [
 		defineField({
-			name: 'active',
-			title: 'Active',
-			description:
-				'Toggle off to hide this dropdown in the header navigation without deleting it.',
-			type: 'boolean',
-			initialValue: true,
-		}),
-		defineField({
 			name: 'link',
 			type: 'link',
 		}),
@@ -30,12 +22,9 @@ export default defineType({
 		select: {
 			link: 'link',
 			links: 'links',
-			active: 'active',
 		},
-		prepare: ({ link, links, active }) => ({
-			title: [active === false && '(inactive)', link.label || link.internal?.title]
-				.filter(Boolean)
-				.join(' '),
+		prepare: ({ link, links }) => ({
+			title: link.label || link.internal?.title || '',
 			subtitle: count(links, 'link'),
 		}),
 	},

@@ -10,15 +10,12 @@ import Wrapper from './Wrapper'
 import { stegaClean } from 'next-sanity'
 import type { SanityCTA } from '@/sanity/typeHelpers'
 
-type FooterLink = NonNullable<SanityCTA['link']> & { active?: boolean | null }
+type FooterLink = NonNullable<SanityCTA['link']>
 
 type FooterColumnInput = {
 	title?: string | null
 	links?: Array<FooterLink | null> | null
 }
-
-const isActive = (link?: { active?: boolean | null } | null) =>
-	link?.active !== false
 
 export default async function Footer() {
 	const lang = await getServerLang()
@@ -36,8 +33,8 @@ export default async function Footer() {
 		(stegaClean(footer?.copyright) || '').replace('{year}', String(year)) ||
 		`© ${year}`
 
-	const bottomLinks = footer?.bottomLinks?.filter(isActive) ?? []
-	const socials = footer?.socials?.filter(isActive) ?? []
+	const bottomLinks = footer?.bottomLinks ?? []
+	const socials = footer?.socials ?? []
 
 	return (
 		<Wrapper className="bg-ink text-canvas">
@@ -75,7 +72,7 @@ export default async function Footer() {
 							key={key}
 							column={{
 								...column,
-								links: column?.links?.filter(isActive) ?? null,
+								links: column?.links ?? null,
 							}}
 						/>
 					))}

@@ -10,13 +10,6 @@ export default defineType({
 	type: 'object',
 	fields: [
 		defineField({
-			name: 'active',
-			title: 'Active',
-			description: 'Toggle off to hide this link without deleting it.',
-			type: 'boolean',
-			initialValue: true,
-		}),
-		defineField({
 			name: 'label',
 			type: 'string',
 		}),
@@ -60,27 +53,14 @@ export default defineType({
 	preview: {
 		select: {
 			label: 'label',
-			type: 'type',
 			_type: 'internal._type',
 			title: 'internal.title',
 			internal: 'internal.metadata.slug.current',
 			params: 'params',
 			external: 'external',
-			active: 'active',
 		},
-		prepare: ({
-			label,
-			type,
-			title,
-			_type,
-			internal,
-			params,
-			external,
-			active,
-		}) => ({
-			title: [active === false && '(inactive)', label || title]
-				.filter(Boolean)
-				.join(' '),
+		prepare: ({ label, title, _type, internal, params, external }) => ({
+			title: label || title || '',
 			subtitle: resolveSlug({ _type, internal, params, external }),
 		}),
 	},
