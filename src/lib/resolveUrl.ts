@@ -1,4 +1,3 @@
-import { BLOG_DIR } from './env'
 import { DEFAULT_LANG } from './i18n'
 import { stegaClean } from 'next-sanity'
 
@@ -7,11 +6,6 @@ type ResolvableDoc = {
 	metadata?: {
 		slug?: { current?: string | null } | null
 	} | null
-}
-
-function segmentFor(type?: string) {
-	if (type === 'blog.post') return `/${BLOG_DIR}/`
-	return '/'
 }
 
 export default function resolveUrl(
@@ -26,7 +20,6 @@ export default function resolveUrl(
 		language?: string
 	} = {},
 ) {
-	const segment = segmentFor(page?._type)
 	const lang = language && language !== DEFAULT_LANG ? `/${language}` : ''
 	const slug = page?.metadata?.slug?.current
 	const path = slug === 'index' ? null : slug
@@ -34,7 +27,7 @@ export default function resolveUrl(
 	return [
 		base && process.env.NEXT_PUBLIC_BASE_URL,
 		lang,
-		segment,
+		'/',
 		path,
 		stegaClean(params),
 	]

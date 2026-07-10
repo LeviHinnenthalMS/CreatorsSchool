@@ -1,5 +1,5 @@
 import resolveUrl from './resolveUrl'
-import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
+import { BASE_URL, vercelPreview } from './env'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG, languages } from './i18n'
 import { getSite } from '@/sanity/lib/queries'
@@ -77,9 +77,6 @@ export default async function processMetadata(
 			languages: {
 				...langMap,
 				...(xDefault ? { 'x-default': xDefault } : {}),
-			},
-			types: {
-				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
 			},
 		},
 	}

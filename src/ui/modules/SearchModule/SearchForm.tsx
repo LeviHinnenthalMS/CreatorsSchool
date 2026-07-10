@@ -94,7 +94,7 @@ export default function SearchForm({
 													</span>
 
 													<small className="technical text-accent/50 shrink-0 text-xs">
-														{result._type === 'blog.post' ? 'Blog' : 'Page'}
+														{'Page'}
 													</small>
 												</a>
 											</li>

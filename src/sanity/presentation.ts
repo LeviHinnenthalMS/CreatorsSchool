@@ -2,7 +2,6 @@
 
 import { defineLocations, presentationTool } from 'sanity/presentation'
 import { groq } from 'next-sanity'
-import { BLOG_DIR } from '@/lib/env'
 
 export const presentation = presentationTool({
 	name: 'editor',
@@ -21,10 +20,6 @@ export const presentation = presentationTool({
 			{
 				route: '/:slug',
 				filter: groq`_type == 'page' && metadata.slug.current == $slug`,
-			},
-			{
-				route: `/${BLOG_DIR}/:slug`,
-				filter: groq`_type == 'blog.post' && metadata.slug.current == $slug`,
 			},
 		],
 		locations: {
@@ -52,20 +47,6 @@ export const presentation = presentationTool({
 									? '/'
 									: `/${doc.slug}`
 								: '/',
-						},
-					],
-				}),
-			}),
-			'blog.post': defineLocations({
-				select: {
-					title: 'metadata.title',
-					slug: 'metadata.slug.current',
-				},
-				resolve: (doc) => ({
-					locations: [
-						{
-							title: doc?.title || 'Untitled',
-							href: doc?.slug ? `/${BLOG_DIR}/${doc.slug}` : `/${BLOG_DIR}`,
 						},
 					],
 				}),

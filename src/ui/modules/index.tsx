@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic'
 
 // Above-the-fold / common modules: keep static-imported so they render in the
 // initial server payload without an extra round-trip for client JS.
-import AboutStory from './AboutStory'
 import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CenteredCTA from './CenteredCTA'
@@ -46,15 +45,11 @@ const SvcPanel = dynamic(() => import('./SvcPanel'))
 
 import { createDataAttribute } from 'next-sanity'
 import type { Module } from '@/sanity/typeHelpers'
-import type {
-	PAGE_QUERY_RESULT,
-	BLOG_POST_QUERY_RESULT,
-} from '@/sanity/types'
+import type { PAGE_QUERY_RESULT } from '@/sanity/types'
 
 type ModuleComponent = React.ComponentType<Record<string, unknown>>
 
 const MODULE_MAP = {
-	'about-story': AboutStory,
 	'accordion-list': AccordionList,
 	breadcrumbs: Breadcrumbs,
 	callout: Callout,
@@ -99,18 +94,14 @@ const warnedTypes = new Set<string>()
 export default function Modules({
 	modules,
 	page,
-	post,
 }: {
 	modules?: Array<Module | null> | null
 	page?: PAGE_QUERY_RESULT
-	post?: BLOG_POST_QUERY_RESULT
 }) {
 	const getAdditionalProps = (module: Module) => {
 		switch (module._type) {
-			case 'blog-post-content':
-				return { post }
 			case 'breadcrumbs':
-				return { currentPage: post || page }
+				return { currentPage: page }
 			default:
 				return {}
 		}

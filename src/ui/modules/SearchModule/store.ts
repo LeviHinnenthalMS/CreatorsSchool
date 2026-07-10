@@ -4,7 +4,7 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { SEARCH_QUERY } from '@/sanity/lib/queries'
 import type { SEARCH_QUERY_RESULT } from '@/sanity/types'
 
-export type SearchScope = 'all' | 'pages' | 'path' | 'blog posts' | undefined
+export type SearchScope = 'all' | 'pages' | 'path' | undefined
 
 type SearchResults = SEARCH_QUERY_RESULT
 

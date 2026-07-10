@@ -5,7 +5,6 @@ import site from './documents/site'
 import footer from './documents/footer'
 import page from './documents/page'
 import globalModule from './documents/global-module'
-import blogPost from './documents/blog.post'
 import navigation from './documents/navigation'
 import redirect from './documents/redirect'
 
@@ -39,7 +38,6 @@ import metadata from './objects/metadata'
 import moduleOptions from './objects/module-options'
 
 // modules
-import aboutStory from './modules/about-story'
 import accordionList from './modules/accordion-list'
 import breadcrumbs from './modules/breadcrumbs'
 import callout from './modules/callout'
@@ -82,7 +80,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	footer,
 	page,
 	globalModule,
-	blogPost,
 	navigation,
 
 	// Creators School domain documents
@@ -116,7 +113,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	moduleOptions,
 
 	// modules
-	aboutStory,
 	accordionList,
 	breadcrumbs,
 	callout,

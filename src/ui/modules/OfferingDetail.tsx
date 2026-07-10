@@ -19,6 +19,24 @@ type Props = SanityModule & {
 	panelCtas?: Array<SanityCTA | null> | null
 }
 
+function withKurs(
+	ctas: Array<SanityCTA | null> | null | undefined,
+	title: string,
+): Array<SanityCTA | null> | null | undefined {
+	if (!ctas?.length || !title) return ctas
+	return ctas.map((cta) => {
+		if (!cta?.link) return cta
+		const slug = cta.link.internal?.metadata?.slug?.current
+		if (slug === 'kontakt') {
+			return {
+				...cta,
+				link: { ...cta.link, params: `?kurs=${encodeURIComponent(title)}#kontaktformular` },
+			}
+		}
+		return cta
+	})
+}
+
 export default async function OfferingDetail(props: Props) {
 	const id =
 		(props.offering as { _ref?: string } | null)?._ref ??
@@ -92,7 +110,7 @@ export default async function OfferingDetail(props: Props) {
 					)}
 
 					<div className="mt-9 flex flex-wrap items-center gap-5">
-						{props.ctas && <CTAs ctas={props.ctas} />}
+						{props.ctas && <CTAs ctas={withKurs(props.ctas, offering.title ?? '')} />}
 						{props.backLinkLabel && props.backLinkHref && (
 							<Link
 								href={stegaClean(props.backLinkHref)}
@@ -242,7 +260,7 @@ export default async function OfferingDetail(props: Props) {
 								)}
 								{props.panelCtas && props.panelCtas.length > 0 && (
 									<CTAs
-										ctas={props.panelCtas}
+										ctas={withKurs(props.panelCtas, offering.title ?? '')}
 										variants={['coral', 'paper-outline']}
 										className="mt-7 flex flex-wrap gap-2.5"
 									/>

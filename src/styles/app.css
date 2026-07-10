@@ -103,6 +103,23 @@
 	--spacing-module-gap: 3rem;
 	--spacing-section: clamp(50px, 6vw, 90px);
 	--spacing-wrap-x: clamp(20px, 3.5vw, 48px);
+
+	/* Button size tokens — referenced by Button.tsx */
+	--btn-gap: 0.5rem;
+	--btn-icon-size: 1.25rem;
+	--btn-sm-px: 1rem;
+	--btn-sm-py: 0.5rem;
+	--btn-sm-text: 0.875rem;
+	--btn-sm-leading: 1.25rem;
+	--btn-sm-icon-size: 1rem;
+	--btn-md-px: 1.5rem;
+	--btn-md-py: 0.75rem;
+	--btn-md-text: 0.9375rem;
+	--btn-md-leading: 1.4rem;
+	--btn-lg-px: 2rem;
+	--btn-lg-py: 1rem;
+	--btn-lg-text: 1rem;
+	--btn-lg-leading: 1.5rem;
 }
 
 /* Figma values that aren't tied to a Tailwind utility namespace */

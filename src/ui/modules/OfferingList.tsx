@@ -9,6 +9,7 @@ import { getOfferings } from '@/sanity/lib/creators'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
+import OfferingCatalog from './OfferingCatalog'
 
 type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
@@ -17,13 +18,14 @@ type Props = SanityModule & {
 	title?: Block[] | null
 	tagline?: string | null
 	bereich?: 'alle' | 'musik' | 'tanz' | null
-	layout?: 'musik-pair' | 'tanz-grid' | 'prog' | null
+	layout?: 'musik-pair' | 'tanz-grid' | 'prog' | 'catalog' | null
 	tinted?: boolean | null
 	cardCtaLabel?: string | null
 	ctaTileTitle?: string | null
 	ctaTileText?: string | null
 	ctaTileLink?: SanityLink | null
 	ctaTileLinkLabel?: string | null
+	catalogKontaktLink?: SanityLink | null
 }
 
 function offeringHref(o: { slug?: string | null; language?: string | null }) {
@@ -39,8 +41,15 @@ export default async function OfferingList(props: Props) {
 	const layout = stegaClean(props.layout || 'prog')
 	const tinted = stegaClean(props.tinted ?? false)
 
-	const items =
+	const byBereich =
 		bereich === 'alle' ? all : all.filter((o) => o.bereich === bereich)
+
+	// Stage card offerings (order >= 21) are home tanz-grid only
+	// prog overview shows only the 8 main offerings (order <= 20)
+	const items =
+		layout === 'prog'
+			? byBereich.filter((o) => !o.order || o.order <= 20)
+			: byBereich
 
 	if (!items.length) return null
 
@@ -176,6 +185,17 @@ export default async function OfferingList(props: Props) {
 							</Link>
 						)}
 					</div>
+				)}
+
+				{layout === 'catalog' && (
+					<OfferingCatalog
+						items={items}
+						kontaktHref={
+							props.catalogKontaktLink?.type === 'internal' && props.catalogKontaktLink.internal
+								? resolveUrl(props.catalogKontaktLink.internal)
+								: '/kontakt'
+						}
+					/>
 				)}
 
 				{layout === 'prog' && (

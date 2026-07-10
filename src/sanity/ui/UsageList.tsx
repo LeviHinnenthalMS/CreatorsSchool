@@ -16,7 +16,6 @@ type ReferencingDoc = {
 
 const DOC_TYPE_LABELS: Record<string, string> = {
 	page: 'Page',
-	'blog.post': 'Blog post',
 	'landing-page': 'Landing page',
 	'global-module': 'Global module',
 	navigation: 'Navigation',

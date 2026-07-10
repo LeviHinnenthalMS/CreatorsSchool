@@ -3,7 +3,6 @@ import { singleton, group, languageList } from './lib/builders'
 import {
 	VscFiles,
 	VscServerProcess,
-	VscEdit,
 	VscMap,
 	VscPin,
 	VscVerified,
@@ -62,9 +61,6 @@ export const structure = structureTool({
 							]),
 					),
 
-				S.divider(),
-
-				languageList(S, 'blog.post', 'Blog Posts').icon(VscEdit),
 				S.divider(),
 
 				// ── Social Proof ──────────────────────────────────────────

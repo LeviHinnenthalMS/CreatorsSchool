@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useTransition, type FormEvent } from 'react'
+import { Suspense, useState, useTransition, type FormEvent } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import { Icon } from '@/ui/creators/Icon'
@@ -43,11 +44,27 @@ function clean(v?: string | null) {
 	return v ? stegaClean(v) : v
 }
 
-export default function ContactForm(props: Props) {
+function normalize(s?: string | null) {
+	return (s ?? '').toLowerCase().replace(/[^a-z0-9äöüß]/g, '')
+}
+
+function matchInterest(interests: Option[], kurs: string): Option | undefined {
+	const k = normalize(kurs)
+	if (!k) return undefined
+	return (
+		interests.find((o) => normalize(o.value) === k) ??
+		interests.find((o) => normalize(o.label) === k) ??
+		interests.find((o) => normalize(o.label).includes(k) || k.includes(normalize(o.label)))
+	)
+}
+
+function ContactFormInner(props: Props) {
 	const labels = props.labels ?? {}
 	const [pending, startTransition] = useTransition()
 	const [done, setDone] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const searchParams = useSearchParams()
+	const kurs = searchParams.get('kurs') ?? ''
 
 	function onSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault()
@@ -75,11 +92,13 @@ export default function ContactForm(props: Props) {
 	const interests = (props.interests ?? []).filter((o) => o.value && o.label)
 	const ages = (props.ageOptions ?? []).filter((o) => o.value && o.label)
 	const whens = (props.whenOptions ?? []).filter((o) => o.value && o.label)
+	const preselected = kurs ? matchInterest(interests, kurs) : null
 
 	if (done) {
 		return (
 			<section
 				{...moduleProps(props)}
+				id="kontaktformular"
 				className="py-[clamp(40px,5vw,70px)]"
 			>
 				<div className="wrap">
@@ -107,6 +126,7 @@ export default function ContactForm(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
+			id="kontaktformular"
 			className="py-[clamp(40px,5vw,70px)]"
 		>
 			<div className="wrap">
@@ -174,7 +194,11 @@ export default function ContactForm(props: Props) {
 												type="radio"
 												name="interest"
 												value={stegaClean(o.value!)}
-												defaultChecked={i === 0}
+												defaultChecked={
+													preselected
+														? stegaClean(o.value) === stegaClean(preselected.value)
+														: i === 0
+												}
 												className="pointer-events-none absolute opacity-0"
 											/>
 											<span className="bg-paper-2 border-line text-ink-2 hover:border-coral hover:text-coral peer-checked:bg-ink peer-checked:text-paper peer-checked:border-ink inline-block rounded-full border px-4 py-2 text-[13.5px] font-medium transition-colors">
@@ -251,6 +275,14 @@ export default function ContactForm(props: Props) {
 				</div>
 			</div>
 		</section>
+	)
+}
+
+export default function ContactForm(props: Props) {
+	return (
+		<Suspense>
+			<ContactFormInner {...props} />
+		</Suspense>
 	)
 }
 

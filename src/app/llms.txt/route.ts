@@ -1,4 +1,4 @@
-import { BASE_URL, BLOG_DIR } from '@/lib/env'
+import { BASE_URL } from '@/lib/env'
 import { DEFAULT_LANG, languages } from '@/lib/i18n'
 import { getSite } from '@/sanity/lib/queries'
 
@@ -22,7 +22,6 @@ ${langLinks}
 
 ## Key resources
 - Sitemap: ${BASE_URL}/sitemap.xml
-- Blog: ${BASE_URL}/${BLOG_DIR}/
 `
 
 	return new Response(body, {

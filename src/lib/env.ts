@@ -15,5 +15,3 @@ const rawBaseUrl = dev
 export const BASE_URL = /^https?:\/\//i.test(rawBaseUrl)
 	? rawBaseUrl.replace(/\/$/, '')
 	: `https://${rawBaseUrl.replace(/\/$/, '')}`
-
-export const BLOG_DIR = 'blog'

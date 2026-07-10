@@ -1,7 +1,6 @@
 import { fetchSanity, fetchSanityLive } from './fetch'
 import { unstable_cache } from 'next/cache'
 import { defineQuery, groq } from 'next-sanity'
-import { BLOG_DIR } from '@/lib/env'
 import type {
 	SITE_QUERY_RESULT,
 	NAVIGATION_DOC_QUERY_RESULT,
@@ -84,38 +83,7 @@ const NAVIGATION_QUERY = `
 export const MODULES_QUERY = `
 	...,
 	ctas[]{ ${CTA_QUERY} },
-	_type == 'about-story' => {
-		content[]{
-			...,
-			_type == 'image' => { ${IMAGE_QUERY} }
-		},
-		timeline[]{
-			year,
-			image{ ${IMAGE_QUERY} }
-		}
-	},
-	_type == 'blog-overview' => {
-		'posts': *[_type == 'blog.post' && language == $lang] | order(publishDate desc) {
-			_id,
-			_type,
-			publishDate,
-			featured,
-			language,
-			metadata{
-				title,
-				description,
-				slug,
-				image{ ${IMAGE_QUERY} }
-			},
-			authors[]->{
-				_id,
-				name,
-				slug,
-				image{ ${IMAGE_QUERY} }
-			}
-		}
-	},
-	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
+_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'comparison-cards' => {
 		positiveCard{
 			...,
@@ -288,21 +256,16 @@ export async function getFooter(lang: string) {
 	})
 }
 
-export const ALL_TRANSLATIONS_QUERY = defineQuery(groq`*[_type in ['page', 'blog.post'] && defined(language)]{
+export const ALL_TRANSLATIONS_QUERY = defineQuery(groq`*[_type == 'page' && defined(language)]{
 	'slug': '/' + select(
-		_type == 'blog.post' => '${BLOG_DIR}/' + metadata.slug.current,
 		metadata.slug.current != 'index' => metadata.slug.current,
 		''
 	),
 	'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
 		'slug': '/' + select(
-			_type == 'blog.post' => '${BLOG_DIR}/' + language + '/' + metadata.slug.current,
 			metadata.slug.current != 'index' => language + '/' + metadata.slug.current,
 			language
 		),
-		_type == 'blog.post' => {
-			'slugBlogAlt': '/' + language + '/${BLOG_DIR}/' + metadata.slug.current
-		},
 		language
 	}
 }`)
@@ -377,65 +340,6 @@ export const NOT_FOUND_QUERY = defineQuery(groq`*[_type == 'page' && metadata.sl
 	)
 }`)
 
-// ── Blog ─────────────────────────────────────────────────────────────────
-
-export const BLOG_POST_SLUGS_QUERY = defineQuery(
-	groq`*[_type == 'blog.post' && defined(metadata.slug.current)].metadata.slug.current`,
-)
-
-export const BLOG_POST_QUERY = defineQuery(groq`*[
-	_type == 'blog.post'
-	&& metadata.slug.current == $slug
-	&& language == $lang
-][0]{
-	...,
-	body[]{
-		...,
-		_type == 'image' => {
-			${IMAGE_QUERY},
-			asset->
-		}
-	},
-	'readTime': length(string::split(pt::text(body), ' ')) / 200,
-	'headings': body[style in ['h2', 'h3']]{
-		style,
-		'text': pt::text(@)
-	},
-	authors[]->,
-	metadata {
-		...,
-		'ogimage': image.asset->url + '?w=1200'
-	},
-	'modulesBefore': (
-		*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-		+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].before[]{ ${MODULES_QUERY} }
-	),
-	'modulesAfter': (
-		*[_type == 'global-module' && path == '${BLOG_DIR}/'].after[]{ ${MODULES_QUERY} }
-		+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-	),
-	${TRANSLATIONS_QUERY},
-}`)
-
-export const RSS_FEED_QUERY = defineQuery(groq`{
-	'blog': *[_type == 'page' && metadata.slug.current == '${BLOG_DIR}'][0]{
-		_type,
-		title,
-		metadata,
-		'image': metadata.image.asset->url,
-	},
-	'posts': *[_type == 'blog.post']{
-		_type,
-		body,
-		publishDate,
-		authors[]->,
-		metadata,
-		'image': metadata.image.asset->url,
-		language,
-	},
-	'copyright': pt::text(*[_type == 'site'][0].copyright)
-}`)
-
 // ── Sitemap, search, announcements, misc ─────────────────────────────────
 
 export const SITEMAP_QUERY = defineQuery(groq`{
@@ -470,26 +374,6 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 			)
 		}
 	},
-	'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(name){
-		language,
-		'url': (
-			$baseUrl
-			+ select(defined(language) && language != $defaultLang => language + '/', '')
-			+ '${BLOG_DIR}/'
-			+ metadata.slug.current
-		),
-		'lastModified': _updatedAt,
-		'priority': 0.4,
-		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
-			language,
-			'url': (
-				$baseUrl
-				+ select(defined(language) && language != $defaultLang => language + '/', '')
-				+ '${BLOG_DIR}/'
-				+ metadata.slug.current
-			)
-		}
-	}
 }`)
 
 export const SEARCH_QUERY = defineQuery(groq`*[
@@ -498,11 +382,9 @@ export const SEARCH_QUERY = defineQuery(groq`*[
 		$scope == 'path' => _type == 'page'
 			&& metadata.slug.current match $path
 			&& !(metadata.slug.current in ['404']),
-		$scope == 'blog posts' => _type == 'blog.post',
-		_type in ['page', 'blog.post'] && !(metadata.slug.current in ['404'])
+		_type == 'page' && !(metadata.slug.current in ['404'])
 	) &&
 	[
-		body[].children[].text,
 		modules[].content[].children[].text,
 		modules[].intro[].children[].text,
 		title,

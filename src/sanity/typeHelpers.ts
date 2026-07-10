@@ -1,10 +1,8 @@
-import type { BlogPost, Page, PAGE_QUERY_RESULT } from './types'
+import type { Page, PAGE_QUERY_RESULT } from './types'
 
-export type Module = NonNullable<
-	NonNullable<NonNullable<PAGE_QUERY_RESULT>['modules']>[number]
->
+export type Module = NonNullable<NonNullable<NonNullable<PAGE_QUERY_RESULT>['modules']>[number]>
 
-export type PageOrPost = Page | BlogPost
+export type PageOrPost = Page
 
 /**
  * Permissive shape of a translation entry returned by `getTranslations()`.

@@ -45,6 +45,7 @@ export default function SvcFaq(props: Props) {
 					{props.items.map((qa, i) => (
 						<details
 							key={qa._key ?? i}
+							name={`faq-${props._key ?? 'group'}`}
 							open={qa.defaultOpen || undefined}
 							className="bg-paper border-line group/faq rounded-[20px] border px-6 py-5.5 transition-[border-color,background] open:border-coral-soft open:bg-coral-tint"
 						>

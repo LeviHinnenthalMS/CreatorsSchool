@@ -7,7 +7,11 @@ const OFFERING_FIELDS = `
 	'slug': slug.current,
 	bereich, eyebrow, lede, order,
 	heroImage{ ${IMAGE_QUERY} },
-	facts[]{ _key, key, value }
+	facts[]{ _key, key, value },
+	categories,
+	catalogTag, decorativeLetter,
+	priceLabel, priceCurrency, priceValue, priceUnit,
+	detailRows[]{ _key, key, value }
 `
 
 const OFFERING_DETAIL_FIELDS = `
@@ -60,6 +64,14 @@ export type OfferingListItem = {
 	order?: number | null
 	heroImage?: { _type?: string; asset?: unknown; alt?: string | null; lqip?: string | null; assetAlt?: string | null } | null
 	facts?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
+	categories?: string[] | null
+	catalogTag?: string | null
+	decorativeLetter?: string | null
+	priceLabel?: string | null
+	priceCurrency?: string | null
+	priceValue?: string | null
+	priceUnit?: string | null
+	detailRows?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
 }
 
 type TitleBlock = {

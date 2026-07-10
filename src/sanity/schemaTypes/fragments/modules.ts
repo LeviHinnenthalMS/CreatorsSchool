@@ -63,7 +63,6 @@ export default defineField({
 		{ type: 'svc-panel' },
 
 		// Generic page-builder modules from the base
-		{ type: 'about-story' },
 		{ type: 'accordion-list' },
 { type: 'breadcrumbs' },
 		{ type: 'callout' },
@@ -118,7 +117,6 @@ export default defineField({
 					name: 'content',
 					title: 'Content',
 					of: [
-						'about-story',
 						'accordion-list',
 						'custom-html',
 						'richtext-module',

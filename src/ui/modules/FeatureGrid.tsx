@@ -10,6 +10,7 @@ type Feature = {
 	tint?: 'coral' | 'soft' | null
 	icon?: string | null
 	title?: string | null
+	heading?: string | null
 	text?: string | null
 }
 
@@ -20,27 +21,55 @@ type Props = SanityModule & {
 	title?: Block[] | null
 	tagline?: string | null
 	features?: Feature[] | null
+	dark?: boolean | null
 }
 
 export default function FeatureGrid(props: Props) {
 	const { features } = props
 	if (!features?.length) return null
+	const dark = stegaClean(props.dark ?? false)
 
 	return (
 		<section
 			{...moduleProps(props)}
-			className="pb-[clamp(40px,5vw,60px)] pt-[clamp(80px,9vw,130px)]"
+			className="py-[clamp(40px,5vw,60px)]"
 		>
-			<div className="wrap">
+			<div className={cn('wrap', dark && 'rounded-[36px] bg-ink px-[clamp(24px,4vw,64px)] py-[clamp(48px,6vw,80px)]')}>
 				<SectionHead
 					eyebrow={props.eyebrow}
 					title={props.title}
 					tagline={props.tagline}
+					tone={dark ? 'paper' : 'coral'}
 				/>
 
-				<div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4">
 					{features.map((f, i) => {
 						const tint = stegaClean(f.tint || 'soft') as 'coral' | 'soft'
+						if (dark) {
+							const [num, label] = (f.title ?? '').split(' · ')
+							return (
+								<article
+									key={f._key ?? i}
+									className="rounded-[18px] border border-white/8 bg-white/5 p-6"
+								>
+									{f.title && (
+										<p className="text-coral m-0 mb-3 text-[13px] font-bold tracking-[0.04em]">
+											{num}{label ? <> / {label}</> : null}
+										</p>
+									)}
+									{f.heading && (
+										<h3 className="text-paper font-display m-0 mb-2.5 text-[19px] font-bold leading-tight -tracking-[0.01em]">
+											{f.heading}
+										</h3>
+									)}
+									{f.text && (
+										<p className="text-white/45 m-0 text-[13.5px] leading-relaxed">
+											{f.text}
+										</p>
+									)}
+								</article>
+							)
+						}
 						return (
 							<article
 								key={f._key ?? i}

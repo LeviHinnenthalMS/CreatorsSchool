@@ -43,7 +43,6 @@ export default defineConfig({
 			supportedLanguages,
 			schemaTypes: [
 				'page',
-				'blog.post',
 				'navigation',
 				'announcement',
 				'footer',
@@ -77,7 +76,7 @@ export default defineConfig({
 	},
 	document: {
 		productionUrl: async (prev, { document }) => {
-			if (['page', 'blog.post'].includes(document?._type)) {
+			if (document?._type === 'page') {
 				return resolveUrl(document as PageOrPost, { base: true })
 			}
 			if (document?._type === 'offering') {

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
 		// `getCachedTranslations()` powers the proxy language lookup; any change
 		// to a translatable document affects it.
-		const translatable = ['page', 'blog.post', 'translation.metadata']
+		const translatable = ['page', 'translation.metadata']
 		if (translatable.includes(body._type)) {
 			revalidateTag('translations', 'max')
 		}
