@@ -42,7 +42,7 @@ export default async function PerformanceBanner(props: Props) {
 				/>
 				<span
 					aria-hidden
-					className="pointer-events-none absolute -bottom-1/2 -left-[10%] h-[160%] w-1/2 bg-[radial-gradient(circle,rgba(232,71,74,0.22),transparent_60%)]"
+					className="pointer-events-none absolute -bottom-1/2 -left-[10%] h-[160%] w-2/3 bg-[radial-gradient(circle,rgba(232,71,74,0.22),transparent_60%)]"
 				/>
 
 				<div className="relative z-10 grid items-center gap-[clamp(36px,4vw,64px)] md:grid-cols-[0.85fr_1.15fr]">

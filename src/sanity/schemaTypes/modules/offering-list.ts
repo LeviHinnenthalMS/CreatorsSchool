@@ -53,6 +53,12 @@ export default defineType({
 			initialValue: false,
 		}),
 		defineField({
+			name: 'cardCtaLabel',
+			title: 'Card link label',
+			description: 'Text shown on each card\'s footer link (e.g. "Probestunde anfragen").',
+			type: 'string',
+		}),
+		defineField({
 			name: 'ctaTileTitle',
 			title: 'CTA tile · title',
 			description: 'Only visible in the "Dance: 3-col grid with CTA tile" layout.',

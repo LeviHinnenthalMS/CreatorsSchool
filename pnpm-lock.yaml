@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@portabletext/react':
+        specifier: ^6.2.0
+        version: 6.2.0(react@19.2.6)
       '@portabletext/to-html':
         specifier: ^5.0.2
         version: 5.0.2
@@ -9510,7 +9513,7 @@ snapshots:
       '@date-fns/utc': 2.1.1
       '@sanity/client': 7.22.1
       '@sanity/types': 5.28.0(@types/react@19.2.15)
-      date-fns: 4.3.0
+      date-fns: 4.4.0
       rxjs: 7.8.2
     transitivePeerDependencies:
       - '@types/react'

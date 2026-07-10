@@ -86,7 +86,7 @@ export default function HeroCreators(props: Props) {
 						<RichTitle
 							title={title}
 							as="h1"
-							className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(46px,6.2vw,92px)]"
+							className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(46px,5vw,92px)]"
 						/>
 
 						{sub && (

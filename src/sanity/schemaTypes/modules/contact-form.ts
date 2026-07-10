@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'contact-form',
@@ -112,6 +113,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Contact form' }),
+		select: { title: 'title' },
+		prepare: ({ title }) => ({ title: getBlockText(title) || 'Contact form', subtitle: 'Contact form' }),
 	},
 })

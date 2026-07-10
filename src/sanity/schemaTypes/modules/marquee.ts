@@ -43,6 +43,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Marquee' }),
+		prepare: () => ({ title: 'Marquee', subtitle: 'Marquee · scrolling words' }),
 	},
 })

@@ -11,6 +11,7 @@ export const singleton = (
 	S: StructureBuilder,
 	id: string,
 	title?: string,
+	schemaType?: string,
 ): ListItemBuilder =>
 	S.listItem()
 		.id(id)
@@ -21,7 +22,7 @@ export const singleton = (
 					.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
 					.join(' '),
 		)
-		.child(S.editor().id(id).schemaType(id).documentId(id))
+		.child(S.editor().id(id).schemaType(schemaType ?? id).documentId(id))
 
 export const group = (
 	S: StructureBuilder,

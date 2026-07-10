@@ -93,7 +93,7 @@ export type SanityCTA = {
 	_key?: string
 	active?: boolean | null
 	link?: SanityLink | null
-	variant?: 'primary' | 'secondary' | 'tertiary' | null
+	variant?: 'primary' | 'secondary' | 'tertiary' | 'pill' | 'pill-dark' | null
 	size?: 'small' | 'medium' | 'large' | null
 	icon?: string | null
 	iconAspectRatio?: number | null

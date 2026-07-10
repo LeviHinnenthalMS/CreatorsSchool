@@ -24,15 +24,12 @@ export const structure = structureTool({
 			.title('Content')
 			.items([
 				singleton(S, 'site', 'Site settings').icon(VscServerProcess),
-				languageList(S, 'footer', 'Footer').icon(VscLayoutPanelLeft),
-				languageList(S, 'navigation', 'Navigation').icon(VscMap),
+				singleton(S, 'footer-de', 'Footer', 'footer').icon(VscLayoutPanelLeft),
+				singleton(S, 'navigation-de', 'Navigation', 'navigation').icon(VscMap),
 				S.documentTypeListItem('redirect').title('Redirects'),
 				S.divider(),
 
-				languageList(S, 'page', 'Homepage', {
-					id: 'page.home',
-					extraFilter: 'metadata.slug.current == "index"',
-				}).icon(VscHome),
+				singleton(S, 'page-home', 'Homepage', 'page').icon(VscHome),
 				languageList(S, 'page', 'Pages', {
 					id: 'page.nonHome',
 					extraFilter: 'metadata.slug.current != "index"',

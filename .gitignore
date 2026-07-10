@@ -49,3 +49,4 @@ next-env.d.ts
 public/google*.html
 
 public/admin/static
+.env*

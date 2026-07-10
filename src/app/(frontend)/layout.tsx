@@ -14,6 +14,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { BASE_URL } from '@/lib/env'
 import { getSite } from '@/sanity/lib/queries'
+import WhatsAppFab from '@/ui/WhatsAppFab'
 import '@/styles/app.css'
 
 export default async function RootLayout({
@@ -22,6 +23,7 @@ export default async function RootLayout({
 	children: React.ReactNode
 }) {
 	const site = await getSite()
+	const whatsapp = (site as { whatsapp?: string | null } | null)?.whatsapp ?? null
 	const siteName = (site as { title?: string | null } | null)?.title ?? undefined
 	const siteImage = (site as { ogimage?: string | null } | null)?.ogimage ?? undefined
 	const jsonLd = [
@@ -62,6 +64,7 @@ export default async function RootLayout({
 
 					<VisualEditingControls />
 				</NuqsAdapter>
+				{whatsapp && <WhatsAppFab number={whatsapp} />}
 
 				<Analytics />
 				<SpeedInsights />

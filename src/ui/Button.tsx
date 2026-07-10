@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import type { ComponentProps, ReactNode } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary'
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'pill' | 'pill-dark'
 export type ButtonSize = 'small' | 'medium' | 'large'
 
 const base =
@@ -18,6 +18,8 @@ const variants: Record<ButtonVariant, string> = {
 		'bg-canvas text-ink border-2 border-border-strong hover:bg-canvas-muted',
 	tertiary:
 		'bg-transparent text-ink border-2 border-transparent hover:bg-canvas-muted',
+	pill: 'bg-canvas text-ink border-2 border-line gap-0 pr-1 hover:bg-canvas-muted',
+	'pill-dark': 'bg-ink text-ink-inverse gap-0 pr-1 hover:bg-ink/85',
 }
 
 const sizes: Record<ButtonSize, string> = {
@@ -107,6 +109,19 @@ export default function Button({
 					height={iconHeight}
 					defaultHeight={defaultIconHeight}
 				/>
+			)}
+			{(variant === 'pill' || variant === 'pill-dark') && (
+				<span
+					aria-hidden
+					className={cn(
+						'ml-3 shrink-0 flex items-center justify-center size-9 rounded-full',
+						variant === 'pill' ? 'bg-accent text-ink-inverse' : 'bg-canvas text-ink',
+					)}
+				>
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+						<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+					</svg>
+				</span>
 			)}
 		</>
 	)

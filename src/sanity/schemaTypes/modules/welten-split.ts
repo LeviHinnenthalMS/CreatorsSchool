@@ -58,6 +58,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Two-worlds split' }),
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({ title: eyebrow || 'Two-worlds split', subtitle: 'Two-worlds split (Music / Dance)' }),
 	},
 })

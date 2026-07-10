@@ -31,7 +31,7 @@ export default async function CTABand(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="px-[clamp(8px,1.5vw,24px)] pb-[clamp(40px,5vw,60px)]"
+			className="px-[clamp(8px,1.5vw,24px)] py-[clamp(40px,5vw,60px)]"
 		>
 			<div className="bg-coral text-paper relative grid items-center gap-10 overflow-hidden rounded-band p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
 				<span
@@ -63,7 +63,7 @@ export default async function CTABand(props: Props) {
 					)}
 				</div>
 
-				<div className="relative z-10 flex flex-col items-end justify-center gap-5 max-md:items-start">
+				<div className="relative z-10 flex flex-col justify-start gap-5 max-md:items-start">
 					{props.showPhone !== false && site.phone && (
 						<a
 							href={site.phoneTel ? `tel:${site.phoneTel}` : undefined}
@@ -79,9 +79,9 @@ export default async function CTABand(props: Props) {
 								href={`https://wa.me/${site.whatsapp}`}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="action-base bg-[#25D366] text-[#07331e] hover:bg-[#20c35d]"
+								className="action-base bg-paper text-ink hover:bg-paper-2"
 							>
-								<Icon name="whatsapp" size={18} />
+								<Icon name="whatsapp" size={22} stroke='1.2' />
 								{props.whatsappLabel || 'WhatsApp'}
 							</a>
 						)}

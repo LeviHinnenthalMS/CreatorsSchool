@@ -45,6 +45,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Service split' }),
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({ title: eyebrow || 'Service split', subtitle: 'Service split (text + bullets)' }),
 	},
 })

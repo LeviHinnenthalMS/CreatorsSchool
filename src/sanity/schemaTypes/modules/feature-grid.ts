@@ -51,6 +51,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Feature grid' }),
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({ title: eyebrow || 'Feature grid', subtitle: 'Feature grid · 4 cards' }),
 	},
 })

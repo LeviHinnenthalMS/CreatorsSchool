@@ -29,6 +29,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Gallery' }),
+		select: { bereich: 'bereich' },
+		prepare: ({ bereich }) => ({ title: bereich ? `Gallery (${bereich})` : 'Gallery', subtitle: 'Gallery · masonry' }),
 	},
 })

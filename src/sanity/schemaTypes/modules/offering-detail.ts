@@ -63,7 +63,7 @@ export default defineType({
 		select: { title: 'offering.title' },
 		prepare: ({ title }) => ({
 			title: title || 'Offering detail',
-			subtitle: 'offering-detail',
+			subtitle: 'Offering detail (auto)',
 		}),
 	},
 })

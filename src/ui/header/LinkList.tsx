@@ -12,7 +12,7 @@ type LinkListInput = {
 		| (SanityLink & {
 				icon?: string | null
 				description?: string | null
-			})
+		  })
 		| null
 	> | null
 	summaryClassName?: string
@@ -32,10 +32,7 @@ export default function LinkList({
 				aria-haspopup="menu"
 				aria-expanded={mobileOpen}
 				onClick={() => setMobileOpen((v) => !v)}
-				className={cn(
-					summaryClassName,
-					'group-hover:text-ink',
-				)}
+				className={cn(summaryClassName, 'group-hover:text-ink')}
 			>
 				{link?.label}
 				<CgChevronDown
@@ -48,24 +45,17 @@ export default function LinkList({
 				/>
 			</button>
 
-			{/*
-			  Desktop: pt-3 transparent hover bridge, absolutely positioned, controlled by group-hover.
-			  Mobile: inline expansion controlled by mobileOpen.
-			*/}
 			<div
 				className={cn(
-					// desktop
 					'lg:absolute lg:top-full lg:left-0 lg:hidden lg:pt-3',
 					'lg:group-hover:block lg:group-focus-within:block lg:group-hover:anim-fade-to-b motion-reduce:lg:group-hover:animate-none',
-					// mobile
-					'',
 					mobileOpen ? 'max-lg:block' : 'max-lg:hidden',
 				)}
 			>
 				<ul
 					role="menu"
 					className={cn(
-						'border-border bg-canvas flex flex-col rounded-md border p-2 shadow-lg',
+						'bg-paper flex flex-col rounded-2xl border border-line p-3 shadow-xl',
 						'lg:min-w-80 lg:gap-1',
 						'max-lg:my-2 max-lg:gap-2',
 					)}
@@ -74,7 +64,12 @@ export default function LinkList({
 						<li key={key} role="none">
 							<CTA
 								role="menuitem"
-								className="hover:bg-canvas-muted flex items-start gap-3 rounded-sm p-3 transition-colors"
+								className={cn(
+									'group/row flex w-full items-start gap-3 rounded-xl px-4 py-3 transition-colors duration-150',
+									key === 0
+										? 'bg-coral-tint hover:bg-coral-deep'
+										: 'hover:bg-warm-white',
+								)}
 								link={sublink}
 							>
 								{sublink?.icon && (
@@ -82,21 +77,23 @@ export default function LinkList({
 										src={sublink.icon}
 										alt=""
 										aria-hidden
-										className="text-ink-muted mt-0.5 h-5 w-auto shrink-0"
+										className="mt-0.5 h-5 w-auto shrink-0"
 										height={20}
 										loading="lazy"
 									/>
 								)}
 								<span className="flex min-w-0 flex-col gap-0.5">
-									<span className="text-ink text-regular leading-6 font-semibold">
+									<span
+										className={cn(
+											'text-regular leading-6 font-semibold transition-colors duration-150',
+											key === 0
+												? 'text-coral-deep group-hover/row:text-white'
+												: 'text-ink group-hover/row:text-coral-deep',
+										)}
+									>
 										{sublink?.label || sublink?.internal?.title}
 									</span>
-									{sublink?.description && (
-										<span className="text-ink-muted text-small leading-5 font-normal">
-											{sublink.description}
-										</span>
-									)}
-								</span>
+									</span>
 							</CTA>
 						</li>
 					))}

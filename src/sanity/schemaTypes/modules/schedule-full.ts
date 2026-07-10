@@ -46,6 +46,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Schedule full' }),
+		prepare: () => ({ title: 'Schedule full', subtitle: 'Schedule · full' }),
 	},
 })

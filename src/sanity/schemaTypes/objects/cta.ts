@@ -30,6 +30,8 @@ export default defineType({
 					{ title: 'Primary', value: 'primary' },
 					{ title: 'Secondary', value: 'secondary' },
 					{ title: 'Tertiary', value: 'tertiary' },
+					{ title: 'Pill', value: 'pill' },
+					{ title: 'Pill (dark bg)', value: 'pill-dark' },
 				],
 				layout: 'radio',
 				direction: 'horizontal',

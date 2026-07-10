@@ -23,12 +23,12 @@
 	--color-mute-2: #b7b7bd;
 
 	/* Signature red — big elements only */
-	--color-coral: #cf1c20;
-	--color-coral-deep: #8f0f13; /* red text < 18px on white */
-	--color-coral-soft: #e8474a;
-	--color-coral-tint: #fbe3e3;
-	--color-blush: #fbe3e3;
-	--color-warm-white: #f7f5f3;
+	--color-coral: #e0524e;
+	--color-coral-deep: #b1393a;
+	--color-coral-soft: #ec6f6b;
+	--color-coral-tint: #f9e3e2;
+	--color-blush: #f9e3e2;
+	--color-warm-white: #f4f1f7;
 
 	/* Plum — Aufführungen page only */
 	--color-plum: #2b2a4a;
@@ -91,11 +91,11 @@
 	--text-h4: 2rem;
 	--text-h5: 1.5rem;
 	--text-h6: 1.25rem;
-	--text-large: 1.25rem;
-	--text-medium: 1.125rem;
-	--text-regular: 1rem;
-	--text-small: 0.875rem;
-	--text-tiny: 0.75rem;
+	--text-large: 1.125rem;
+	--text-medium: 1rem;
+	--text-regular: 0.875rem;
+	--text-small: 0.8125rem;
+	--text-tiny: 0.6875rem;
 
 	--leading-tight: 1.1;
 
@@ -129,11 +129,11 @@
 		--text-h4: 1.5rem;
 		--text-h5: 1.25rem;
 		--text-h6: 1.125rem;
-		--text-large: 1rem;
+		--text-large: 0.9375rem;
 		--text-medium: 0.875rem;
-		--text-regular: 0.75rem;
+		--text-regular: 0.8125rem;
 		--text-small: 0.75rem;
-		--text-tiny: 0.625rem;
+		--text-tiny: 0.6875rem;
 
 		--padding-section-large: 2.5rem;
 		--padding-section-medium: 2.5rem;

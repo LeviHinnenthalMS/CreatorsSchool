@@ -29,6 +29,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Testimonial cards' }),
+		select: { eyebrow: 'eyebrow' },
+		prepare: ({ eyebrow }) => ({ title: eyebrow || 'Testimonial cards', subtitle: 'Testimonial cards (Creators)' }),
 	},
 })

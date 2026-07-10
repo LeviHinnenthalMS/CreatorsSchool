@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'location-card',
@@ -56,6 +57,7 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Location card' }),
+		select: { title: 'title' },
+		prepare: ({ title }) => ({ title: getBlockText(title) || 'Location card', subtitle: 'Location card' }),
 	},
 })

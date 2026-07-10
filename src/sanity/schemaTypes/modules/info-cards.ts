@@ -45,6 +45,6 @@ export default defineType({
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
-		prepare: () => ({ title: 'Info cards' }),
+		prepare: () => ({ title: 'Info cards', subtitle: 'Info cards (contact)' }),
 	},
 })

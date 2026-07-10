@@ -19,6 +19,7 @@ type Props = SanityModule & {
 	bereich?: 'alle' | 'musik' | 'tanz' | null
 	layout?: 'musik-pair' | 'tanz-grid' | 'prog' | null
 	tinted?: boolean | null
+	cardCtaLabel?: string | null
 	ctaTileTitle?: string | null
 	ctaTileText?: string | null
 	ctaTileLink?: SanityLink | null
@@ -95,9 +96,24 @@ export default async function OfferingList(props: Props) {
 									</h3>
 								)}
 								{o.lede && (
-									<p className="text-charcoal m-0 text-[15.5px] leading-relaxed">
+									<p className="text-charcoal m-0 grow text-[15.5px] leading-relaxed">
 										{o.lede}
 									</p>
+								)}
+								{o.facts && o.facts.length > 2 && (
+									<div className="border-line-2 mt-2 flex flex-col gap-2.5 border-t border-dashed pt-5">
+										{o.facts.slice(2).map((f, i) => (
+											<span
+												key={f._key ?? i}
+												className="text-coral-deep inline-flex items-center gap-2.5 text-[14px] font-semibold"
+											>
+												<span className="bg-blush flex size-6 shrink-0 items-center justify-center rounded-md">
+													<Icon name="check" size={12} className="text-coral-deep" strokeWidth={2.5} />
+												</span>
+												{f.value}
+											</span>
+										))}
+									</div>
 								)}
 							</Link>
 						))}
@@ -127,10 +143,12 @@ export default async function OfferingList(props: Props) {
 										{o.lede}
 									</p>
 								)}
+								{props.cardCtaLabel && (
 								<span className="text-coral-deep mt-auto inline-flex items-center gap-2 pt-4 text-[13.5px] font-semibold">
-									Mehr erfahren
+									{props.cardCtaLabel}
 									<Icon name="arrow" size={13} strokeWidth={2.5} />
 								</span>
+							)}
 							</Link>
 						))}
 

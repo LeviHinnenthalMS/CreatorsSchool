@@ -6,17 +6,10 @@ import AboutStory from './AboutStory'
 import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CenteredCTA from './CenteredCTA'
-import ComparisonCards from './ComparisonCards'
 import FeatureMedia from './FeatureMedia'
 import HeroSplit from './HeroSplit'
-import ImageCallouts from './ImageCallouts'
-import MeetTheFounder from './MeetTheFounder'
-import MeetTheTeam from './MeetTheTeam'
 import RichtextModule from './RichtextModule'
 import SocialProofLogos from './SocialProofLogos'
-import StatsGrid from './StatsGrid'
-import TestimonialFeatured from './TestimonialFeatured'
-import VideoWithText from './VideoWithText'
 
 // Creators School modules (above-the-fold / stage)
 import HeroCreators from './HeroCreators'
@@ -25,15 +18,9 @@ import PageHeader from './PageHeader'
 // Heavy / below-the-fold / page-specific modules: code-split with dynamic()
 // so each page only ships the client JS it actually uses.
 const AccordionList = dynamic(() => import('./AccordionList'))
-const BlogOverview = dynamic(() => import('./blog/BlogOverview'))
-const BlogPostContent = dynamic(() => import('./blog/PostContent'))
 const CustomHTML = dynamic(() => import('./CustomHTML'))
-const FeatureTabs = dynamic(() => import('./FeatureTabs'))
-const NewsletterCTA = dynamic(() => import('./NewsletterCTA'))
 const PersonList = dynamic(() => import('./PersonList'))
-const SearchModule = dynamic(() => import('./SearchModule'))
 const StyleGuide = dynamic(() => import('./StyleGuide'))
-const TestimonialGrid = dynamic(() => import('./TestimonialGrid'))
 
 // Creators School modules (lazy)
 const Marquee = dynamic(() => import('./Marquee'))
@@ -69,29 +56,16 @@ type ModuleComponent = React.ComponentType<Record<string, unknown>>
 const MODULE_MAP = {
 	'about-story': AboutStory,
 	'accordion-list': AccordionList,
-	'blog-overview': BlogOverview,
-	'blog-post-content': BlogPostContent,
 	breadcrumbs: Breadcrumbs,
 	callout: Callout,
 	'centered-cta': CenteredCTA,
-	'comparison-cards': ComparisonCards,
 	'custom-html': CustomHTML,
 	'feature-media': FeatureMedia,
-	'feature-tabs': FeatureTabs,
 	'hero.split': HeroSplit,
-	'image-callouts': ImageCallouts,
-	'meet-the-founder': MeetTheFounder,
-	'meet-the-team': MeetTheTeam,
-	'newsletter-cta': NewsletterCTA,
 	'person-list': PersonList,
 	'richtext-module': RichtextModule,
-	'search-module': SearchModule,
 	'social-proof.logos': SocialProofLogos,
-	'stats-grid': StatsGrid,
 	'style-guide': StyleGuide,
-	'testimonial.featured': TestimonialFeatured,
-	'testimonial.grid': TestimonialGrid,
-	'video-with-text': VideoWithText,
 
 	// Creators School modules
 	'hero.creators': HeroCreators,
