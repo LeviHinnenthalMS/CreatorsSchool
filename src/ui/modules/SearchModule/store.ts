@@ -1,5 +1,4 @@
 import { useQueryState } from 'nuqs'
-import { create } from 'zustand'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { SEARCH_QUERY } from '@/sanity/lib/queries'
 import type { SEARCH_QUERY_RESULT } from '@/sanity/types'
@@ -15,18 +14,6 @@ export const useQuery = () => {
 
 	return { query, setQuery }
 }
-
-export const searchStore = create<{
-	loading: boolean
-	setLoading: (loading: boolean) => void
-	results: SearchResults
-	setResults: (results: SearchResults) => void
-}>((set) => ({
-	loading: false,
-	setLoading: (loading) => set({ loading }),
-	results: [],
-	setResults: (results) => set({ results }),
-}))
 
 export async function handleSearch({
 	query,

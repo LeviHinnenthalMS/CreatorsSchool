@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import type { OfferingListItem } from '@/sanity/lib/creators'
+import { Img } from '@/ui/Img'
 
 const FILTER_LABELS: Record<string, string> = {
 	alle: 'Alle',
@@ -44,10 +45,17 @@ function CalIcon() {
 
 const META_ICONS = [<ClockIcon key="c" />, <UsersIcon key="u" />, <CalIcon key="k" />]
 
-function probeHref(kontaktHref: string, title: string | null | undefined) {
+function probeHref(
+	kontaktHref: string,
+	title: string | null | undefined,
+	ageFact: string | null | undefined,
+) {
 	const base = kontaktHref.split('#')[0].split('?')[0]
-	const kurs = title ? `?kurs=${encodeURIComponent(title)}` : ''
-	return `${base}${kurs}#kontaktformular`
+	const params = new URLSearchParams()
+	if (title) params.set('kurs', title)
+	if (ageFact) params.set('alter', ageFact)
+	const qs = params.toString() ? `?${params.toString()}` : ''
+	return `${base}${qs}#kontaktformular`
 }
 
 function offeringHref(o: OfferingListItem) {
@@ -128,6 +136,9 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 					const letter = o.decorativeLetter ?? titleItalic?.[0]?.toLowerCase() ?? '·'
 					const tag = o.catalogTag ?? o.facts?.[0]?.value
 					const metaRows = o.detailRows?.slice(0, 3) ?? []
+					const ageFact = o.facts?.find((f) =>
+						/alter|age/i.test(f.key ?? ''),
+					)?.value
 
 					return (
 						<div
@@ -137,27 +148,37 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 								dark ? 'bg-ink' : 'bg-paper border border-line',
 							)}
 						>
-							{/* Left coral box */}
-							<div className="relative flex min-h-[180px] w-full shrink-0 flex-col p-6 lg:min-h-[unset] lg:w-[210px]"
-								style={{ background: 'var(--color-coral)' }}>
-								<span
-									className={cn(
-										'font-display text-[13px] font-bold tracking-[0.06em]',
-										dark ? 'text-white/80' : 'text-white/80',
+							{/* Left image box */}
+							<div className="p-3 lg:p-4 shrink-0 lg:w-[222px]">
+								<div className="relative min-h-[120px] w-full overflow-hidden rounded-[18px] lg:h-full lg:min-h-[160px]">
+									{o.heroImage?.asset ? (
+										<Img
+											image={o.heroImage}
+											width={420}
+											className="absolute inset-0 h-full w-full object-cover"
+											alt={o.heroImage.alt ?? o.title ?? ''}
+										/>
+									) : (
+										<div
+											className="flex h-full min-h-[120px] w-full flex-col p-5 lg:min-h-[160px]"
+											style={{ background: 'var(--color-coral)' }}
+										>
+											<span className="font-display text-[13px] font-bold tracking-[0.06em] text-white/80">
+												N° {String(i + 1).padStart(2, '0')}
+											</span>
+											<span
+												aria-hidden
+												className={cn(
+													'font-display absolute bottom-4 left-0 right-0 select-none text-center font-bold leading-none',
+													dark ? 'text-white/20' : 'text-ink/20',
+												)}
+												style={{ fontSize: 'clamp(80px,9vw,108px)', fontStyle: 'italic' }}
+											>
+												{letter}
+											</span>
+										</div>
 									)}
-								>
-									N° {String(i + 1).padStart(2, '0')}
-								</span>
-								<span
-									aria-hidden
-									className={cn(
-										'font-display absolute bottom-3 right-5 select-none font-bold leading-none',
-										dark ? 'text-white/20' : 'text-ink/20',
-									)}
-									style={{ fontSize: 'clamp(72px,8vw,96px)', fontStyle: 'italic' }}
-								>
-									{letter}
-								</span>
+								</div>
 							</div>
 
 							{/* Middle content */}
@@ -217,9 +238,10 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							</div>
 
 							{/* Right price panel */}
+							<div className="p-3 lg:p-4 shrink-0 lg:w-[238px]">
 							<div
 								className={cn(
-									'flex shrink-0 flex-col justify-center gap-5 p-7 lg:w-[230px] lg:rounded-r-[22px]',
+									'flex h-full flex-col justify-center gap-5 rounded-[18px] p-6',
 									dark ? 'bg-ink-2' : 'bg-paper-2',
 								)}
 							>
@@ -255,7 +277,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 
 								<div className="flex flex-col gap-2.5">
 									<Link
-										href={probeHref(kontaktHref, o.title)}
+										href={probeHref(kontaktHref, o.title, ageFact)}
 										className={cn(
 											'rounded-full px-5 py-3 text-center text-[13.5px] font-semibold no-underline transition-colors',
 											dark
@@ -277,6 +299,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 										Details
 									</Link>
 								</div>
+							</div>
 							</div>
 						</div>
 					)

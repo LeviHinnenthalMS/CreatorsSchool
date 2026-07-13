@@ -33,7 +33,7 @@ export default async function PerformanceBanner(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="my-[clamp(50px,6vw,90px)] px-[clamp(8px,1.5vw,24px)]"
+			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(8px,1.5vw,24px)]"
 		>
 			<div className="bg-plum text-paper relative overflow-hidden rounded-[40px] p-[clamp(48px,6vw,96px)]">
 				<span

@@ -79,6 +79,13 @@ export default defineType({
 			group: 'contact',
 		}),
 		defineField({
+			name: 'city',
+			title: 'City / Ort',
+			description: 'Short city name shown in contact cards, e.g. "Melle"',
+			type: 'string',
+			group: 'contact',
+		}),
+		defineField({
 			name: 'addressLines',
 			title: 'Address (multi-line)',
 			type: 'array',

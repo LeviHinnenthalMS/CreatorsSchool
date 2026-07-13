@@ -83,7 +83,16 @@ const NAVIGATION_QUERY = `
 export const MODULES_QUERY = `
 	...,
 	ctas[]{ ${CTA_QUERY} },
-_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
+	_type == 'about-story' => {
+		eyebrow,
+		title,
+		body,
+		image{ ${IMAGE_QUERY} },
+		signatureName,
+		personName,
+		personRole,
+	},
+	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'comparison-cards' => {
 		positiveCard{
 			...,
@@ -124,7 +133,17 @@ _type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 		eyebrowImage{ ${ASSET_IMG_QUERY} },
 		image{ ${ASSET_IMG_QUERY} }
 	},
-	_type == 'person-list' => { people[]-> },
+	_type == 'person-list' => {
+		people[]->{
+			_id,
+			name,
+			role,
+			image{ ${IMAGE_QUERY} },
+			badge,
+			cardColor,
+			tags,
+		}
+	},
 	_type == 'social-proof.logos' => {
 		logos[]->{
 			...,
@@ -186,6 +205,13 @@ _type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'location-card' => {
 		mapImage{ ${IMAGE_QUERY} },
 		mapLink{ ${LINK_QUERY} }
+	},
+	_type == 'contact-form' => {
+		infoCards[]{ ..., link{ ${LINK_QUERY} } },
+		'interests': *[_type == 'offering' && language == $lang] | order(order asc) {
+			'value': slug.current,
+			'label': title
+		}
 	},
 `
 

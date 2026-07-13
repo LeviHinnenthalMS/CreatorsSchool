@@ -1,7 +1,7 @@
 import { PortableText, type PortableTextReactComponents } from '@portabletext/react'
 import { cn } from '@/lib/utils'
 
-type Tone = 'coral' | 'blush' | 'paper'
+type Tone = 'coral' | 'blush' | 'paper' | 'neutral'
 
 type Block = {
 	_type?: string
@@ -18,6 +18,7 @@ const accentToneClass: Record<Tone, string> = {
 	coral: 'text-coral font-medium italic',
 	blush: 'text-blush font-medium italic',
 	paper: 'text-paper font-medium italic',
+	neutral: 'text-ink font-medium italic',
 }
 
 const pillToneClass: Record<Tone, string> = {
@@ -27,6 +28,8 @@ const pillToneClass: Record<Tone, string> = {
 		'bg-blush text-plum inline-block -rotate-[2deg] rounded-pill px-4 pb-1 font-semibold italic',
 	paper:
 		'bg-paper text-coral inline-block -rotate-[2deg] rounded-pill px-4 pb-1 font-semibold italic',
+	neutral:
+		'bg-mute-2/60 text-ink inline-block -rotate-[2deg] rounded-pill px-4 pb-1 font-semibold italic',
 }
 
 function buildComponents(tone: Tone): Partial<PortableTextReactComponents> {

@@ -1,6 +1,6 @@
 import { defineField } from 'sanity'
 
-const HERO_TYPES = ['hero.split', 'hero.creators'] as const
+const HERO_TYPES = ['hero.split', 'hero.creators', 'hero.performance'] as const
 
 const insertMenuViews = [
 	{
@@ -47,6 +47,7 @@ export default defineField({
 		{ type: 'offering-list' },
 		{ type: 'offering-detail' },
 		{ type: 'performance-banner' },
+		{ type: 'performance-dates' },
 		{ type: 'about-strip' },
 		{ type: 'cta-band' },
 		{ type: 'schedule-preview' },
@@ -61,6 +62,9 @@ export default defineField({
 		{ type: 'svc-learn' },
 		{ type: 'svc-faq' },
 		{ type: 'svc-panel' },
+		{ type: 'opening-hours' },
+		{ type: 'about-story' },
+		{ type: 'timeline' },
 
 		// Generic page-builder modules from the base
 		{ type: 'accordion-list' },
@@ -88,6 +92,7 @@ export default defineField({
 						'offering-list',
 						'offering-detail',
 						'performance-banner',
+						'performance-dates',
 						'about-strip',
 						'cta-band',
 						'schedule-preview',
@@ -102,6 +107,9 @@ export default defineField({
 						'svc-learn',
 						'svc-faq',
 						'svc-panel',
+						'opening-hours',
+						'about-story',
+						'timeline',
 					],
 				},
 				{

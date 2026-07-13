@@ -1,6 +1,8 @@
 'use client'
 
-import { useQuery, searchStore, handleSearch, type SearchScope } from './store'
+import { useState } from 'react'
+import { useQuery, handleSearch, type SearchScope } from './store'
+import type { SEARCH_QUERY_RESULT } from '@/sanity/types'
 import { cn, debounce, count } from '@/lib/utils'
 import { VscSearch } from 'react-icons/vsc'
 import Loading from '@/ui/Loading'
@@ -23,7 +25,8 @@ export default function SearchForm({
 }> &
 	React.ComponentProps<'search'>) {
 	const { query, setQuery } = useQuery()
-	const { loading, setLoading, results, setResults } = searchStore()
+	const [loading, setLoading] = useState(false)
+	const [results, setResults] = useState<SEARCH_QUERY_RESULT>([])
 
 	return (
 		<search className={cn(css.root, 'relative', className)} {...props}>

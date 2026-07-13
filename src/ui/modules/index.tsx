@@ -13,6 +13,7 @@ import SocialProofLogos from './SocialProofLogos'
 // Creators School modules (above-the-fold / stage)
 import HeroCreators from './HeroCreators'
 import PageHeader from './PageHeader'
+import HeroPerformance from './HeroPerformance'
 
 // Heavy / below-the-fold / page-specific modules: code-split with dynamic()
 // so each page only ships the client JS it actually uses.
@@ -28,6 +29,7 @@ const WeltenSplit = dynamic(() => import('./WeltenSplit'))
 const OfferingList = dynamic(() => import('./OfferingList'))
 const OfferingDetail = dynamic(() => import('./OfferingDetail'))
 const PerformanceBanner = dynamic(() => import('./PerformanceBanner'))
+const PerformanceDates = dynamic(() => import('./PerformanceDates'))
 const AboutStrip = dynamic(() => import('./AboutStrip'))
 const CTABand = dynamic(() => import('./CTABand'))
 const SchedulePreview = dynamic(() => import('./SchedulePreview'))
@@ -42,6 +44,9 @@ const SvcSplit = dynamic(() => import('./SvcSplit'))
 const SvcLearn = dynamic(() => import('./SvcLearn'))
 const SvcFaq = dynamic(() => import('./SvcFaq'))
 const SvcPanel = dynamic(() => import('./SvcPanel'))
+const OpeningHours = dynamic(() => import('./OpeningHours'))
+const AboutStory = dynamic(() => import('./AboutStory'))
+const Timeline = dynamic(() => import('./Timeline'))
 
 import { createDataAttribute } from 'next-sanity'
 import type { Module } from '@/sanity/typeHelpers'
@@ -64,6 +69,7 @@ const MODULE_MAP = {
 
 	// Creators School modules
 	'hero.creators': HeroCreators,
+	'hero.performance': HeroPerformance,
 	'page-header': PageHeader,
 	marquee: Marquee,
 	'feature-grid': FeatureGrid,
@@ -71,6 +77,7 @@ const MODULE_MAP = {
 	'offering-list': OfferingList,
 	'offering-detail': OfferingDetail,
 	'performance-banner': PerformanceBanner,
+	'performance-dates': PerformanceDates,
 	'about-strip': AboutStrip,
 	'cta-band': CTABand,
 	'schedule-preview': SchedulePreview,
@@ -85,6 +92,9 @@ const MODULE_MAP = {
 	'svc-learn': SvcLearn,
 	'svc-faq': SvcFaq,
 	'svc-panel': SvcPanel,
+	'opening-hours': OpeningHours,
+	'about-story': AboutStory,
+	timeline: Timeline,
 } as const satisfies Record<string, ModuleComponent>
 
 type ModuleType = keyof typeof MODULE_MAP

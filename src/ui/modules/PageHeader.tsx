@@ -20,7 +20,7 @@ export default function PageHeader(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[clamp(60px,8vw,110px)]"
+			className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[calc(var(--header-height)+14px+clamp(60px,8vw,110px))]"
 		>
 			<span
 				aria-hidden

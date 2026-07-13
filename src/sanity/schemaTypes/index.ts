@@ -59,6 +59,8 @@ import weltenSplit from './modules/welten-split'
 import offeringList from './modules/offering-list'
 import offeringDetail from './modules/offering-detail'
 import performanceBanner from './modules/performance-banner'
+import heroPerformance from './modules/hero.performance'
+import performanceDates from './modules/performance-dates'
 import aboutStrip from './modules/about-strip'
 import ctaBand from './modules/cta-band'
 import schedulePreview from './modules/schedule-preview'
@@ -73,6 +75,9 @@ import svcSplit from './modules/svc-split'
 import svcLearn from './modules/svc-learn'
 import svcFaq from './modules/svc-faq'
 import svcPanel from './modules/svc-panel'
+import openingHours from './modules/opening-hours'
+import aboutStory from './modules/about-story'
+import timeline from './modules/timeline'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents
@@ -134,6 +139,8 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	offeringList,
 	offeringDetail,
 	performanceBanner,
+	heroPerformance,
+	performanceDates,
 	aboutStrip,
 	ctaBand,
 	schedulePreview,
@@ -148,4 +155,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	svcLearn,
 	svcFaq,
 	svcPanel,
+	openingHours,
+	aboutStory,
+	timeline,
 ]

@@ -55,20 +55,26 @@ export default function LinkList({
 				<ul
 					role="menu"
 					className={cn(
-						'bg-paper flex flex-col rounded-2xl border border-line p-3 shadow-xl',
-						'lg:min-w-80 lg:gap-1',
-						'max-lg:my-2 max-lg:gap-2',
+						'bg-paper flex flex-col',
+						// desktop: floating card
+						'lg:rounded-2xl lg:border lg:border-line lg:p-3 lg:shadow-xl lg:min-w-80 lg:gap-1',
+						// mobile: flat inline list, indented with left accent
+						'max-lg:pl-4 max-lg:border-l-2 max-lg:border-coral/25 max-lg:ml-1 max-lg:mb-2 max-lg:gap-0',
 					)}
 				>
 					{links?.map((sublink, key) => (
-						<li key={key} role="none">
+						<li key={key} role="none" className="max-lg:border-0">
 							<CTA
 								role="menuitem"
 								className={cn(
-									'group/row flex w-full items-start gap-3 rounded-xl px-4 py-3 transition-colors duration-150',
+									'group/row flex w-full items-start gap-3 transition-colors duration-150',
+									// desktop
+									'lg:rounded-xl lg:px-4 lg:py-3',
 									key === 0
-										? 'bg-coral-tint hover:bg-coral-deep'
-										: 'hover:bg-warm-white',
+										? 'lg:bg-coral-tint lg:hover:bg-coral-deep'
+										: 'lg:hover:bg-warm-white',
+									// mobile: simple text link
+									'max-lg:py-3 max-lg:text-[15px] max-lg:font-medium',
 								)}
 								link={sublink}
 							>
@@ -77,7 +83,7 @@ export default function LinkList({
 										src={sublink.icon}
 										alt=""
 										aria-hidden
-										className="mt-0.5 h-5 w-auto shrink-0"
+										className="mt-0.5 h-5 w-auto shrink-0 max-lg:hidden"
 										height={20}
 										loading="lazy"
 									/>
@@ -85,15 +91,17 @@ export default function LinkList({
 								<span className="flex min-w-0 flex-col gap-0.5">
 									<span
 										className={cn(
-											'text-regular leading-6 font-semibold transition-colors duration-150',
+											'leading-6 font-semibold transition-colors duration-150',
+											'lg:text-regular',
 											key === 0
-												? 'text-coral-deep group-hover/row:text-white'
-												: 'text-ink group-hover/row:text-coral-deep',
+												? 'lg:text-coral-deep lg:group-hover/row:text-white'
+												: 'lg:text-ink lg:group-hover/row:text-coral-deep',
+											'max-lg:text-ink-2 max-lg:hover:text-coral',
 										)}
 									>
 										{sublink?.label || sublink?.internal?.title}
 									</span>
-									</span>
+								</span>
 							</CTA>
 						</li>
 					))}

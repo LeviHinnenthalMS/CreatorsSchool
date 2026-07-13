@@ -31,7 +31,7 @@ export default function HeroSplit({
 	const asset = assets?.[0]
 
 	return (
-		<section className="section grid items-center gap-4 md:gap-8 overflow-hidden py-4 md:max-h-[calc(100svh-var(--header-height))] md:grid-cols-2 md:gap-x-12">
+		<section className="section grid items-center gap-4 md:gap-8 overflow-hidden pb-4 pt-[calc(var(--header-height)+14px+1rem)] md:max-h-[calc(100svh-var(--header-height))] md:grid-cols-2 md:gap-x-12">
 			<figure
 				className={cn(
 					asset?._type === 'img' &&

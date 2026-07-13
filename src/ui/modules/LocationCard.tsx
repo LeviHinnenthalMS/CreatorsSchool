@@ -4,6 +4,7 @@ import { Icon } from '@/ui/creators/Icon'
 import RichTitle from '@/ui/creators/RichTitle'
 import Btn from '@/ui/creators/Btn'
 import resolveUrl from '@/lib/resolveUrl'
+import MapEmbed from './MapEmbed'
 import type { SanityImage, SanityLink, SanityModule } from '@/sanity/typeHelpers'
 
 type Direction = {
@@ -15,9 +16,11 @@ type Direction = {
 type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
 type Props = SanityModule & {
+	eyebrow?: string | null
 	title?: Block[] | null
 	text?: string | null
 	directions?: Direction[] | null
+	mapEmbedUrl?: string | null
 	mapImage?: SanityImage | null
 	mapLink?: SanityLink | null
 	mapLinkLabel?: string | null
@@ -39,6 +42,12 @@ export default function LocationCard(props: Props) {
 		>
 			<div className="bg-paper-2 border-line overflow-hidden rounded-band border md:grid md:grid-cols-[1fr_1.2fr]">
 				<div className="flex flex-col justify-center p-[clamp(40px,5vw,70px)]">
+					{props.eyebrow && (
+						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold uppercase tracking-[0.08em]">
+							<span aria-hidden className="bg-coral inline-block size-2 rounded-full" />
+							{props.eyebrow}
+						</span>
+					)}
 					<RichTitle
 						title={props.title}
 						as="h2"
@@ -72,14 +81,16 @@ export default function LocationCard(props: Props) {
 						</div>
 					)}
 					{mapHref && (
-						<Btn href={mapHref} variant="coral" target="_blank">
+						<Btn href={mapHref} variant="ink" target="_blank">
 							{props.mapLinkLabel || 'Open in Maps'}
 						</Btn>
 					)}
 				</div>
 
 				<div className="from-warm-white to-paper-2 relative min-h-[320px] overflow-hidden bg-gradient-to-b md:min-h-[480px]">
-					{props.mapImage ? (
+					{props.mapEmbedUrl ? (
+						<MapEmbed src={props.mapEmbedUrl} />
+					) : props.mapImage ? (
 						<Img
 							image={props.mapImage}
 							alt={props.mapImage.alt ?? ''}

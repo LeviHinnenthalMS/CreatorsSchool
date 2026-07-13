@@ -48,6 +48,20 @@ export default defineType({
 				}),
 			],
 		}),
+		defineField({
+			name: 'theme',
+			title: 'Theme',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Light (default)', value: 'light' },
+					{ title: 'Dark (ink)', value: 'dark' },
+					{ title: 'Red (coral)', value: 'red' },
+				],
+				layout: 'radio',
+			},
+			initialValue: 'light',
+		}),
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {

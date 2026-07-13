@@ -7,6 +7,7 @@ export default defineType({
 	title: 'Location card',
 	type: 'object',
 	fields: [
+		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
 		defineField({
 			name: 'title',
 			title: 'Headline',
@@ -34,6 +35,12 @@ export default defineType({
 					preview: { select: { title: 'title', subtitle: 'text' } },
 				}),
 			],
+		}),
+		defineField({
+			name: 'mapEmbedUrl',
+			title: 'Google Maps embed URL',
+			description: 'Share → Embed a map → copy the src URL. Shown only after cookie consent.',
+			type: 'url',
 		}),
 		defineField({
 			name: 'mapImage',

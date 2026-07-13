@@ -62,7 +62,7 @@ export default function HeroCreators(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="relative overflow-hidden pb-[clamp(60px,7vw,100px)] pt-[clamp(40px,5vw,70px)]"
+			className="relative overflow-hidden pb-[clamp(60px,7vw,100px)] pt-[calc(var(--header-height)+14px+clamp(40px,5vw,70px))]"
 		>
 			<span
 				aria-hidden
@@ -141,7 +141,7 @@ export default function HeroCreators(props: Props) {
 					</div>
 
 					{image && (
-						<div className="relative mx-auto aspect-[4/5] min-h-[420px] w-full max-lg:max-w-md lg:min-h-[480px]">
+						<div className="relative mx-auto aspect-[4/5] min-h-[420px] w-full max-lg:max-w-md max-sm:min-h-[280px] lg:min-h-[480px]">
 							<div className="from-blush to-warm-white border-line absolute inset-0 -z-10 translate-x-3.5 translate-y-3.5 rounded-[28px] border bg-gradient-to-br" />
 							<div className="bg-ink shadow-lg absolute inset-0 overflow-hidden rounded-[28px]">
 								<Img

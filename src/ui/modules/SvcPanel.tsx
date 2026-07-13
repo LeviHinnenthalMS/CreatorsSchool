@@ -63,11 +63,11 @@ export default function SvcPanel(props: Props) {
 								{p.value && (
 									<div className="flex items-baseline gap-2">
 										{p.currency && (
-											<span className="text-paper/80 text-[24px] font-semibold">
+											<span className="text-paper/80 text-[clamp(18px,4vw,24px)] font-semibold">
 												{p.currency}
 											</span>
 										)}
-										<span className="text-paper font-display text-[56px] font-bold leading-none -tracking-[0.03em]">
+										<span className="text-paper font-display text-[clamp(36px,8vw,56px)] font-bold leading-none -tracking-[0.03em]">
 											{p.value}
 										</span>
 										{p.unit && (

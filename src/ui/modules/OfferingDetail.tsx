@@ -22,15 +22,19 @@ type Props = SanityModule & {
 function withKurs(
 	ctas: Array<SanityCTA | null> | null | undefined,
 	title: string,
+	ageFact?: string | null,
 ): Array<SanityCTA | null> | null | undefined {
 	if (!ctas?.length || !title) return ctas
 	return ctas.map((cta) => {
 		if (!cta?.link) return cta
 		const slug = cta.link.internal?.metadata?.slug?.current
 		if (slug === 'kontakt') {
+			const params = new URLSearchParams()
+			params.set('kurs', title)
+			if (ageFact) params.set('alter', ageFact)
 			return {
 				...cta,
-				link: { ...cta.link, params: `?kurs=${encodeURIComponent(title)}#kontaktformular` },
+				link: { ...cta.link, params: `?${params.toString()}#kontaktformular` },
 			}
 		}
 		return cta
@@ -53,7 +57,7 @@ export default async function OfferingDetail(props: Props) {
 			{/* page header */}
 			<section
 				{...moduleProps(props)}
-				className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[clamp(60px,8vw,110px)]"
+				className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[clamp(30px,4vw,55px)]"
 			>
 				<span
 					aria-hidden
@@ -110,7 +114,11 @@ export default async function OfferingDetail(props: Props) {
 					)}
 
 					<div className="mt-9 flex flex-wrap items-center gap-5">
-						{props.ctas && <CTAs ctas={withKurs(props.ctas, offering.title ?? '')} />}
+						{props.ctas && <CTAs ctas={withKurs(
+						props.ctas,
+						offering.title ?? '',
+						offering.facts?.find((f) => /alter|age/i.test(f.key ?? ''))?.value,
+					)} />}
 						{props.backLinkLabel && props.backLinkHref && (
 							<Link
 								href={stegaClean(props.backLinkHref)}
@@ -229,11 +237,11 @@ export default async function OfferingDetail(props: Props) {
 								{offering.priceValue && (
 									<div className="flex items-baseline gap-2">
 										{offering.priceCurrency && (
-											<span className="text-paper/80 text-[24px] font-semibold">
+											<span className="text-paper/80 text-[clamp(18px,4vw,24px)] font-semibold">
 												{offering.priceCurrency}
 											</span>
 										)}
-										<span className="text-paper font-display text-[56px] font-bold leading-none -tracking-[0.03em]">
+										<span className="text-paper font-display text-[clamp(36px,8vw,56px)] font-bold leading-none -tracking-[0.03em]">
 											{offering.priceValue}
 										</span>
 										{offering.priceUnit && (

@@ -33,7 +33,7 @@ export default async function CTABand(props: Props) {
 			{...moduleProps(props)}
 			className="px-[clamp(8px,1.5vw,24px)] py-[clamp(40px,5vw,60px)]"
 		>
-			<div className="bg-coral text-paper relative grid items-center gap-10 overflow-hidden rounded-band p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
+			<div className="bg-coral text-paper relative grid items-center gap-10 max-sm:gap-6 overflow-hidden rounded-band p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
 				<span
 					aria-hidden
 					className="pointer-events-none absolute -top-1/2 right-[-10%] h-[200%] w-[60%] bg-[radial-gradient(circle,rgba(244,199,126,0.40),transparent_60%)]"

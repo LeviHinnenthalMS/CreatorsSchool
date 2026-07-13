@@ -76,7 +76,7 @@ export default function AboutStrip(props: Props) {
 					</div>
 
 					{profile && (
-						<div className="from-coral to-coral-deep relative flex min-h-[480px] flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br p-9">
+						<div className="from-coral to-coral-deep relative flex min-h-[480px] max-sm:min-h-[360px] flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br p-9">
 							<span
 								aria-hidden
 								className="pointer-events-none absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.12)_1.5px,transparent_1.5px)] [background-size:24px_24px] [mask-image:radial-gradient(80%_80%_at_50%_50%,black,transparent)]"

@@ -47,12 +47,12 @@ export default async function Header() {
 	const eventBadgeActive = site.eventBadge?.active !== false
 
 	return (
-		<Wrapper className="z-100 fixed inset-x-0 top-3.5 lg:px-2">
+		<Wrapper className="z-100 fixed inset-x-0 top-0 lg:top-3.5 lg:px-2">
 			<div
 				className={cn(
 					css.header,
 					'border-line bg-paper shadow-sm',
-					'max-lg:flex max-lg:max-h-[100dvh] max-lg:w-full max-lg:flex-col max-lg:rounded-[32px] max-lg:border',
+					'max-lg:flex max-lg:max-h-[100dvh] max-lg:w-full max-lg:flex-col max-lg:border-b',
 					'lg:mx-auto lg:max-w-wrap lg:items-center lg:gap-x-4 lg:rounded-pill lg:border lg:pl-6 lg:pr-3 lg:h-15',
 				)}
 			>
@@ -90,9 +90,9 @@ export default async function Header() {
 
 				<div
 					className={cn(
-						'max-lg:fixed max-lg:inset-x-3 max-lg:top-[88px] max-lg:z-0',
-						'max-lg:max-h-[calc(100dvh-100px)] max-lg:overflow-y-auto max-lg:overscroll-contain',
-						'max-lg:flex max-lg:flex-col max-lg:bg-paper max-lg:rounded-[28px] max-lg:border max-lg:border-line max-lg:shadow-lg',
+						'max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--header-height)] max-lg:z-0',
+						'max-lg:max-h-[calc(100dvh-var(--header-height))] max-lg:overflow-y-auto max-lg:overscroll-contain',
+						'max-lg:flex max-lg:flex-col max-lg:bg-paper max-lg:border-b max-lg:border-line max-lg:shadow-xl max-lg:rounded-b-[24px]',
 						'max-lg:transition-transform max-lg:duration-300 max-lg:ease-out motion-reduce:max-lg:transition-none',
 						'max-lg:header-closed:-translate-y-[120%] max-lg:header-closed:pointer-events-none',
 						'max-lg:header-open:translate-y-0',

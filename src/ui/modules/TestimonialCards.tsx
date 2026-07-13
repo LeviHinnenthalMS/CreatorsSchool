@@ -69,7 +69,7 @@ export default function TestimonialCards(props: Props) {
 							<article
 								key={t._id ?? i}
 								className={cn(
-									'relative flex flex-col gap-6 rounded-card border p-8',
+									'relative flex flex-col gap-6 rounded-card border p-8 max-sm:p-5',
 									tint === 'coral'
 										? 'bg-blush border-coral-tint'
 										: 'bg-warm-white border-line',

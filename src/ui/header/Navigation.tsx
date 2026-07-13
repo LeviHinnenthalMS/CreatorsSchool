@@ -34,8 +34,8 @@ export default function Navigation({ items }: { items: NavItem[] }) {
 	const pathname = usePathname()
 
 	const baseClassName = cn(
-		'flex items-center gap-1 rounded-sm font-semibold text-ink transition-colors duration-150',
-		'max-lg:w-full max-lg:justify-between max-lg:py-3 max-lg:text-regular max-lg:leading-6',
+		'flex items-center gap-1 md:rounded-sm font-semibold text-ink transition-colors duration-150',
+		'max-lg:w-full max-lg:justify-between max-lg:py-4 max-lg:text-[17px] max-lg:leading-6',
 		'lg:px-2 lg:py-1 lg:text-regular lg:leading-6 lg:text-neutral-dark',
 		'lg:hover:bg-canvas-muted lg:hover:text-ink',
 		'focus-visible:bg-canvas-muted focus-visible:text-ink focus-visible:outline-none',
@@ -45,7 +45,7 @@ export default function Navigation({ items }: { items: NavItem[] }) {
 		<nav
 			className={cn(
 				'flex [grid-area:nav]',
-				'max-lg:flex-col max-lg:gap-1 max-lg:px-4 max-lg:py-2',
+				'max-lg:flex-col max-lg:divide-y max-lg:divide-line max-lg:px-5 max-lg:pt-1 max-lg:pb-3',
 				'lg:items-center lg:justify-self-center lg:gap-3',
 			)}
 			aria-label="Main"
@@ -62,10 +62,16 @@ export default function Navigation({ items }: { items: NavItem[] }) {
 									baseClassName,
 									active && [
 										'!text-coral',
-										'relative',
-										'after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2',
-										'after:h-[3px] after:w-[calc(100%-8px)] after:rounded-full after:bg-coral',
-										'after:content-[""]',
+										// desktop underline dot
+										'lg:relative',
+										'lg:after:absolute lg:after:bottom-0 lg:after:left-1/2 lg:after:-translate-x-1/2',
+										'lg:after:h-[3px] lg:after:w-4 lg:after:rounded-full lg:after:bg-coral',
+										'lg:after:content-[""]',
+										// mobile: coral left accent bar
+										'max-lg:relative max-lg:pl-4',
+										'max-lg:before:absolute max-lg:before:left-0 max-lg:before:top-1/2 max-lg:before:-translate-y-1/2',
+										'max-lg:before:h-5 max-lg:before:w-[3px] max-lg:before:rounded-full max-lg:before:bg-coral',
+										'max-lg:before:content-[""]',
 									],
 								)}
 								link={item}
@@ -82,7 +88,13 @@ export default function Navigation({ items }: { items: NavItem[] }) {
 							<LinkList
 								summaryClassName={cn(
 									baseClassName,
-									childActive && '!text-coral',
+									childActive && [
+										'!text-coral',
+										'max-lg:relative max-lg:pl-4',
+										'max-lg:before:absolute max-lg:before:left-0 max-lg:before:top-1/2 max-lg:before:-translate-y-1/2',
+										'max-lg:before:h-5 max-lg:before:w-[3px] max-lg:before:rounded-full max-lg:before:bg-coral',
+										'max-lg:before:content-[""]',
+									],
 								)}
 								{...item}
 								key={key}
