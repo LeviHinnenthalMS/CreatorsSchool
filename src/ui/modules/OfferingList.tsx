@@ -10,6 +10,7 @@ import { DEFAULT_LANG } from '@/lib/i18n'
 import resolveUrl from '@/lib/resolveUrl'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
 import OfferingCatalog from './OfferingCatalog'
+import TanzCarousel from './TanzCarousel'
 
 type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
 
@@ -130,61 +131,14 @@ export default async function OfferingList(props: Props) {
 				)}
 
 				{layout === 'tanz-grid' && (
-					<div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
-						{items.map((o) => (
-							<Link
-								key={o._id}
-								href={offeringHref(o)}
-								className="bg-paper border-line hover:border-coral-soft flex min-h-[230px] flex-col gap-3 rounded-card-sm border px-7 py-7 no-underline transition-[transform,border-color] duration-300 hover:-translate-y-1"
-							>
-								{o.facts?.[0]?.value && (
-									<span className="text-coral-deep bg-blush font-display self-start rounded-full px-3.5 py-1 text-[14px] font-semibold italic">
-										{o.facts[0].value}
-									</span>
-								)}
-								{o.title && (
-									<h3 className="text-ink font-display m-0 text-[23px] font-semibold leading-tight -tracking-[0.015em]">
-										{o.title}
-									</h3>
-								)}
-								{o.lede && (
-									<p className="text-charcoal m-0 text-[14.5px] leading-relaxed">
-										{o.lede}
-									</p>
-								)}
-								{props.cardCtaLabel && (
-								<span className="text-coral-deep mt-auto inline-flex items-center gap-2 pt-4 text-[13.5px] font-semibold">
-									{props.cardCtaLabel}
-									<Icon name="arrow" size={13} strokeWidth={2.5} />
-								</span>
-							)}
-							</Link>
-						))}
-
-						{ctaTileHref && (
-							<Link
-								href={ctaTileHref}
-								className="bg-ink text-paper rounded-card-sm flex min-h-[230px] flex-col justify-center gap-3 px-7 py-7 no-underline"
-							>
-								{props.ctaTileTitle && (
-									<h3 className="text-paper font-display m-0 text-[26px] font-semibold leading-tight -tracking-[0.015em]">
-										{props.ctaTileTitle}
-									</h3>
-								)}
-								{props.ctaTileText && (
-									<p className="text-paper/70 m-0 text-[14.5px]">
-										{props.ctaTileText}
-									</p>
-								)}
-								{props.ctaTileLinkLabel && (
-									<span className="text-coral-soft mt-2 inline-flex items-center gap-2 text-[13.5px] font-semibold">
-										{props.ctaTileLinkLabel}
-										<Icon name="arrow" size={13} strokeWidth={2.5} />
-									</span>
-								)}
-							</Link>
-						)}
-					</div>
+					<TanzCarousel
+						items={items}
+						cardCtaLabel={props.cardCtaLabel}
+						ctaTileHref={ctaTileHref}
+						ctaTileTitle={props.ctaTileTitle}
+						ctaTileText={props.ctaTileText}
+						ctaTileLinkLabel={props.ctaTileLinkLabel}
+					/>
 				)}
 
 				{layout === 'catalog' && (

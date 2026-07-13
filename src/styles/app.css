@@ -101,7 +101,7 @@
 
 	/* Module rhythm */
 	--spacing-module-gap: 3rem;
-	--spacing-section: clamp(50px, 6vw, 90px);
+	--section-py: clamp(50px, 6vw, 90px);
 	--spacing-wrap-x: clamp(20px, 3.5vw, 48px);
 
 	/* Button size tokens — referenced by Button.tsx */
@@ -542,7 +542,7 @@
 
 @utility section {
 	@apply wrap;
-	padding-block: var(--spacing-section);
+	padding-block: var(--section-py);
 }
 
 @utility section-pad-large {

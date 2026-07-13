@@ -59,7 +59,7 @@ export default function TestimonialCards(props: Props) {
 					tagline={props.tagline}
 				/>
 
-				<div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+				<div className="flex gap-5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-3 lg:overflow-visible" style={{ scrollSnapType: 'x mandatory' }}>
 					{items.map((t, i) => {
 						const tint = i % 2 === 0 ? 'coral' : 'soft'
 						const quote = plainText(t.content)
@@ -69,11 +69,12 @@ export default function TestimonialCards(props: Props) {
 							<article
 								key={t._id ?? i}
 								className={cn(
-									'relative flex flex-col gap-6 rounded-card border p-8 max-sm:p-5',
+									'relative flex w-[80vw] shrink-0 flex-col gap-6 rounded-card border p-8 max-sm:p-5 lg:w-auto lg:shrink',
 									tint === 'coral'
 										? 'bg-blush border-coral-tint'
 										: 'bg-warm-white border-line',
 								)}
+								style={{ scrollSnapAlign: 'start' }}
 							>
 								<div aria-hidden className="text-coral text-[15px] tracking-[2px]">
 									★★★★★
@@ -88,9 +89,6 @@ export default function TestimonialCards(props: Props) {
 									{quote}
 								</blockquote>
 								<div className="border-line-2 mt-auto flex items-center gap-3.5 border-t border-dashed pt-4.5">
-									<div className="bg-paper border-line text-ink font-display grid size-11 place-items-center rounded-full border text-[16px] font-semibold">
-										{name?.split(' ').map((p) => p[0]).join('').slice(0, 2)}
-									</div>
 									<div className="leading-tight">
 										{name && (
 											<div className="text-ink text-[15px] font-semibold">{name}</div>
