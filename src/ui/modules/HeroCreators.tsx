@@ -56,8 +56,22 @@ export default function HeroCreators(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="relative overflow-hidden pb-[clamp(60px,7vw,100px)] pt-[calc(var(--header-height)+14px+clamp(40px,5vw,70px))]"
+			className="relative overflow-hidden pb-[clamp(40px,7vw,100px)] pt-[calc(var(--header-height)+clamp(20px,4vw,70px))]"
 		>
+			{/* Mobile: image as full-section background */}
+			{image && (
+				<div className="pointer-events-none absolute inset-0 lg:hidden">
+					<Img
+						image={image}
+						className="size-full object-cover"
+						alt=""
+						sizes="100vw"
+						loading="eager"
+					/>
+					<div className="absolute inset-0 bg-paper/85" />
+				</div>
+			)}
+
 			<span
 				aria-hidden
 				className="bg-blush pointer-events-none absolute -left-[8%] top-[8%] size-[320px] rounded-full opacity-70 blur-[20px]"
@@ -71,7 +85,7 @@ export default function HeroCreators(props: Props) {
 				<div className="grid items-center gap-[clamp(2rem,4vw,3.5rem)] lg:grid-cols-[1.05fr_1fr]">
 					<div>
 						{eyebrow && (
-							<span className="bg-paper-2 border-line text-charcoal mb-7 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold">
+							<span className="bg-paper-2 border-line text-charcoal mb-5 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold">
 								<span className="bg-coral shadow-[0_0_0_4px_var(--color-coral-tint)] inline-block size-[7px] rounded-full" />
 								{eyebrow}
 							</span>
@@ -80,21 +94,21 @@ export default function HeroCreators(props: Props) {
 						<RichTitle
 							title={title}
 							as="h1"
-							className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(46px,5vw,92px)]"
+							className="text-ink m-0 font-display font-semibold leading-[1] tracking-[-0.02em] text-[clamp(40px,5vw,92px)]"
 						/>
 
 						{sub && (
-							<p className="text-charcoal mt-7 max-w-[48ch] text-[clamp(16px,1.3vw,18.5px)] leading-relaxed">
+							<p className="text-charcoal mt-5 max-w-[48ch] text-[clamp(15px,1.3vw,18.5px)] leading-relaxed lg:mt-7">
 								{sub}
 							</p>
 						)}
 
 						{ctas && ctas.length > 0 && (
-							<CTAs ctas={ctas} className="mt-10 flex flex-wrap items-center gap-6" />
+							<CTAs ctas={ctas} className="mt-6 flex flex-wrap items-center gap-6 lg:mt-10" />
 						)}
 
 						{(reviewTitle || reviewSubtitle) && (
-							<div className="mt-9 flex flex-wrap items-center gap-3.5">
+							<div className="mt-5 flex flex-wrap items-center gap-3.5 lg:mt-9">
 								<Stars />
 								<div>
 									{reviewTitle && (
@@ -108,21 +122,22 @@ export default function HeroCreators(props: Props) {
 						)}
 					</div>
 
+					{/* Desktop-only image panel */}
 					{image && (
-						<div className="relative mx-auto aspect-[4/5] min-h-[420px] w-full max-lg:max-w-md max-sm:min-h-[280px] lg:min-h-[480px]">
+						<div className="relative mx-auto hidden aspect-[4/5] w-full lg:block lg:min-h-[480px]">
 							<div className="from-blush to-warm-white border-line absolute inset-0 -z-10 translate-x-3.5 translate-y-3.5 rounded-[28px] border bg-gradient-to-br" />
 							<div className="bg-ink shadow-lg absolute inset-0 overflow-hidden rounded-[28px]">
 								<Img
 									image={image}
 									className="size-full object-cover"
 									alt={image.alt ?? ''}
-									sizes="(min-width: 1024px) 50vw, 100vw"
+									sizes="50vw"
 									loading="eager"
 								/>
 							</div>
 
 							{testimonial && quote && (
-								<div className="bg-paper border-line shadow-md absolute bottom-[4%] right-[-2%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4 max-md:right-[4%]">
+								<div className="bg-paper border-line shadow-md absolute bottom-[4%] right-[-2%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4">
 									<Stars className="mb-2.5 flex gap-0.5" />
 									<p className="text-ink text-[13px] leading-snug">„{quote}"</p>
 									{testimonial.author?.name && (

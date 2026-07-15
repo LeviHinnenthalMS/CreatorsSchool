@@ -145,7 +145,7 @@ export default function WeltenSplit(props: Props) {
 						)
 
 						const baseCls = cn(
-							'group/welt relative flex min-h-[420px] max-sm:min-h-[300px] flex-col justify-between gap-7 overflow-hidden rounded-[30px] border p-[clamp(34px,3.6vw,54px)] text-inherit no-underline transition-transform duration-500 hover:-translate-y-1.5',
+							'group/welt relative flex min-h-[420px] max-sm:min-h-[300px] flex-col justify-between gap-7 overflow-hidden rounded-[30px] border p-6 md:p-[clamp(34px,3.6vw,54px)] text-inherit no-underline transition-transform duration-500 hover:-translate-y-1.5',
 							dark
 								? 'bg-coral border-coral text-paper'
 								: 'bg-warm-white border-line text-ink',
@@ -156,7 +156,7 @@ export default function WeltenSplit(props: Props) {
 								{dark && (
 									<span
 										aria-hidden
-										className="pointer-events-none absolute -bottom-16 -right-16 size-[280px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14),transparent_62%)]"
+										className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_35%_at_110%_110%,rgba(255,255,255,0.22),transparent)]"
 									/>
 								)}
 								{inner}

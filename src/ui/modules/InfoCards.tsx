@@ -61,7 +61,7 @@ export default async function InfoCards(props: Props) {
 
 		return (
 			<section {...moduleProps(props)} className="relative overflow-hidden py-[clamp(40px,5vw,70px)]">
-				<div className="pointer-events-none absolute -right-24 -top-24 size-[400px] rounded-full bg-[radial-gradient(circle,rgba(207,28,32,0.22),transparent_60%)]" />
+				<div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_45%_at_calc(100%+5%)_-5%,rgba(207,28,32,0.30),transparent)]" />
 				<div className="wrap grid gap-12 lg:grid-cols-[1fr_420px] lg:items-start">
 					<div className="flex flex-col gap-5 lg:pt-4">
 						{props.eyebrow && <Eyebrow>{props.eyebrow}</Eyebrow>}

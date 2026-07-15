@@ -28,14 +28,14 @@ export default function AboutStrip(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink text-paper relative mx-[clamp(8px,1.5vw,24px)] overflow-hidden rounded-band py-[clamp(80px,9vw,130px)]"
+			className="bg-ink text-paper relative mx-0 md:mx-[clamp(20px,3.5vw,48px)] overflow-hidden rounded-band py-[clamp(30px,3vw,60px)]"
 		>
 			<span
 				aria-hidden
-				className="pointer-events-none absolute -right-24 -top-24 size-[400px] rounded-full bg-[radial-gradient(circle,rgba(207,28,32,0.26),transparent_60%)]"
+				className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_45%_at_calc(100%+5%)_-5%,rgba(207,28,32,0.38),transparent)]"
 			/>
 			<div className="wrap relative z-10">
-				<div className="grid items-center gap-14 md:grid-cols-2">
+				<div className="grid items-center gap-8 md:gap-14 md:grid-cols-2">
 					<div>
 						{props.eyebrow && <Eyebrow tone="blush">{props.eyebrow}</Eyebrow>}
 						<RichTitle
@@ -50,7 +50,7 @@ export default function AboutStrip(props: Props) {
 							</p>
 						)}
 						{props.stats && props.stats.length > 0 && (
-							<div className="mt-9 grid grid-cols-3 gap-3.5 max-sm:grid-cols-1">
+							<div className="max-sm:flex max-sm:flex-wrap mt-7 grid grid-cols-3 gap-2.5">
 								{props.stats.map((s, i) => (
 									<div
 										key={s._key ?? i}
@@ -76,7 +76,7 @@ export default function AboutStrip(props: Props) {
 					</div>
 
 					{profile && (
-						<div className="from-coral to-coral-deep relative flex min-h-[480px] max-sm:min-h-[360px] flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br p-9">
+						<div className="from-coral to-coral-deep relative flex md:min-h-[480px] h-full flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br p-6 md:p-9">
 							<span
 								aria-hidden
 								className="pointer-events-none absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.12)_1.5px,transparent_1.5px)] [background-size:24px_24px] [mask-image:radial-gradient(80%_80%_at_50%_50%,black,transparent)]"
@@ -114,7 +114,7 @@ export default function AboutStrip(props: Props) {
 								)}
 								{profile.quote && (
 									<p className="text-paper font-display mt-6 max-w-[40ch] text-[18px] font-normal italic leading-snug">
-										<span className="text-blush font-display text-[60px] leading-[0.4] -tracking-[0.01em] mr-2 align-text-bottom italic">
+										<span className="text-blush font-display text-[40px] md:text-[60px] leading-[0.4] -tracking-[0.01em] mr-2 align-text-bottom italic">
 											&ldquo;
 										</span>
 										{profile.quote}

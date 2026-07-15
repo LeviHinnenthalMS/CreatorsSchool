@@ -38,12 +38,12 @@ export default function OpeningHours(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink relative mx-[clamp(8px,1.5vw,24px)] mb-[clamp(40px,5vw,70px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
+			className="bg-ink relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(40px,5vw,70px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
 		>
 			{/* Subtle red glow top-right */}
 			<span
 				aria-hidden
-				className="pointer-events-none absolute -right-24 -top-24 size-[400px] rounded-full bg-[radial-gradient(circle,rgba(207,28,32,0.22),transparent_60%)]"
+				className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_45%_at_calc(100%+5%)_-5%,rgba(207,28,32,0.32),transparent)]"
 			/>
 
 			<div className="wrap relative z-10 grid gap-[clamp(48px,6vw,80px)] lg:grid-cols-[2fr_3fr] lg:items-center">
@@ -73,33 +73,39 @@ export default function OpeningHours(props: Props) {
 							<div
 								key={row._key ?? i}
 								className={cn(
-									'grid grid-cols-[160px_1fr_auto] items-center gap-x-6 px-6 py-[18px]',
+									'grid grid-cols-[1fr_auto] grid-rows-[auto_auto] items-center gap-x-3 gap-y-1 px-4 py-3',
+									'sm:grid-cols-[160px_1fr_auto] sm:grid-rows-1 sm:gap-x-6 sm:px-6 sm:py-[18px]',
 									isToday
 										? 'rounded-[14px] bg-white/[0.07]'
 										: 'border-t border-white/[0.07] first:border-t-0',
 								)}
 							>
-								{/* Day name */}
-								<span className="flex items-center gap-2.5">
+								{/* Day name — col1 row1 always */}
+								<span className="flex items-center gap-2 sm:col-[1] sm:row-[1]">
 									{isToday && (
 										<span
 											aria-hidden
 											className="bg-coral inline-block size-[7px] shrink-0 rounded-full"
 										/>
 									)}
-									<span className="font-display text-[16px] font-bold leading-none text-paper">
+									<span className="font-display text-[15px] font-bold leading-none text-paper sm:text-[16px]">
 										{row.label}
 									</span>
 								</span>
 
-								{/* Time */}
-								<span className={cn('text-[15px] text-paper/70', isClosed && 'italic')}>
-									{isClosed ? 'geschlossen' : `${row.open} – ${row.close} Uhr`}
+								{/* Badge — col2 row1 on mobile, col3 on sm */}
+								<span className="col-[2] row-[1] inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.07em] text-paper/80 sm:col-[3] sm:px-3.5 sm:py-1.5 sm:text-[11px]">
+									{isToday ? 'Heute' : isClosed ? 'Zu' : 'Offen'}
 								</span>
 
-								{/* Badge */}
-								<span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.07em] text-paper/80">
-									{isToday ? 'Heute geöffnet' : isClosed ? 'Geschlossen' : 'Geöffnet'}
+								{/* Time — spans both cols row2 on mobile, col2 on sm */}
+								<span
+									className={cn(
+										'col-span-2 row-[2] text-[13px] text-paper/70 sm:col-[2] sm:col-span-1 sm:row-[1] sm:text-[15px]',
+										isClosed && 'italic',
+									)}
+								>
+									{isClosed ? 'geschlossen' : `${row.open} – ${row.close} Uhr`}
 								</span>
 							</div>
 						)

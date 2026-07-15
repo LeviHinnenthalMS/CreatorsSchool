@@ -47,8 +47,8 @@ export default function FeatureGrid(props: Props) {
 			<div
 				className={cn(
 					'wrap',
-					isDark && 'mx-5 md:mx-10 rounded-[36px] bg-ink px-[clamp(24px,4vw,64px)] py-[clamp(48px,6vw,80px)]',
-					isRed && 'mx-5 md:mx-10 rounded-[36px] px-[clamp(24px,4vw,64px)] py-[clamp(48px,6vw,80px)]',
+					isDark && 'mx-5 md:mx-10 rounded-[36px] bg-ink p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
+					isRed && 'mx-5 md:mx-10 rounded-[36px] p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
 				)}
 				style={isRed ? {
 					background: 'radial-gradient(ellipse 55% 75% at 85% 15%, rgba(255,130,110,0.35) 0%, transparent 65%), var(--color-coral)',
@@ -61,10 +61,13 @@ export default function FeatureGrid(props: Props) {
 					tone={isDecorated ? 'paper' : 'coral'}
 				/>
 
-				<div className={cn(
-					'grid grid-cols-1 gap-[14px] sm:grid-cols-2',
-					features.length >= 4 ? 'lg:grid-cols-4' : features.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
-				)}>
+				<div
+					className={cn(
+						'flex gap-[14px] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:overflow-visible',
+						features.length >= 4 ? 'lg:grid-cols-4' : features.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2',
+					)}
+					style={{ scrollSnapType: 'x mandatory' }}
+				>
 					{features.map((f, i) => {
 						if (isRed) {
 							const [num, label] = (f.title ?? '').split(' · ')
@@ -72,7 +75,8 @@ export default function FeatureGrid(props: Props) {
 							return (
 								<article
 									key={f._key ?? i}
-									className="rounded-[18px] bg-white/10 p-6"
+									className="w-[80vw] shrink-0 lg:w-auto lg:shrink rounded-[18px] bg-white/10 p-6"
+									style={{ scrollSnapAlign: 'start' }}
 								>
 									<div className="mb-4 inline-block rounded-full bg-black/20 px-3 py-1">
 										<span className="font-body text-[12px] font-bold tracking-[0.04em] text-paper/80">
@@ -96,7 +100,8 @@ export default function FeatureGrid(props: Props) {
 							return (
 								<article
 									key={f._key ?? i}
-									className="rounded-[18px] border border-white/8 bg-white/5 p-6"
+									className="w-[80vw] shrink-0 lg:w-auto lg:shrink rounded-[18px] border border-white/8 bg-white/5 p-6"
+									style={{ scrollSnapAlign: 'start' }}
 								>
 									{f.title && (
 										<p className="text-coral m-0 mb-3 text-[13px] font-bold tracking-[0.04em]">
@@ -123,11 +128,12 @@ export default function FeatureGrid(props: Props) {
 							<article
 								key={f._key ?? i}
 								className={cn(
-									'rounded-card border p-8 max-sm:p-5 transition-[transform,border-color] duration-300 hover:-translate-y-1',
+									'w-[80vw] shrink-0 lg:w-auto lg:shrink rounded-card border p-8 max-sm:p-5 transition-[transform,border-color] duration-300 hover:-translate-y-1',
 									tint === 'coral'
 										? 'bg-blush border-coral-tint hover:border-coral-soft'
 										: 'bg-warm-white border-line hover:border-line-2',
 								)}
+								style={{ scrollSnapAlign: 'start' }}
 							>
 								<div
 									className={cn(

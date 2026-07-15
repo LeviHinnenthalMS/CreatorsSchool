@@ -33,16 +33,16 @@ export default async function PerformanceBanner(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(8px,1.5vw,24px)]"
+			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(20px,3.5vw,48px)]"
 		>
-			<div className="bg-plum text-paper relative overflow-hidden rounded-[40px] p-[clamp(48px,6vw,96px)]">
+			<div className="bg-plum text-paper relative overflow-hidden rounded-[40px] p-6 md:p-[clamp(48px,6vw,96px)]">
 				<span
 					aria-hidden
-					className="pointer-events-none absolute -right-20 -top-[120px] size-[460px] rounded-full bg-[radial-gradient(circle,rgba(251,227,227,0.16),transparent_62%)]"
+					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_50%_at_calc(100%+5%)_-8%,rgba(251,227,227,0.25),transparent)]"
 				/>
 				<span
 					aria-hidden
-					className="pointer-events-none absolute -bottom-1/2 -left-[10%] h-[160%] w-2/3 bg-[radial-gradient(circle,rgba(232,71,74,0.22),transparent_60%)]"
+					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_55%_at_-10%_110%,rgba(232,71,74,0.32),transparent)]"
 				/>
 
 				<div className="relative z-10 grid items-center gap-[clamp(36px,4vw,64px)] md:grid-cols-[0.85fr_1.15fr]">

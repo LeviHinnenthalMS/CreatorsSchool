@@ -51,7 +51,7 @@ export default function SvcPanel(props: Props) {
 						<div className="bg-ink text-paper rounded-panel relative overflow-hidden p-[clamp(30px,3.4vw,44px)]">
 							<span
 								aria-hidden
-								className="pointer-events-none absolute -bottom-12 -right-12 size-[220px] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-coral)_32%,transparent),transparent_62%)]"
+								className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_30%_at_110%_110%,color-mix(in_srgb,var(--color-coral)_50%,transparent),transparent)]"
 							/>
 
 							<div className="relative z-10">

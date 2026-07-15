@@ -38,16 +38,16 @@ export default async function CTABand(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="px-[clamp(8px,1.5vw,24px)] py-[clamp(40px,5vw,60px)]"
+			className="px-[clamp(20px,3.5vw,48px)] py-[clamp(40px,5vw,60px)]"
 		>
-			<div className="bg-coral text-paper relative grid items-center gap-10 max-sm:gap-6 overflow-hidden rounded-band p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
+			<div className="bg-coral text-paper relative grid items-center gap-10 max-sm:gap-6 overflow-hidden rounded-band p-6 md:p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
 				<span
 					aria-hidden
-					className="pointer-events-none absolute -top-1/2 right-[-10%] h-[200%] w-[60%] bg-[radial-gradient(circle,rgba(244,199,126,0.40),transparent_60%)]"
+					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_55%_at_110%_-10%,rgba(244,199,126,0.55),transparent)]"
 				/>
 				<span
 					aria-hidden
-					className="pointer-events-none absolute -bottom-2/5 left-[-8%] h-[150%] w-1/2 bg-[radial-gradient(circle,rgba(45,26,34,0.18),transparent_60%)]"
+					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_45%_at_-8%_110%,rgba(45,26,34,0.28),transparent)]"
 				/>
 
 				<div className="relative z-10">

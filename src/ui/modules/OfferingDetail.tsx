@@ -67,7 +67,7 @@ export default async function OfferingDetail(props: Props) {
 			>
 				<span
 					aria-hidden
-					className="bg-blush pointer-events-none absolute -right-[30px] -top-[70px] -z-10 size-[340px] rounded-full opacity-45 blur-[30px]"
+					className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_35%_at_calc(100%+5%)_-8%,var(--color-blush),transparent)] opacity-45"
 				/>
 				<div className="wrap">
 					<nav className="text-mute mb-7 flex flex-wrap items-center gap-2 text-[13px]" aria-label="Breadcrumb">
@@ -234,7 +234,7 @@ export default async function OfferingDetail(props: Props) {
 						<div className="bg-ink text-paper rounded-panel relative overflow-hidden p-[clamp(30px,3.4vw,44px)]">
 							<span
 								aria-hidden
-								className="pointer-events-none absolute -bottom-12 -right-12 size-[220px] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-coral)_32%,transparent),transparent_62%)]"
+								className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_30%_at_110%_110%,color-mix(in_srgb,var(--color-coral)_50%,transparent),transparent)]"
 							/>
 							<div className="relative z-10">
 								{offering.priceLabel && (
