@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { GoNote } from 'react-icons/go'
 import { richTitleField } from '../fragments/rich-title'
+import { iconField } from '../fragments/icon-field'
 
 const bereichList = [
 	{ title: 'Music', value: 'musik' },
@@ -82,6 +83,22 @@ export default defineType({
 		}),
 
 		defineField({
+			name: 'bookingType',
+			title: 'CTA type',
+			description: 'Determines which call-to-action button is shown on this offering page.',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Probestunde buchen', value: 'probestunde' },
+					{ title: 'Kontakt aufnehmen', value: 'kontakt' },
+				],
+				layout: 'radio',
+			},
+			initialValue: 'probestunde',
+			group: 'overview',
+		}),
+
+		defineField({
 			name: 'facts',
 			title: 'Facts (header chips)',
 			description: 'e.g. Age · Duration · Levels · Price',
@@ -147,13 +164,7 @@ export default defineType({
 					type: 'object',
 					name: 'learnCard',
 					fields: [
-						defineField({
-							name: 'icon',
-							title: 'Icon',
-							type: 'string',
-							description:
-								'Key from the icon set (e.g. "sparkle", "music", "stage", "movement", "voice", "heart").',
-						}),
+						defineField(iconField),
 						defineField({ name: 'title', title: 'Title', type: 'string' }),
 						defineField({ name: 'text', title: 'Text', type: 'text', rows: 2 }),
 					],

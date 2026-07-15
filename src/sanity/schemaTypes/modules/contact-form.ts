@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { iconField } from '../fragments/icon-field'
 import { getBlockText } from '@/lib/utils'
 
 export default defineType({
@@ -19,49 +20,27 @@ export default defineType({
 			rows: 3,
 		}),
 		defineField({
+			name: 'privacyUrl',
+			title: 'Datenschutz page URL',
+			description: 'Link shown in the privacy consent checkbox (e.g. /datenschutz).',
+			type: 'string',
+		}),
+		defineField({
 			name: 'labels',
 			title: 'Field labels',
 			type: 'object',
 			fields: [
 				defineField({ name: 'name', title: 'Your name', type: 'string' }),
-				defineField({ name: 'child', title: "Child's name", type: 'string' }),
-				defineField({ name: 'email', title: 'Email', type: 'string' }),
-				defineField({ name: 'phone', title: 'Phone', type: 'string' }),
-				defineField({
-					name: 'interest',
-					title: 'Which offering?',
-					type: 'string',
-				}),
+				defineField({ name: 'contact', title: 'Phone or E-Mail (combined field)', type: 'string' }),
+				defineField({ name: 'interest', title: 'Which offering?', type: 'string' }),
 				defineField({ name: 'age', title: "Child's age", type: 'string' }),
-				defineField({ name: 'when', title: 'When works for you?', type: 'string' }),
-				defineField({ name: 'message', title: 'Message', type: 'string' }),
 				defineField({ name: 'submit', title: 'Submit button', type: 'string' }),
-				defineField({
-					name: 'requiredHint',
-					title: 'Required-field hint (e.g. "* required")',
-					type: 'string',
-				}),
-				defineField({
-					name: 'privacy',
-					title: 'Privacy consent',
-					type: 'text',
-					rows: 3,
-				}),
-				defineField({
-					name: 'successTitle',
-					title: 'Success · title',
-					type: 'string',
-				}),
-				defineField({
-					name: 'successText',
-					title: 'Success · text',
-					type: 'string',
-				}),
-				defineField({
-					name: 'errorText',
-					title: 'Error · text',
-					type: 'string',
-				}),
+				defineField({ name: 'footnote', title: 'Below-button note', type: 'string' }),
+				defineField({ name: 'requiredHint', title: 'Required-field hint', type: 'string' }),
+				defineField({ name: 'privacy', title: 'Privacy consent text', type: 'text', rows: 2 }),
+				defineField({ name: 'successTitle', title: 'Success · title', type: 'string' }),
+				defineField({ name: 'successText', title: 'Success · text', type: 'string' }),
+				defineField({ name: 'errorText', title: 'Error · text', type: 'string' }),
 			],
 		}),
 		defineField({
@@ -133,7 +112,7 @@ export default defineType({
 							},
 							initialValue: 'neutral',
 						}),
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField(iconField),
 						defineField({ name: 'label', title: 'Label', type: 'string' }),
 						defineField({ name: 'value', title: 'Value', type: 'string' }),
 						defineField({ name: 'small', title: 'Small (extra line)', type: 'string' }),

@@ -16,6 +16,7 @@ const OFFERING_FIELDS = `
 
 const OFFERING_DETAIL_FIELDS = `
 	${OFFERING_FIELDS},
+	bookingType,
 	forWhoTitle, forWhoLead,
 	forWho[]{ _key, title, text },
 	learnTitle,
@@ -81,6 +82,7 @@ type TitleBlock = {
 }
 
 export type OfferingDetail = OfferingListItem & {
+	bookingType?: 'probestunde' | 'kontakt' | null
 	forWhoTitle?: TitleBlock[] | null
 	forWhoLead?: string | null
 	forWho?: Array<{ _key?: string; title?: string | null; text?: string | null }> | null

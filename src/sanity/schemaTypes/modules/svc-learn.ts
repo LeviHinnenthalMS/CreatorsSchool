@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { iconField } from '../fragments/icon-field'
 
 export default defineType({
 	name: 'svc-learn',
@@ -29,7 +30,7 @@ export default defineType({
 					type: 'object',
 					name: 'learnCard',
 					fields: [
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField(iconField),
 						defineField({ name: 'title', title: 'Title', type: 'string' }),
 						defineField({ name: 'text', title: 'Text', type: 'text', rows: 2 }),
 					],

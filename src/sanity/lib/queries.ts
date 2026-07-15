@@ -88,6 +88,7 @@ export const MODULES_QUERY = `
 		title,
 		body,
 		image{ ${IMAGE_QUERY} },
+		video,
 		signatureName,
 		personName,
 		personRole,
@@ -182,12 +183,14 @@ export const MODULES_QUERY = `
 		}
 	},
 	_type == 'hero.creators' => {
-		image{ ${IMAGE_QUERY} }
+		image{ ${IMAGE_QUERY} },
+		testimonial->{ content, author }
 	},
 	_type == 'welten-split' => {
 		cards[]{
 			...,
-			link{ ${LINK_QUERY} }
+			link{ ${LINK_QUERY} },
+			image{ ${IMAGE_QUERY} }
 		}
 	},
 	_type == 'offering-list' => {
@@ -207,6 +210,7 @@ export const MODULES_QUERY = `
 		mapLink{ ${LINK_QUERY} }
 	},
 	_type == 'contact-form' => {
+		privacyUrl,
 		infoCards[]{ ..., link{ ${LINK_QUERY} } },
 		'interests': *[_type == 'offering' && language == $lang] | order(order asc) {
 			'value': slug.current,
@@ -234,6 +238,8 @@ export const SITE_QUERY = defineQuery(groq`
 	*[_type == 'site'][0]{
 		...,
 		ctas[]{ ${CTA_QUERY} },
+		ctaKontakt{ ${CTA_QUERY} },
+		ctaProbestunde{ ${CTA_QUERY} },
 		'ogimage': ogimage.asset->url
 	}
 `)

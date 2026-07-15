@@ -3,8 +3,10 @@ import { Img } from '@/ui/Img'
 import { Icon } from '@/ui/creators/Icon'
 import RichTitle from '@/ui/creators/RichTitle'
 import Btn from '@/ui/creators/Btn'
+import { stegaClean } from 'next-sanity'
 import resolveUrl from '@/lib/resolveUrl'
 import MapEmbed from './MapEmbed'
+import { getSite } from '@/sanity/lib/queries'
 import type { SanityImage, SanityLink, SanityModule } from '@/sanity/typeHelpers'
 
 type Direction = {
@@ -28,12 +30,17 @@ type Props = SanityModule & {
 
 function href(link?: SanityLink | null) {
 	if (!link) return undefined
-	if (link.type === 'internal' && link.internal) return resolveUrl(link.internal)
+	if (link.type === 'internal') {
+		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.params) return stegaClean(link.params)
+	}
 	return link.external ?? undefined
 }
 
-export default function LocationCard(props: Props) {
+export default async function LocationCard(props: Props) {
+	const site = await getSite() as { mapEmbedUrl?: string | null }
 	const mapHref = href(props.mapLink)
+	const embedUrl = props.mapEmbedUrl ?? site.mapEmbedUrl
 
 	return (
 		<section
@@ -88,8 +95,8 @@ export default function LocationCard(props: Props) {
 				</div>
 
 				<div className="from-warm-white to-paper-2 relative min-h-[320px] overflow-hidden bg-gradient-to-b md:min-h-[480px]">
-					{props.mapEmbedUrl ? (
-						<MapEmbed src={props.mapEmbedUrl} />
+					{embedUrl ? (
+						<MapEmbed src={embedUrl} />
 					) : props.mapImage ? (
 						<Img
 							image={props.mapImage}

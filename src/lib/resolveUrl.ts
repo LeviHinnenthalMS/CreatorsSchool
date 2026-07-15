@@ -11,7 +11,7 @@ type ResolvableDoc = {
 export default function resolveUrl(
 	page?: ResolvableDoc | null,
 	{
-		base = true,
+		base = false,
 		params,
 		language,
 	}: {

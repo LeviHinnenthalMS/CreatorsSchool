@@ -113,8 +113,6 @@ export default async function HeroPerformance(props: Props) {
 					{site.whatsapp && (
 						<a
 							href={`https://wa.me/${site.whatsapp}`}
-							target="_blank"
-							rel="noopener noreferrer"
 							className="action-base bg-paper text-ink hover:bg-paper-2"
 						>
 							<Icon name="whatsapp" size={20} stroke="1.2" />

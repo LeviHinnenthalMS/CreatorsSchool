@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'site',
@@ -145,6 +146,46 @@ export default defineType({
 			description: 'Typically used in the header and/or footer.',
 			type: 'array',
 			of: [{ type: 'cta' }],
+			group: 'cta',
+		}),
+		defineField({
+			name: 'mapEmbedUrl',
+			title: 'Google Maps embed URL',
+			description: 'Default iframe src used in Location Card modules. Get it from Google Maps → Share → Embed a map.',
+			type: 'url',
+			group: 'contact',
+		}),
+		defineField({
+			name: 'ctaProbestunde',
+			title: 'CTA — Probestunde buchen',
+			description: 'Used on offering pages with type "Probestunde buchen".',
+			type: 'cta',
+			group: 'cta',
+		}),
+		defineField({
+			name: 'ctaKontakt',
+			title: 'CTA — Kontakt aufnehmen',
+			description: 'Used on offering pages with type "Kontakt aufnehmen".',
+			type: 'cta',
+			group: 'cta',
+		}),
+		defineField({
+			name: 'ctaBandEyebrow',
+			title: 'CTA Band — Eyebrow',
+			type: 'string',
+			group: 'cta',
+		}),
+		defineField({
+			name: 'ctaBandTitle',
+			title: 'CTA Band — Title',
+			...richTitleField(),
+			group: 'cta',
+		}),
+		defineField({
+			name: 'ctaBandText',
+			title: 'CTA Band — Text',
+			type: 'text',
+			rows: 3,
 			group: 'cta',
 		}),
 	],

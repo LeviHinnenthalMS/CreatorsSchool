@@ -47,7 +47,16 @@ export default defineType({
 							title: 'Subtitle (italic)',
 							type: 'string',
 						}),
-						defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
+						defineField({
+								name: 'image',
+								title: 'Image',
+								type: 'image',
+								options: { hotspot: true },
+								fields: [
+									defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
+								],
+							}),
+							defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
 						defineField({ name: 'link', title: 'Link', type: 'link' }),
 						defineField({ name: 'linkLabel', title: 'Link label', type: 'string' }),
 					],

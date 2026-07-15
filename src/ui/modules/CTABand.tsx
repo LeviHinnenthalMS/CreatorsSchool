@@ -26,7 +26,14 @@ export default async function CTABand(props: Props) {
 		phoneTel?: string | null
 		whatsapp?: string | null
 		email?: string | null
+		ctaBandEyebrow?: string | null
+		ctaBandTitle?: Block[] | null
+		ctaBandText?: string | null
 	}
+
+	const eyebrow = props.eyebrow ?? site.ctaBandEyebrow
+	const title = props.title ?? site.ctaBandTitle
+	const text = props.text ?? site.ctaBandText
 
 	return (
 		<section
@@ -44,21 +51,21 @@ export default async function CTABand(props: Props) {
 				/>
 
 				<div className="relative z-10">
-					{props.eyebrow && (
+					{eyebrow && (
 						<span className="text-paper mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.06em]">
 							<span aria-hidden className="bg-coral-soft shadow-[0_0_0_4px_rgba(232,71,74,0.30)] inline-block size-2 rounded-full" />
-							{props.eyebrow}
+							{eyebrow}
 						</span>
 					)}
 					<RichTitle
-						title={props.title}
+						title={title}
 						as="h2"
 						tone="blush"
 						className="text-paper m-0 text-[clamp(32px,4.5vw,60px)] font-display font-bold leading-[1.02] -tracking-[0.03em]"
 					/>
-					{props.text && (
+					{text && (
 						<p className="text-paper/85 mt-5 max-w-[48ch] text-[16.5px]">
-							{props.text}
+							{text}
 						</p>
 					)}
 				</div>
@@ -77,8 +84,6 @@ export default async function CTABand(props: Props) {
 						{props.showWhatsapp !== false && site.whatsapp && (
 							<a
 								href={`https://wa.me/${site.whatsapp}`}
-								target="_blank"
-								rel="noopener noreferrer"
 								className="action-base bg-paper text-ink hover:bg-paper-2"
 							>
 								<Icon name="whatsapp" size={22} stroke='1.2' />

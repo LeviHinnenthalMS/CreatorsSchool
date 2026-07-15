@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { iconField } from '../fragments/icon-field'
 
 export default defineType({
 	name: 'info-cards',
@@ -28,7 +29,7 @@ export default defineType({
 							},
 							initialValue: 'neutral',
 						}),
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField(iconField),
 						defineField({ name: 'label', title: 'Label', type: 'string' }),
 						defineField({ name: 'value', title: 'Value', type: 'string' }),
 						defineField({

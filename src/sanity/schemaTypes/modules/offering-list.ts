@@ -84,8 +84,8 @@ export default defineType({
 	preview: {
 		select: { bereich: 'bereich' },
 		prepare: ({ bereich }) => ({
-			title: 'Offerings list',
-			subtitle: `Filter: ${bereich || 'all'}`,
+			title: bereich ? `Offerings list · ${bereich}` : 'Offerings list',
+			subtitle: 'Offerings list',
 		}),
 	},
 })

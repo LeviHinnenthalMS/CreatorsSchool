@@ -26,14 +26,11 @@ type InfoCard = {
 
 type Labels = {
 	name?: string | null
-	child?: string | null
-	email?: string | null
-	phone?: string | null
+	contact?: string | null
 	interest?: string | null
 	age?: string | null
-	when?: string | null
-	message?: string | null
 	submit?: string | null
+	footnote?: string | null
 	requiredHint?: string | null
 	privacy?: string | null
 	successTitle?: string | null
@@ -49,8 +46,8 @@ type Props = SanityModule & {
 	labels?: Labels | null
 	interests?: Option[] | null
 	ageOptions?: Option[] | null
-	whenOptions?: Option[] | null
 	infoCards?: InfoCard[] | null
+	privacyUrl?: string | null
 }
 
 function clean(v?: string | null) {
@@ -73,56 +70,44 @@ function matchOption(options: Option[], val: string): Option | undefined {
 
 function cardHref(link?: SanityLink | null) {
 	if (!link) return undefined
-	if (link.type === 'internal' && link.internal) return resolveUrl(link.internal)
+	if (link.type === 'internal') {
+		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.params) return stegaClean(link.params)
+	}
 	return link.external ?? undefined
 }
 
 function InfoCardItem({ card: c }: { card: InfoCard }) {
-	const variant = stegaClean(c.variant || 'neutral') as 'coral' | 'ink' | 'neutral'
-	const iconBg =
-		variant === 'coral'
-			? 'bg-coral text-paper'
-			: variant === 'ink'
-				? 'bg-coral-soft text-ink'
-				: 'bg-paper-3 text-charcoal'
-
-	const wrap = cn(
-		'grid grid-cols-[56px_1fr] items-center gap-5 rounded-card border p-6 no-underline transition-[transform,border-color] duration-300',
-		variant === 'ink'
-			? 'bg-ink border-ink text-paper'
-			: 'bg-paper border-line hover:border-coral hover:scale-[1.01]',
-	)
+	const url = cardHref(c.link)
 
 	const inner = (
-		<>
-			<span className={cn('grid size-14 shrink-0 place-items-center rounded-[14px]', iconBg)}>
-				<Icon name={c.icon} size={20} />
+		<div className="flex items-center gap-3.5 py-3.5">
+			<span className="bg-paper-3 text-coral grid size-9 shrink-0 place-items-center rounded-full">
+				<Icon name={c.icon} size={15} />
 			</span>
 			<div>
 				{c.label && (
-					<p className={cn('m-0 text-[11.5px] font-bold uppercase tracking-[0.08em]', variant === 'ink' ? 'text-white/50' : 'text-mute')}>
+					<p className="text-mute m-0 text-[11px] font-semibold uppercase tracking-[0.07em]">
 						{c.label}
 					</p>
 				)}
 				{c.value && (
-					<p className={cn('font-display m-0 mt-1 text-[20px] font-bold leading-tight -tracking-[0.015em]', variant === 'ink' ? 'text-paper' : 'text-ink')}>
+					<p className="text-ink m-0 text-[15px] font-semibold leading-snug">
 						{c.value}
 					</p>
 				)}
 				{c.small && (
-					<p className={cn('m-0 mt-1 text-[13px]', variant === 'ink' ? 'text-white/50' : 'text-mute')}>
-						{c.small}
-					</p>
+					<p className="text-mute m-0 mt-0.5 text-[12px]">{c.small}</p>
 				)}
 			</div>
-		</>
+		</div>
 	)
 
-	const url = cardHref(c.link)
+	const cls = 'block border-b border-line last:border-0 no-underline transition-opacity hover:opacity-70'
 	return url ? (
-		<Link href={url} className={wrap}>{inner}</Link>
+		<Link href={url} className={cls}>{inner}</Link>
 	) : (
-		<div className={wrap}>{inner}</div>
+		<div className={cn(cls, 'hover:opacity-100')}>{inner}</div>
 	)
 }
 
@@ -131,10 +116,10 @@ function FormPanel({
 	pending,
 	done,
 	error,
+	fieldErrors,
 	onSubmit,
 	interests,
 	ages,
-	whens,
 	preselected,
 	preselectedAge,
 }: {
@@ -142,10 +127,10 @@ function FormPanel({
 	pending: boolean
 	done: boolean
 	error: string | null
+	fieldErrors: Record<string, string>
 	onSubmit: (e: FormEvent<HTMLFormElement>) => void
 	interests: Option[]
 	ages: Option[]
-	whens: Option[]
 	preselected: Option | null
 	preselectedAge: Option | null
 }) {
@@ -161,18 +146,20 @@ function FormPanel({
 				<div className="bg-coral text-paper mb-6 grid size-12 place-items-center rounded-full">
 					<Icon name="check" size={22} />
 				</div>
-				<h2 className="text-ink font-display m-0 text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.05] -tracking-[0.025em]">
+				<h2 className="text-ink font-display m-0 text-[clamp(26px,3vw,38px)] font-bold leading-[1.05] -tracking-[0.025em]">
 					{clean(labels.successTitle) || 'Danke für deine Nachricht.'}
 				</h2>
 				<p className="text-ink-2 mt-3.5 max-w-[42ch] text-[15.5px]">
-					{clean(labels.successText) || 'Wir melden uns in den nächsten Tagen bei dir.'}
+					{clean(labels.successText) || 'Wir melden uns in den nächsten 24 Stunden bei dir.'}
 				</p>
 			</div>
 		)
 	}
 
+	const privacyUrl = clean(props.privacyUrl)
+
 	return (
-		<div className="bg-paper border-line relative overflow-hidden rounded-panel border p-[clamp(28px,3.5vw,44px)]">
+		<div className="bg-paper border-line relative overflow-hidden rounded-panel border p-[clamp(24px,3.5vw,40px)]">
 			<span
 				aria-hidden
 				className="bg-coral-tint pointer-events-none absolute -right-24 -top-24 size-[280px] rounded-full opacity-60 blur-[20px]"
@@ -183,142 +170,91 @@ function FormPanel({
 					<RichTitle
 						title={props.title}
 						as="h2"
-						className="text-ink font-display m-0 text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.05] -tracking-[0.025em]"
+						className="text-ink font-display m-0 text-[clamp(26px,3vw,38px)] font-bold leading-[1.05] -tracking-[0.025em]"
 					/>
 					{props.lead && (
-						<p className="text-ink-2 mt-3.5 max-w-[42ch] text-[15.5px]">{props.lead}</p>
+						<p className="text-ink-2 mt-3 max-w-[42ch] text-[14.5px] leading-relaxed">{props.lead}</p>
 					)}
 				</header>
 			)}
 
-			<form onSubmit={onSubmit} className="relative z-10 mt-8 grid gap-4.5" noValidate>
-				<div className="grid gap-3.5 sm:grid-cols-2">
-					<Field
-						label={clean(labels.name) || 'Ihr Name'}
-						name="name"
-						placeholder="Vor- und Nachname"
-						required
-						requiredHint={clean(labels.requiredHint)}
-					/>
-					<Field
-						label={clean(labels.child) || 'Name des Kindes'}
-						name="child"
-						placeholder="Optional"
-					/>
+			<form onSubmit={onSubmit} className="relative z-10 mt-6 grid gap-4" noValidate>
+				{/* Honeypot — invisible to humans, bots fill it in */}
+				<div aria-hidden style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }}>
+					<label>Website <input name="_hp" type="text" autoComplete="off" tabIndex={-1} /></label>
 				</div>
-				<div className="grid gap-3.5 sm:grid-cols-2">
-					<Field
-						label={clean(labels.email) || 'E-Mail'}
-						name="email"
-						type="email"
-						placeholder="ihre.email@beispiel.de"
-						required
-						requiredHint={clean(labels.requiredHint)}
-					/>
-					<Field
-						label={clean(labels.phone) || 'Telefon'}
-						name="phone"
-						type="tel"
-						placeholder="Optional"
-					/>
-				</div>
-
 				{interests.length > 0 && (
-					<fieldset className="m-0 border-0 p-0">
-						<legend className="text-ink mb-3 text-[14px] font-semibold">
-							{clean(labels.interest) || 'Welches Angebot interessiert Sie?'}
-						</legend>
-						<div className="flex flex-wrap gap-2">
-							{interests.map((o, i) => (
-								<label key={o.value} className="relative inline-flex cursor-pointer">
-									<input
-										type="radio"
-										name="interest"
-										value={stegaClean(o.value!)}
-										defaultChecked={
-											preselected
-												? stegaClean(o.value) === stegaClean(preselected.value)
-												: i === 0
-										}
-										className="peer pointer-events-none absolute opacity-0"
-									/>
-									<span className="border-line bg-paper-2 text-ink-2 hover:border-coral hover:text-coral peer-checked:bg-ink peer-checked:border-ink peer-checked:text-paper inline-block rounded-full border px-4 py-2 text-[13.5px] font-medium transition-colors">
-										{stegaClean(o.label!)}
-									</span>
-								</label>
-							))}
-						</div>
-					</fieldset>
-				)}
-
-				{(ages.length > 0 || whens.length > 0) && (
-					<div className="grid gap-3.5 sm:grid-cols-2">
-						{ages.length > 0 && (
-							<Select
-								label={clean(labels.age) || 'Alter des Kindes'}
-								name="age"
-								options={ages}
-								defaultValue={preselectedAge ? stegaClean(preselectedAge.value!) ?? undefined : undefined}
-							/>
-						)}
-						{whens.length > 0 && (
-							<Select
-								label={clean(labels.when) || 'Wann passt es Ihnen?'}
-								name="when"
-								options={whens}
-							/>
-						)}
-					</div>
-				)}
-
-				<div className="flex flex-col gap-2">
-					<label className="text-ink mb-1 text-[14px] font-semibold">
-						{clean(labels.message) || 'Ihre Nachricht'}
-					</label>
-					<textarea
-						name="msg"
-						rows={5}
-						placeholder="Erzählen Sie uns kurz, was Sie suchen — Vorerfahrung, Wünsche, Fragen. Alles, was uns hilft, Sie gut zu beraten."
-						className="border-line bg-paper text-ink placeholder:text-mute focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] min-h-[120px] resize-y rounded-[14px] border px-4 py-3.5 text-[14.5px] outline-none transition-[border-color,box-shadow]"
+					<Select
+						label={clean(labels.interest) || 'Welches Angebot?'}
+						name="interest"
+						options={interests}
+						defaultValue={preselected ? stegaClean(preselected.value!) ?? undefined : undefined}
 					/>
-				</div>
+				)}
 
-				<div className="border-line-2 mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-dashed pt-5">
-					<label className="text-ink-2 flex max-w-[40ch] cursor-pointer items-start gap-2.5 text-[13px] leading-snug">
+				{ages.length > 0 && (
+					<Select
+						label={clean(labels.age) || 'Alter des Kindes'}
+						name="age"
+						options={ages}
+						defaultValue={preselectedAge ? stegaClean(preselectedAge.value!) ?? undefined : undefined}
+					/>
+				)}
+
+				<Field
+					label={clean(labels.name) || 'Ihr Name'}
+					name="name"
+					placeholder="Vor- und Nachname"
+					required
+					requiredHint={clean(labels.requiredHint)}
+					error={fieldErrors.name}
+				/>
+
+				<Field
+					label={clean(labels.contact) || 'Telefon oder E-Mail'}
+					name="contact"
+					placeholder="So erreichen wir Sie am besten"
+					required
+					requiredHint={clean(labels.requiredHint)}
+					error={fieldErrors.contact}
+				/>
+
+				<div>
+					<label className="text-ink-2 flex cursor-pointer items-start gap-3 text-[13px] leading-snug">
 						<input
 							type="checkbox"
-							required
 							name="privacy"
-							className="mt-0.5 accent-coral"
+							className="mt-0.5 shrink-0 accent-coral"
 						/>
 						<span>
-							{clean(labels.privacy) ||
-								'Ich habe die Datenschutzhinweise gelesen und stimme der Verarbeitung meiner Angaben für die Kontaktaufnahme zu.'}
+							{clean(labels.privacy) || 'Ich stimme der Verarbeitung meiner Angaben zur Kontaktaufnahme zu'}
+							{privacyUrl ? (
+								<> (<Link href={privacyUrl} className="text-coral underline">Datenschutz</Link>).</>
+							) : '.'}
 						</span>
 					</label>
-					<button
-						type="submit"
-						disabled={pending}
-						className="action-base bg-coral text-paper shadow-[0_10px_28px_-10px_color-mix(in_srgb,var(--color-coral)_42%,transparent)] hover:shadow-[0_18px_38px_-12px_color-mix(in_srgb,var(--color-coral)_52%,transparent)] disabled:opacity-70 max-sm:w-full max-sm:justify-center"
-					>
-						{pending ? '…' : clean(labels.submit) || 'Anfrage senden'}
-						<span
-							aria-hidden
-							className="bg-paper text-coral grid size-7 place-items-center rounded-full"
-						>
-							<Icon name="arrow" size={14} strokeWidth={2.5} />
-						</span>
-					</button>
+					{fieldErrors.privacy && (
+						<p className="text-coral-deep mt-1.5 text-[12.5px] font-medium">{fieldErrors.privacy}</p>
+					)}
 				</div>
 
+				<button
+					type="submit"
+					disabled={pending}
+					className="bg-coral text-paper hover:bg-coral-deep mt-1 w-full rounded-full py-4 text-[15.5px] font-semibold shadow-[0_10px_28px_-10px_color-mix(in_srgb,var(--color-coral)_42%,transparent)] transition-colors disabled:opacity-70"
+				>
+					{pending ? '…' : clean(labels.submit) || 'Kostenlose Probestunde anfragen'}
+				</button>
+
 				{error && (
-					<p role="alert" className="text-coral-deep mt-2 text-[14px] font-semibold">
+					<p role="alert" className="text-coral-deep text-center text-[13.5px] font-semibold">
 						{error}
 					</p>
 				)}
 
-				<p className="text-mute text-[12px]">
-					Pflichtfelder mit * markiert. Wir nutzen Ihre Daten ausschließlich zur Beantwortung Ihrer Anfrage.
+				<p className="text-mute flex items-center justify-center gap-2 text-center text-[12.5px]">
+					<span aria-hidden className="bg-mute inline-block size-1.5 shrink-0 rounded-full" />
+					{clean(labels.footnote) || 'Antwort innerhalb von 24 Stunden · unverbindlich'}
 				</p>
 			</form>
 		</div>
@@ -330,6 +266,7 @@ function ContactFormInner(props: Props) {
 	const [pending, startTransition] = useTransition()
 	const [done, setDone] = useState(false)
 	const [error, setError] = useState<string | null>(null)
+	const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 	const searchParams = useSearchParams()
 	const kurs = searchParams.get('kurs') ?? ''
 	const alter = searchParams.get('alter') ?? ''
@@ -338,15 +275,29 @@ function ContactFormInner(props: Props) {
 		e.preventDefault()
 		setError(null)
 		const fd = new FormData(e.currentTarget)
+
+		// Honeypot: if the hidden field has a value, a bot filled it — silently abort
+		if (String(fd.get('_hp') || '')) return
+
+		const errors: Record<string, string> = {}
+		if (!String(fd.get('name') || '').trim())
+			errors.name = 'Bitte geben Sie Ihren Namen ein.'
+		if (!String(fd.get('contact') || '').trim())
+			errors.contact = 'Bitte geben Sie Ihre Telefonnummer oder E-Mail-Adresse ein.'
+		if (!fd.get('privacy'))
+			errors.privacy = 'Bitte stimmen Sie der Datenschutzerklärung zu.'
+		if (Object.keys(errors).length) {
+			setFieldErrors(errors)
+			return
+		}
+		setFieldErrors({})
+
 		const payload = {
 			name: String(fd.get('name') || ''),
-			childName: String(fd.get('child') || ''),
-			email: String(fd.get('email') || ''),
-			phone: String(fd.get('phone') || ''),
+			contact: String(fd.get('contact') || ''),
 			interest: String(fd.get('interest') || ''),
 			childAge: String(fd.get('age') || ''),
-			preferredTime: String(fd.get('when') || ''),
-			message: String(fd.get('msg') || ''),
+			_hp: String(fd.get('_hp') || ''),
 			sourcePath: typeof window !== 'undefined' ? window.location.pathname : undefined,
 		}
 
@@ -359,9 +310,8 @@ function ContactFormInner(props: Props) {
 
 	const interests = (props.interests ?? []).filter((o) => o.value && o.label)
 	const ages = (props.ageOptions ?? []).filter((o) => o.value && o.label)
-	const whens = (props.whenOptions ?? []).filter((o) => o.value && o.label)
-	const preselected = kurs ? matchOption(interests, kurs) : null
-	const preselectedAge = alter ? matchOption(ages, alter) : null
+	const preselected = kurs ? matchOption(interests, kurs) ?? null : null
+	const preselectedAge = alter ? matchOption(ages, alter) ?? null : null
 
 	const formPanel = (
 		<FormPanel
@@ -369,12 +319,12 @@ function ContactFormInner(props: Props) {
 			pending={pending}
 			done={done}
 			error={error}
+			fieldErrors={fieldErrors}
 			onSubmit={onSubmit}
 			interests={interests}
 			ages={ages}
-			whens={whens}
-			preselected={preselected ?? null}
-			preselectedAge={preselectedAge ?? null}
+			preselected={preselected}
+			preselectedAge={preselectedAge}
 		/>
 	)
 
@@ -388,16 +338,20 @@ function ContactFormInner(props: Props) {
 		>
 			<div className="wrap">
 				{cards?.length ? (
-					<div className="grid gap-8 lg:grid-cols-[1fr_1.45fr] lg:items-start">
-						<div className="flex flex-col gap-3">
-							{cards.map((c, i) => (
-								<InfoCardItem key={c._key ?? i} card={c} />
-							))}
+					<div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:items-start">
+						<div className="lg:pt-2">
+							<div className="divide-y divide-line">
+								{cards.map((c, i) => (
+									<InfoCardItem key={c._key ?? i} card={c} />
+								))}
+							</div>
 						</div>
 						{formPanel}
 					</div>
 				) : (
-					formPanel
+					<div className="mx-auto max-w-lg">
+						{formPanel}
+					</div>
 				)}
 			</div>
 		</section>
@@ -419,6 +373,7 @@ function Field({
 	placeholder,
 	required,
 	requiredHint,
+	error,
 }: {
 	label: string
 	name: string
@@ -426,10 +381,11 @@ function Field({
 	placeholder?: string
 	required?: boolean
 	requiredHint?: string | null
+	error?: string
 }) {
 	return (
 		<div className="flex flex-col gap-2">
-			<label className="text-ink text-[14px] font-semibold">
+			<label className="text-ink text-[13.5px] font-semibold">
 				{label}
 				{required && (
 					<span aria-label={requiredHint || 'erforderlich'} className="text-coral ml-0.5">
@@ -441,12 +397,16 @@ function Field({
 				name={name}
 				type={type}
 				placeholder={placeholder}
-				required={required}
 				aria-required={required || undefined}
+				aria-invalid={error ? true : undefined}
 				className={cn(
-					'border-line bg-paper text-ink placeholder:text-mute focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] rounded-[14px] border px-4 py-3.5 text-[14.5px] outline-none transition-[border-color,box-shadow]',
+					'border-line bg-paper-2 text-ink placeholder:text-mute focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] rounded-[14px] border px-4 py-3.5 text-[14.5px] outline-none transition-[border-color,box-shadow]',
+					error && 'border-coral-deep',
 				)}
 			/>
+			{error && (
+				<p className="text-coral-deep text-[12.5px] font-medium">{error}</p>
+			)}
 		</div>
 	)
 }
@@ -464,11 +424,11 @@ function Select({
 }) {
 	return (
 		<div className="flex flex-col gap-2">
-			<label className="text-ink text-[14px] font-semibold">{label}</label>
+			<label className="text-ink text-[13.5px] font-semibold">{label}</label>
 			<select
 				name={name}
 				defaultValue={defaultValue ?? ''}
-				className="border-line bg-paper text-ink focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] appearance-none rounded-[14px] border bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2714%27%20height=%2714%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%232d1a22%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27><polyline%20points=%276%209%2012%2015%2018%209%27/></svg>')] bg-[length:14px] bg-[right_16px_center] bg-no-repeat px-4 py-3.5 pr-11 text-[14.5px] outline-none transition-[border-color,box-shadow]"
+				className="border-line bg-paper-2 text-ink focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] appearance-none rounded-[14px] border bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%2714%27%20height=%2714%27%20viewBox=%270%200%2024%2024%27%20fill=%27none%27%20stroke=%27%232d1a22%27%20stroke-width=%272.5%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27><polyline%20points=%276%209%2012%2015%2018%209%27/></svg>')] bg-[length:14px] bg-[right_16px_center] bg-no-repeat px-4 py-3.5 pr-11 text-[14.5px] outline-none transition-[border-color,box-shadow]"
 			>
 				<option value="">Bitte wählen</option>
 				{options.map((o) => (

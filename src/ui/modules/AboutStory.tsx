@@ -10,9 +10,23 @@ type Props = SanityModule & {
 	title?: any
 	body?: any
 	image?: (SanityImage & { caption?: string | null; captionSub?: string | null }) | null
+	video?: string | null
 	signatureName?: string | null
 	personName?: string | null
 	personRole?: string | null
+}
+
+function youtubeEmbedUrl(url: string): string {
+	try {
+		const u = new URL(url)
+		const id =
+			u.hostname === 'youtu.be'
+				? u.pathname.slice(1)
+				: u.searchParams.get('v') ?? ''
+		return `https://www.youtube-nocookie.com/embed/${id}`
+	} catch {
+		return ''
+	}
 }
 
 export default function AboutStory({
@@ -20,61 +34,76 @@ export default function AboutStory({
 	title,
 	body,
 	image,
+	video,
 	signatureName,
 	personName,
 	personRole,
 	...props
 }: Props) {
 	const hasContent = title || body || signatureName
-	if (!hasContent && !image?.asset) return null
+	if (!hasContent && !image?.asset && !video) return null
 
 	return (
 		<section
 			{...moduleProps(props)}
 			className="py-[clamp(60px,8vw,120px)]"
 		>
-			<div className="wrap grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-				{/* Left: stacked photo card */}
-				<div className="relative mx-auto w-full max-w-[440px] lg:mx-0">
-					{/* Back cards (decorative depth) */}
-					<div
-						className="absolute inset-0 -rotate-3 scale-95 rounded-[22px] bg-mute-2/35"
-						aria-hidden
-					/>
-					<div
-						className="absolute inset-0 rotate-[1.5deg] scale-[0.97] rounded-[22px] bg-mute/20"
-						aria-hidden
-					/>
-
-					{/* Front card */}
-					<div className="relative overflow-hidden rounded-[22px] shadow-lg">
-						{image?.asset ? (
-							<Img
-								image={image}
-								width={880}
-								sizes="(max-width: 1024px) 90vw, 480px"
-								className="block aspect-[3/4] w-full object-cover"
+			<div className={`wrap grid items-center gap-12 lg:gap-20 ${video ? 'lg:grid-cols-[1.4fr_1fr]' : 'lg:grid-cols-[1fr_1.15fr]'}`}>
+				{/* Left: media card */}
+				{video ? (
+					<div className="mx-auto w-full max-w-[600px] lg:mx-0">
+						<div className="overflow-hidden rounded-[22px] shadow-lg">
+							<iframe
+								src={youtubeEmbedUrl(stegaClean(video) ?? '')}
+								title="Video"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+								allowFullScreen
+								className="aspect-video w-full border-0"
 							/>
-						) : (
-							<div className="aspect-[3/4] w-full bg-line" />
-						)}
-
-						{(image?.caption || image?.captionSub) && (
-							<div className="absolute inset-x-0 bottom-0 bg-ink/80 px-6 py-5 backdrop-blur-sm">
-								{image?.caption && (
-									<p className="font-display m-0 text-[17px] font-bold leading-snug text-paper">
-										{stegaClean(image.caption)}
-									</p>
-								)}
-								{image?.captionSub && (
-									<p className="m-0 mt-1 text-[13px] leading-snug text-paper/65">
-										{stegaClean(image.captionSub)}
-									</p>
-								)}
-							</div>
-						)}
+						</div>
 					</div>
-				</div>
+				) : (
+					<div className="relative mx-auto w-full max-w-[440px] lg:mx-0">
+						{/* Back cards (decorative depth) */}
+						<div
+							className="absolute inset-0 -rotate-3 scale-95 rounded-[22px] bg-mute-2/35"
+							aria-hidden
+						/>
+						<div
+							className="absolute inset-0 rotate-[1.5deg] scale-[0.97] rounded-[22px] bg-mute/20"
+							aria-hidden
+						/>
+
+						{/* Front card */}
+						<div className="relative overflow-hidden rounded-[22px] shadow-lg">
+							{image?.asset ? (
+								<Img
+									image={image}
+									width={880}
+									sizes="(max-width: 1024px) 90vw, 480px"
+									className="block aspect-[3/4] w-full object-cover"
+								/>
+							) : (
+								<div className="aspect-[3/4] w-full bg-line" />
+							)}
+
+							{(image?.caption || image?.captionSub) && (
+								<div className="absolute inset-x-0 bottom-0 bg-ink/80 px-6 py-5 backdrop-blur-sm">
+									{image?.caption && (
+										<p className="font-display m-0 text-[17px] font-bold leading-snug text-paper">
+											{stegaClean(image.caption)}
+										</p>
+									)}
+									{image?.captionSub && (
+										<p className="m-0 mt-1 text-[13px] leading-snug text-paper/65">
+											{stegaClean(image.captionSub)}
+										</p>
+									)}
+								</div>
+							)}
+						</div>
+					</div>
+				)}
 
 				{/* Right: content */}
 				<div>

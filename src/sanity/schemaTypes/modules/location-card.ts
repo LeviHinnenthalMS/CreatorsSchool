@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { iconField } from '../fragments/icon-field'
 import { getBlockText } from '@/lib/utils'
 
 export default defineType({
@@ -28,7 +29,7 @@ export default defineType({
 					type: 'object',
 					name: 'direction',
 					fields: [
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField(iconField),
 						defineField({ name: 'title', title: 'Title', type: 'string' }),
 						defineField({ name: 'text', title: 'Text', type: 'string' }),
 					],

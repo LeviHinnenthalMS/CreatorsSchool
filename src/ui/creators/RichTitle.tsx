@@ -14,6 +14,13 @@ type Block = {
 	}>
 }
 
+const baseToneClass: Record<Tone, string> = {
+	coral: 'text-ink',
+	blush: 'text-ink',
+	paper: 'text-paper',
+	neutral: 'text-ink',
+}
+
 const accentToneClass: Record<Tone, string> = {
 	coral: 'text-coral font-medium italic',
 	blush: 'text-blush font-medium italic',
@@ -66,7 +73,7 @@ export default function RichTitle({
 	if (!hasText) return null
 
 	return (
-		<Tag className={cn('text-ink', className)}>
+		<Tag className={cn(baseToneClass[tone], className)}>
 			<PortableText value={title as never} components={buildComponents(tone)} />
 		</Tag>
 	)

@@ -48,8 +48,8 @@ export default defineType({
 	preview: {
 		select: { eyebrow: 'eyebrow' },
 		prepare: ({ eyebrow }) => ({
-			title: 'Page header',
-			subtitle: eyebrow || 'page-header',
+			title: eyebrow || 'Page header',
+			subtitle: 'Page header',
 		}),
 	},
 })

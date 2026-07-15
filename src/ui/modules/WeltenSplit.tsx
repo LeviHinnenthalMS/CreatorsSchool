@@ -6,6 +6,8 @@ import resolveUrl from '@/lib/resolveUrl'
 import Link from 'next/link'
 import { stegaClean } from 'next-sanity'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
+import { Img } from '@/ui/Img'
+import type { SanityImage } from '@/sanity/typeHelpers'
 
 type Card = {
 	_key?: string
@@ -13,6 +15,7 @@ type Card = {
 	eyebrow?: string | null
 	title?: string | null
 	subtitle?: string | null
+	image?: SanityImage | null
 	text?: string | null
 	link?: SanityLink | null
 	linkLabel?: string | null
@@ -29,7 +32,10 @@ type Props = SanityModule & {
 
 function hrefFor(link?: SanityLink | null) {
 	if (!link) return undefined
-	if (link.type === 'internal' && link.internal) return resolveUrl(link.internal)
+	if (link.type === 'internal') {
+		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.params) return stegaClean(link.params)
+	}
 	return link.external ?? undefined
 }
 
@@ -96,6 +102,16 @@ export default function WeltenSplit(props: Props) {
 										</p>
 									)}
 								</div>
+								{c.image?.asset && (
+									<div className="w-full overflow-hidden rounded-2xl" style={{ aspectRatio: '4/3' }}>
+										<Img
+											image={c.image}
+											alt={c.image.alt ?? ''}
+											width={800}
+											className="size-full object-cover"
+										/>
+									</div>
+								)}
 								{c.text && (
 									<p
 										className={cn(

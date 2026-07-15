@@ -35,51 +35,10 @@ export default defineType({
 			],
 		}),
 		defineField({
-			name: 'tags',
-			title: 'Floating tags (max 3)',
-			type: 'array',
-			validation: (Rule) => Rule.max(3),
-			of: [
-				defineArrayMember({
-					type: 'object',
-					name: 'photoTag',
-					fields: [
-						defineField({
-							name: 'position',
-							title: 'Position',
-							type: 'string',
-							options: {
-								list: [
-									{ title: 'Top right', value: 't1' },
-									{ title: 'Middle left', value: 't2' },
-									{ title: 'Bottom right', value: 't3' },
-								],
-								layout: 'radio',
-							},
-						}),
-						defineField({
-							name: 'style',
-							title: 'Style',
-							type: 'string',
-							options: {
-								list: [
-									{ title: 'Coral', value: 'coral' },
-									{ title: 'Neutral', value: 'neutral' },
-									{ title: 'Ink', value: 'ink' },
-								],
-								layout: 'radio',
-							},
-							initialValue: 'neutral',
-						}),
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
-						defineField({ name: 'label', title: 'Label', type: 'string' }),
-						defineField({ name: 'value', title: 'Value', type: 'string' }),
-					],
-					preview: {
-						select: { title: 'label', subtitle: 'value' },
-					},
-				}),
-			],
+			name: 'testimonial',
+			title: 'Testimonial overlay (on image)',
+			type: 'reference',
+			to: [{ type: 'testimonial' }],
 		}),
 		defineField({
 			name: 'ctas',
@@ -109,8 +68,8 @@ export default defineType({
 	preview: {
 		select: { eyebrow: 'eyebrow' },
 		prepare: ({ eyebrow }) => ({
-			title: 'Hero',
-			subtitle: eyebrow || 'hero.creators',
+			title: eyebrow || 'Hero',
+			subtitle: 'Hero (Creators)',
 		}),
 	},
 })

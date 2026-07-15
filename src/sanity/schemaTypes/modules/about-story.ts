@@ -51,6 +51,13 @@ export default defineType({
 			],
 			group: 'photo',
 		}),
+		defineField({
+			name: 'video',
+			title: 'YouTube video URL',
+			description: 'If set, replaces the photo. Use a standard youtube.com or youtu.be URL.',
+			type: 'url',
+			group: 'photo',
+		}),
 
 		// Signature block
 		defineField({
@@ -77,8 +84,8 @@ export default defineType({
 	preview: {
 		select: { eyebrow: 'eyebrow', personName: 'personName' },
 		prepare: ({ eyebrow, personName }) => ({
-			title: eyebrow || 'About story',
-			subtitle: personName ? `Signed by ${personName}` : 'About story',
+			title: eyebrow || personName || 'About story',
+			subtitle: 'About story',
 		}),
 	},
 })

@@ -23,7 +23,7 @@ type MetadataInput = {
 export default async function processMetadata(
 	page: MetadataInput,
 ): Promise<Metadata> {
-	const url = resolveUrl(page, { language: page.language ?? undefined })
+	const url = resolveUrl(page, { base: true, language: page.language ?? undefined })
 	const { title, description, ogimage, noIndex } = page.metadata ?? {}
 
 	const site = await getSite()

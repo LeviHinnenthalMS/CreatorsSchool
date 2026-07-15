@@ -1,20 +1,8 @@
 import moduleProps from '@/lib/moduleProps'
-import { cn } from '@/lib/utils'
 import { Img } from '@/ui/Img'
-import { stegaClean } from 'next-sanity'
-import { Icon } from '@/ui/creators/Icon'
 import CTAs from '@/ui/creators/CTAs'
 import RichTitle from '@/ui/creators/RichTitle'
 import type { SanityImage, SanityCTA, SanityModule } from '@/sanity/typeHelpers'
-
-type Tag = {
-	_key?: string
-	position?: 't1' | 't2' | 't3' | null
-	style?: 'coral' | 'neutral' | 'ink' | null
-	icon?: string | null
-	label?: string | null
-	value?: string | null
-}
 
 type TitleBlock = {
 	_type?: string
@@ -22,42 +10,48 @@ type TitleBlock = {
 	children?: Array<{ text?: string; marks?: string[] }>
 }
 
+type Testimonial = {
+	content?: unknown
+	author?: { name?: string | null; role?: string | null } | null
+}
+
 type Props = SanityModule & {
 	eyebrow?: string | null
 	title?: TitleBlock[] | null
 	sub?: string | null
 	image?: SanityImage | null
-	tags?: Tag[] | null
+	testimonial?: Testimonial | null
 	ctas?: Array<SanityCTA | null> | null
 	reviewTitle?: string | null
 	reviewSubtitle?: string | null
-	reviewAvatars?: string[] | null
 }
 
-const tagPosition: Record<NonNullable<Tag['position']>, string> = {
-	t1: 'top-[6%] right-[-4%] max-md:right-[4%]',
-	t2: 'bottom-[30%] left-[-6%] max-md:left-[4%]',
-	t3: 'bottom-[4%] right-[-2%] max-md:right-[4%]',
+function plainText(node: unknown): string {
+	if (!Array.isArray(node)) return ''
+	return node
+		.map((block) => {
+			if (typeof block === 'object' && block && Array.isArray((block as { children?: unknown[] }).children)) {
+				return ((block as { children: { text?: string }[] }).children || []).map((c) => c.text || '').join('')
+			}
+			return ''
+		})
+		.join('\n')
+		.trim()
 }
 
-const tagBg: Record<NonNullable<Tag['style']>, string> = {
-	coral: 'bg-coral text-paper',
-	neutral: 'bg-paper-3 text-ink',
-	ink: 'bg-ink text-paper',
-}
+const Stars = ({ className }: { className?: string }) => (
+	<span className={className} aria-label="5 Sterne">
+		{Array.from({ length: 5 }).map((_, i) => (
+			<svg key={i} width="18" height="18" viewBox="0 0 20 20" fill="currentColor" className="text-coral inline-block">
+				<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+			</svg>
+		))}
+	</span>
+)
 
 export default function HeroCreators(props: Props) {
-	const {
-		eyebrow,
-		title,
-		sub,
-		image,
-		tags,
-		ctas,
-		reviewTitle,
-		reviewSubtitle,
-		reviewAvatars,
-	} = props
+	const { eyebrow, title, sub, image, testimonial, ctas, reviewTitle, reviewSubtitle } = props
+	const quote = plainText(testimonial?.content)
 
 	return (
 		<section
@@ -101,39 +95,13 @@ export default function HeroCreators(props: Props) {
 
 						{(reviewTitle || reviewSubtitle) && (
 							<div className="mt-9 flex flex-wrap items-center gap-3.5">
-								{reviewAvatars && reviewAvatars.length > 0 && (
-									<div className="flex">
-										{reviewAvatars.map((initial, i) => {
-											const bg =
-												i === 0
-													? 'bg-coral-tint'
-													: i === 1
-														? 'bg-warm-white'
-														: 'bg-paper-3'
-											return (
-												<div
-													key={i}
-													className={cn(
-														'border-paper text-ink font-display shadow-sm -ml-2.5 grid size-10 place-items-center rounded-full border-[3px] text-[13px] font-semibold first:ml-0',
-														bg,
-													)}
-												>
-													{stegaClean(initial)}
-												</div>
-											)
-										})}
-									</div>
-								)}
-								<div className="text-charcoal">
+								<Stars />
+								<div>
 									{reviewTitle && (
-										<div className="text-ink text-[14.5px] font-semibold">
-											{reviewTitle}
-										</div>
+										<div className="text-ink text-[14.5px] font-semibold">{reviewTitle}</div>
 									)}
 									{reviewSubtitle && (
-										<div className="text-mute text-[12.5px]">
-											{reviewSubtitle}
-										</div>
+										<div className="text-mute text-[12.5px]">{reviewSubtitle}</div>
 									)}
 								</div>
 							</div>
@@ -153,41 +121,18 @@ export default function HeroCreators(props: Props) {
 								/>
 							</div>
 
-							{tags?.map((tag, i) => {
-								if (!tag.position) return null
-								const variant = (stegaClean(tag.style) ||
-									'neutral') as keyof typeof tagBg
-								return (
-									<div
-										key={tag._key ?? i}
-										className={cn(
-											'bg-paper border-line shadow-md absolute z-10 flex items-center gap-3 rounded-[18px] border px-4.5 py-3.5',
-											tagPosition[tag.position],
-										)}
-									>
-										<span
-											className={cn(
-												'grid size-9 place-items-center rounded-xl',
-												tagBg[variant],
-											)}
-										>
-											<Icon name={tag.icon} size={20} />
-										</span>
-										<div>
-											{tag.label && (
-												<div className="text-mute text-[12px] font-medium">
-													{tag.label}
-												</div>
-											)}
-											{tag.value && (
-												<div className="text-ink font-display text-[20px] font-semibold leading-none -tracking-[0.01em]">
-													{tag.value}
-												</div>
-											)}
-										</div>
-									</div>
-								)
-							})}
+							{testimonial && quote && (
+								<div className="bg-paper border-line shadow-md absolute bottom-[4%] right-[-2%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4 max-md:right-[4%]">
+									<Stars className="mb-2.5 flex gap-0.5" />
+									<p className="text-ink text-[13px] leading-snug">„{quote}"</p>
+									{testimonial.author?.name && (
+										<p className="text-mute mt-2 text-[12px]">
+											{testimonial.author.name}
+											{testimonial.author.role && ` · ${testimonial.author.role}`}
+										</p>
+									)}
+								</div>
+							)}
 						</div>
 					)}
 				</div>

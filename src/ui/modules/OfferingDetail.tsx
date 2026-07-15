@@ -6,6 +6,7 @@ import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
 import { Icon } from '@/ui/creators/Icon'
 import { getOfferingById } from '@/sanity/lib/creators'
+import { getSite } from '@/sanity/lib/queries'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type Props = SanityModule & {
@@ -47,8 +48,13 @@ export default async function OfferingDetail(props: Props) {
 		(props.offering as { _id?: string } | null)?._id
 	if (!id) return null
 
-	const offering = await getOfferingById(id)
+	const [offering, site] = await Promise.all([
+		getOfferingById(id),
+		getSite() as Promise<{ ctaProbestunde?: SanityCTA | null; ctaKontakt?: SanityCTA | null }>,
+	])
 	if (!offering) return null
+
+	const bookingCta = offering.bookingType === 'kontakt' ? site.ctaKontakt : site.ctaProbestunde
 
 	const parentHref = stegaClean(props.breadcrumbParentHref || '/angebote')
 
@@ -57,7 +63,7 @@ export default async function OfferingDetail(props: Props) {
 			{/* page header */}
 			<section
 				{...moduleProps(props)}
-				className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[clamp(30px,4vw,55px)]"
+				className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[calc(var(--header-height)+14px+clamp(30px,4vw,55px))]"
 			>
 				<span
 					aria-hidden
@@ -114,11 +120,13 @@ export default async function OfferingDetail(props: Props) {
 					)}
 
 					<div className="mt-9 flex flex-wrap items-center gap-5">
-						{props.ctas && <CTAs ctas={withKurs(
-						props.ctas,
-						offering.title ?? '',
-						offering.facts?.find((f) => /alter|age/i.test(f.key ?? ''))?.value,
-					)} />}
+						{(props.ctas?.length || bookingCta) && (
+							<CTAs ctas={withKurs(
+								props.ctas ?? (bookingCta ? [bookingCta] : null),
+								offering.title ?? '',
+								offering.facts?.find((f) => /alter|age/i.test(f.key ?? ''))?.value,
+							)} />
+						)}
 						{props.backLinkLabel && props.backLinkHref && (
 							<Link
 								href={stegaClean(props.backLinkHref)}
@@ -266,9 +274,9 @@ export default async function OfferingDetail(props: Props) {
 										))}
 									</div>
 								)}
-								{props.panelCtas && props.panelCtas.length > 0 && (
+								{(props.panelCtas?.length || bookingCta) && (
 									<CTAs
-										ctas={withKurs(props.panelCtas, offering.title ?? '')}
+										ctas={withKurs(props.panelCtas ?? (bookingCta ? [bookingCta] : null), offering.title ?? '')}
 										variants={['coral', 'paper-outline']}
 										className="mt-7 flex flex-wrap gap-2.5"
 									/>
@@ -301,6 +309,7 @@ export default async function OfferingDetail(props: Props) {
 								<details
 									key={qa._key ?? i}
 									open={i === 0}
+									name="offering-faq"
 									className="bg-paper border-line group/faq rounded-[20px] border px-6 py-5.5 transition-[border-color,background] open:border-coral-soft open:bg-coral-tint"
 								>
 									<summary className="text-ink font-display flex cursor-pointer items-center justify-between gap-4 text-[18px] font-semibold -tracking-[0.015em] [&::-webkit-details-marker]:hidden">

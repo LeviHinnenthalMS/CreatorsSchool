@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
+import { iconField } from '../fragments/icon-field'
 
 export default defineType({
 	name: 'feature-grid',
@@ -40,7 +41,7 @@ export default defineType({
 							},
 							initialValue: 'soft',
 						}),
-						defineField({ name: 'icon', title: 'Icon key', type: 'string' }),
+						defineField(iconField),
 						defineField({ name: 'title', title: 'Title', type: 'string' }),
 						defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
 					],

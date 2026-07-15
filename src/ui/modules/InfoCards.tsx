@@ -33,7 +33,10 @@ type Props = SanityModule & {
 
 function href(link?: SanityLink | null) {
 	if (!link) return undefined
-	if (link.type === 'internal' && link.internal) return resolveUrl(link.internal)
+	if (link.type === 'internal') {
+		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.params) return stegaClean(link.params)
+	}
 	return link.external ?? undefined
 }
 

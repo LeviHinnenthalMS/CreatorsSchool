@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { iconField } from '../fragments/icon-field'
 import { VscBriefcase } from 'react-icons/vsc'
 
 export default defineType({
@@ -13,13 +14,7 @@ export default defineType({
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 		}),
-		defineField({
-			name: 'icon',
-			title: 'Icon',
-			description:
-				'Icon key matching the job card (e.g. "dance", "music", "star").',
-			type: 'string',
-		}),
+		defineField(iconField),
 		defineField({
 			name: 'type',
 			title: 'Employment type',
