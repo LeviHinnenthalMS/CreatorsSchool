@@ -28,7 +28,7 @@ export default function AboutStrip(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink text-paper relative mx-0 md:mx-[clamp(20px,3.5vw,48px)] overflow-hidden rounded-band py-[clamp(30px,3vw,60px)]"
+			className="bg-ink text-paper relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
 		>
 			<span
 				aria-hidden

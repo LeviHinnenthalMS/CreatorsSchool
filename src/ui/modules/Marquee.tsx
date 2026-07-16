@@ -39,7 +39,7 @@ export default function Marquee(props: Props) {
 		<div
 			{...moduleProps(props)}
 			aria-hidden
-			className="bg-ink text-paper mx-[clamp(8px,1.5vw,24px)] my-[clamp(20px,4vw,40px)] overflow-hidden rounded-full py-4"
+			className="bg-ink text-paper mx-[clamp(20px,3.5vw,48px)] mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] overflow-hidden rounded-full py-4"
 		>
 			<div
 				className="flex w-max gap-14 motion-reduce:animate-none"

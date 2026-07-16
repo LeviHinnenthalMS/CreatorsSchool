@@ -42,13 +42,17 @@ export default function FeatureGrid(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="py-[clamp(40px,5vw,60px)]"
+			className={cn(
+				isDecorated
+					? 'mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(20px,3.5vw,48px)]'
+					: 'py-[clamp(40px,5vw,60px)]',
+			)}
 		>
 			<div
 				className={cn(
 					'wrap',
-					isDark && 'mx-5 md:mx-10 rounded-[36px] bg-ink p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
-					isRed && 'mx-5 md:mx-10 rounded-[36px] p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
+					isDark && 'rounded-[36px] bg-ink p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
+					isRed && 'rounded-[36px] p-6 md:px-[clamp(24px,4vw,64px)] md:py-[clamp(48px,6vw,80px)]',
 				)}
 				style={isRed ? {
 					background: 'radial-gradient(ellipse 55% 75% at 85% 15%, rgba(255,130,110,0.35) 0%, transparent 65%), var(--color-coral)',

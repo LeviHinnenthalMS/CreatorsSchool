@@ -38,7 +38,7 @@ export default function OpeningHours(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(40px,5vw,70px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
+			className="bg-ink relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
 		>
 			{/* Subtle red glow top-right */}
 			<span

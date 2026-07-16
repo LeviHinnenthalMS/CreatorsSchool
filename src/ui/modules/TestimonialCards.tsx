@@ -50,7 +50,7 @@ export default function TestimonialCards(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="py-[clamp(80px,9vw,130px)]"
+			className="py-[clamp(44px,9vw,130px)]"
 		>
 			<div className="wrap">
 				<SectionHead

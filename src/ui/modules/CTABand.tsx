@@ -38,7 +38,7 @@ export default async function CTABand(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="px-[clamp(20px,3.5vw,48px)] py-[clamp(40px,5vw,60px)]"
+			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(20px,3.5vw,48px)]"
 		>
 			<div className="bg-coral text-paper relative grid items-center gap-10 max-sm:gap-6 overflow-hidden rounded-band p-6 md:p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
 				<span

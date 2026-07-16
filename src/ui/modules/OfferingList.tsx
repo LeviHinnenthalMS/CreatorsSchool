@@ -63,7 +63,7 @@ export default async function OfferingList(props: Props) {
 		<section
 			{...moduleProps(props)}
 			className={cn(
-				'py-[clamp(70px,8vw,120px)]',
+				'py-[clamp(44px,8vw,120px)]',
 				tinted && 'bg-warm-white',
 			)}
 		>
