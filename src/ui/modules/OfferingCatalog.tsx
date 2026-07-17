@@ -132,6 +132,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 			<div className="flex flex-col gap-5">
 				{visible.map((o, i) => {
 					const dark = i % 2 === 0
+					const isContactOnly = o.bookingType === 'kontakt'
 					const [titleMain, titleItalic] = splitTitle(o.title ?? '')
 					const letter = o.decorativeLetter ?? titleItalic?.[0]?.toLowerCase() ?? '·'
 					const tag = o.catalogTag ?? o.facts?.[0]?.value
@@ -149,7 +150,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							)}
 						>
 							{/* Left image box */}
-							<div className="p-3 lg:p-4 shrink-0 lg:w-[222px]">
+							<div className="hidden shrink-0 p-3 lg:block lg:w-[222px] lg:p-4">
 								<div className="relative min-h-[120px] w-full overflow-hidden rounded-[18px] lg:h-full lg:min-h-[160px]">
 									{o.heroImage?.asset ? (
 										<Img
@@ -285,7 +286,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 												: 'bg-ink text-paper hover:bg-ink-2',
 										)}
 									>
-										Probestunde
+										{isContactOnly ? 'Kontakt aufnehmen' : 'Probestunde'}
 									</Link>
 									<Link
 										href={offeringHref(o)}

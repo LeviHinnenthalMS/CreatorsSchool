@@ -10,13 +10,13 @@ const OFFERING_FIELDS = `
 	facts[]{ _key, key, value },
 	categories,
 	catalogTag, decorativeLetter,
+	bookingType,
 	priceLabel, priceCurrency, priceValue, priceUnit,
 	detailRows[]{ _key, key, value }
 `
 
 const OFFERING_DETAIL_FIELDS = `
 	${OFFERING_FIELDS},
-	bookingType,
 	forWhoTitle, forWhoLead,
 	forWho[]{ _key, title, text },
 	learnTitle,
@@ -68,6 +68,7 @@ export type OfferingListItem = {
 	categories?: string[] | null
 	catalogTag?: string | null
 	decorativeLetter?: string | null
+	bookingType?: 'probestunde' | 'kontakt' | null
 	priceLabel?: string | null
 	priceCurrency?: string | null
 	priceValue?: string | null
@@ -82,7 +83,6 @@ type TitleBlock = {
 }
 
 export type OfferingDetail = OfferingListItem & {
-	bookingType?: 'probestunde' | 'kontakt' | null
 	forWhoTitle?: TitleBlock[] | null
 	forWhoLead?: string | null
 	forWho?: Array<{ _key?: string; title?: string | null; text?: string | null }> | null

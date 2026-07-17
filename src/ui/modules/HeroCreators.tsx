@@ -58,20 +58,6 @@ export default function HeroCreators(props: Props) {
 			{...moduleProps(props)}
 			className="relative overflow-hidden pb-[clamp(40px,7vw,100px)] pt-[calc(var(--header-height)+clamp(20px,4vw,70px))]"
 		>
-			{/* Mobile: image as full-section background */}
-			{image && (
-				<div className="pointer-events-none absolute inset-0 lg:hidden">
-					<Img
-						image={image}
-						className="size-full object-cover"
-						alt=""
-						sizes="100vw"
-						loading="eager"
-					/>
-					<div className="absolute inset-0 bg-paper/85" />
-				</div>
-			)}
-
 			<span
 				aria-hidden
 				className="bg-blush pointer-events-none absolute -left-[8%] top-[8%] size-[320px] rounded-full opacity-70 blur-[20px]"
@@ -133,6 +119,7 @@ export default function HeroCreators(props: Props) {
 									alt={image.alt ?? ''}
 									sizes="50vw"
 									loading="eager"
+									fetchPriority="high"
 								/>
 							</div>
 
@@ -151,6 +138,20 @@ export default function HeroCreators(props: Props) {
 						</div>
 					)}
 				</div>
+
+				{/* Mobile image strip */}
+				{image && (
+					<div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-[22px] lg:hidden">
+						<Img
+							image={image}
+							className="size-full object-cover"
+							alt={image.alt ?? ''}
+							sizes="100vw"
+							loading="eager"
+							fetchPriority="high"
+						/>
+					</div>
+				)}
 			</div>
 		</section>
 	)

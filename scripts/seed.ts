@@ -423,6 +423,7 @@ function buildOfferings(phId: string) {
 		{
 			_id: O.hochzeit, _type: 'offering', language: 'de', order: 6,
 			title: 'Hochzeitsgesang', bereich: 'musik',
+			bookingType: 'kontakt',
 			slug: { _type: 'slug', current: 'hochzeitsgesang' },
 			eyebrow: 'Bereich Musik · Gesang',
 			lede: 'Ein Lied für den schönsten Tag. Persönliche Beratung bei der Liedauswahl, gemeinsame Probe und Begleitung — auch außerhalb von Melle.',
@@ -487,6 +488,7 @@ function buildOfferings(phId: string) {
 		{
 			_id: O.kita, _type: 'offering', language: 'de', order: 8,
 			title: 'Kindergarten-Projekte', bereich: 'musik',
+			bookingType: 'kontakt',
 			slug: { _type: 'slug', current: 'kindergarten-projekte' },
 			eyebrow: 'Bereich Musik · Kooperation',
 			lede: 'Musikalische Angebote direkt in Ihrer Kindertagesstätte. Wir bringen Klang, Bewegung und Lieder ins Haus — wöchentlich oder als Projektwoche.',
