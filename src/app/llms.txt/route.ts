@@ -1,15 +1,15 @@
 import { BASE_URL } from '@/lib/env'
-import { DEFAULT_LANG, languages } from '@/lib/i18n'
+import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
 import { getSite } from '@/sanity/lib/queries'
 
 export async function GET() {
 	const site = await getSite()
 	const name = (site as { title?: string | null } | null)?.title ?? 'Site'
 
-	const langLinks = languages
-		.map((l) => {
-			const prefix = l === DEFAULT_LANG ? '' : `/${l}`
-			return `- [${l}] ${BASE_URL}${prefix}/`
+	const langLinks = supportedLanguages
+		.map(({ id, title }) => {
+			const prefix = id === DEFAULT_LANG ? '' : `/${id}`
+			return `- [${title}](${BASE_URL}${prefix}/)`
 		})
 		.join('\n')
 
@@ -21,7 +21,8 @@ export async function GET() {
 ${langLinks}
 
 ## Key resources
-- Sitemap: ${BASE_URL}/sitemap.xml
+- [Sitemap](${BASE_URL}/sitemap.xml)
+- [RSS / Blog](${BASE_URL}/blog)
 `
 
 	return new Response(body, {

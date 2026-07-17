@@ -59,7 +59,7 @@ export function Img({
 			blurDataURL={image.lqip ?? undefined}
 			{...props}
 			alt={resolvedAlt}
-			loading={loading}
+			loading={loading === 'eager' ? undefined : loading}
 			priority={loading === 'eager'}
 		/>
 	)
