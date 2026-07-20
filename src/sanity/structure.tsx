@@ -13,6 +13,7 @@ import {
 	VscCalendar,
 	VscBriefcase,
 	VscDeviceCamera,
+	VscEdit,
 } from 'react-icons/vsc'
 import { GoPerson, GoNote } from 'react-icons/go'
 import { GrBlockQuote } from 'react-icons/gr'
@@ -35,6 +36,8 @@ export const structure = structureTool({
 				}).icon(VscFiles),
 
 				S.documentTypeListItem('global-module').title('Global modules'),
+				S.divider(),
+				languageList(S, 'blogPost', 'Blog posts').icon(VscEdit),
 				S.divider(),
 
 				// ── Creators School: domain content ───────────────────────

@@ -14,6 +14,10 @@ export const presentation = presentationTool({
 	resolve: {
 		mainDocuments: [
 			{
+				route: '/blog/:slug',
+				filter: groq`_type == 'blogPost' && slug.current == $slug`,
+			},
+			{
 				route: '/',
 				filter: groq`_type == 'page' && metadata.slug.current == 'index'`,
 			},
@@ -23,6 +27,14 @@ export const presentation = presentationTool({
 			},
 		],
 		locations: {
+			blogPost: defineLocations({
+				select: { title: 'title', slug: 'slug.current' },
+				resolve: (doc) => ({
+					locations: doc?.slug
+						? [{ title: doc.title || 'Blog post', href: `/blog/${doc.slug}` }]
+						: [],
+				}),
+			}),
 			site: defineLocations({
 				message: 'This document is used on all pages',
 				locations: [

@@ -55,6 +55,7 @@ export default defineConfig({
 				'scheduleSlot',
 				'galleryImage',
 				'job',
+				'blogPost',
 			],
 		}),
 	],
@@ -78,6 +79,10 @@ export default defineConfig({
 		productionUrl: async (prev, { document }) => {
 			if (document?._type === 'page') {
 				return resolveUrl(document as PageOrPost, { base: true })
+			}
+			if (document?._type === 'blogPost') {
+				const slug = (document as { slug?: { current?: string } }).slug?.current
+				if (slug) return `${process.env.NEXT_PUBLIC_BASE_URL || ''}/blog/${slug}`
 			}
 			if (document?._type === 'offering') {
 				const lang = (document as { language?: string }).language

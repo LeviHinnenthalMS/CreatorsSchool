@@ -2,6 +2,7 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import { SITEMAP_QUERY } from '@/sanity/lib/queries'
 import type { MetadataRoute } from 'next'
+import { BASE_URL } from '@/lib/env'
 
 type RawEntry = MetadataRoute.Sitemap[number] & {
 	language?: string | null
@@ -17,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		},
 	})
 
-	return Object.values(data)
+	const entries = Object.values(data)
 		.flat()
 		.map(({ language, alternates, ...entry }) => {
 			const langs = [
@@ -38,4 +39,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				},
 			}
 		})
+
+	return [
+		...entries,
+		{
+			url: `${BASE_URL}/blog`,
+			changeFrequency: 'weekly',
+			priority: 0.7,
+		},
+	]
 }

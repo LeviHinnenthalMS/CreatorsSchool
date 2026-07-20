@@ -406,17 +406,32 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 			)
 		}
 	},
+	'blogPosts': *[
+		_type == 'blogPost' && defined(slug.current)
+	]|order(publishedAt desc){
+		language,
+		'url': (
+			$baseUrl
+			+ 'blog/'
+			+ slug.current
+		),
+		'lastModified': _updatedAt,
+		'priority': 0.6
+	},
 }`)
 
 export const SEARCH_QUERY = defineQuery(groq`*[
 	select(
 		$scope == 'pages' => _type == 'page',
+		$scope == 'blog posts' => _type == 'blogPost',
 		$scope == 'path' => _type == 'page'
 			&& metadata.slug.current match $path
 			&& !(metadata.slug.current in ['404']),
-		_type == 'page' && !(metadata.slug.current in ['404'])
+		_type in ['page', 'blogPost'] && !(metadata.slug.current in ['404'])
 	) &&
 	[
+		body[].children[].text,
+		excerpt,
 		modules[].content[].children[].text,
 		modules[].intro[].children[].text,
 		title,

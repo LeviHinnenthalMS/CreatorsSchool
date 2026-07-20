@@ -22,7 +22,7 @@ ${langLinks}
 
 ## Key resources
 - [Sitemap](${BASE_URL}/sitemap.xml)
-- [RSS / Blog](${BASE_URL}/blog)
+- [Blog](${BASE_URL}/blog)
 `
 
 	return new Response(body, {

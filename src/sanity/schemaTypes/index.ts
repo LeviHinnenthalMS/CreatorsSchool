@@ -16,6 +16,7 @@ import scheduleSlot from './documents/scheduleSlot'
 import galleryImage from './documents/galleryImage'
 import job from './documents/job'
 import contactSubmission from './documents/contactSubmission'
+import blogPost from './documents/blog-post'
 
 // miscellaneous
 import announcement from './misc/announcement'
@@ -36,6 +37,7 @@ import linkGroup from './objects/link.group'
 import localizedString from './objects/localized-string'
 import metadata from './objects/metadata'
 import moduleOptions from './objects/module-options'
+import blogVideo from './objects/blog-video'
 
 // modules
 import accordionList from './modules/accordion-list'
@@ -95,6 +97,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	galleryImage,
 	job,
 	contactSubmission,
+	blogPost,
 
 	// storage items
 	announcement,
@@ -116,6 +119,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	linkGroup,
 	metadata,
 	moduleOptions,
+	blogVideo,
 
 	// modules
 	accordionList,

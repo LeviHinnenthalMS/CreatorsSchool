@@ -45,11 +45,13 @@ Before the site renders, publish at minimum:
 
 Optional but commonly used:
 
-| Document        | Slug / path    | Purpose                                                   |
-| --------------- | -------------- | --------------------------------------------------------- |
-| `page`          | `404`          | "Page not found" content                                  |
-| `page`          | `blog`         | Blog listing (add the **Blog frontpage** module)          |
-| `global-module` | `blog/` (path) | Blog post template (add the **Blog post content** module) |
+| Document | Slug | Purpose                          |
+| -------- | ---- | -------------------------------- |
+| `page`   | `404` | "Page not found" content        |
+
+The blog overview is available automatically at `/blog`. Create and publish
+entries under **Blog posts** in Sanity Studio; no overview page needs to be
+maintained manually.
 
 ## Scripts
 
