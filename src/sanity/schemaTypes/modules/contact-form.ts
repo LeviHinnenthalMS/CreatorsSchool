@@ -32,6 +32,7 @@ export default defineType({
 			fields: [
 				defineField({ name: 'name', title: 'Your name', type: 'string' }),
 				defineField({ name: 'contact', title: 'Phone or E-Mail (combined field)', type: 'string' }),
+				defineField({ name: 'message', title: 'Message', type: 'string' }),
 				defineField({ name: 'interest', title: 'Which offering?', type: 'string' }),
 				defineField({ name: 'age', title: "Child's age", type: 'string' }),
 				defineField({ name: 'submit', title: 'Submit button', type: 'string' }),

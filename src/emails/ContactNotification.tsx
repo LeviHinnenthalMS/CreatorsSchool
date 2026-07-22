@@ -14,12 +14,13 @@ import {
 type Props = {
 	name: string
 	contact: string
+	message?: string
 	interest?: string
 	childAge?: string
 	sourcePath?: string
 }
 
-export default function ContactNotification({ name, contact, interest, childAge, sourcePath }: Props) {
+export default function ContactNotification({ name, contact, message, interest, childAge, sourcePath }: Props) {
 	return (
 		<Html>
 			<Head />
@@ -41,6 +42,15 @@ export default function ContactNotification({ name, contact, interest, childAge,
 							<Text style={label}>Telefon / E-Mail</Text>
 							<Text style={value}>{contact}</Text>
 						</Row>
+						{message && (
+							<>
+								<Hr style={divider} />
+								<Row>
+									<Text style={label}>Nachricht</Text>
+									<Text style={{ ...value, whiteSpace: 'pre-wrap' }}>{message}</Text>
+								</Row>
+							</>
+						)}
 						{interest && (
 							<>
 								<Hr style={divider} />

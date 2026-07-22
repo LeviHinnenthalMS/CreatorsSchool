@@ -26,6 +26,7 @@ const writeClient = writeToken
 export type ContactPayload = {
 	name?: string
 	contact?: string   // phone or email — new combined field
+	message?: string
 	interest?: string
 	childAge?: string
 	sourcePath?: string
@@ -43,6 +44,7 @@ export async function submitContact(payload: ContactPayload) {
 
 	const contact = sanitize(payload.contact)
 	const name = sanitize(payload.name)
+	const message = sanitize(payload.message, 2000)
 	if (!contact || !name) {
 		return { ok: false as const, error: 'missing-required' }
 	}
@@ -60,6 +62,7 @@ export async function submitContact(payload: ContactPayload) {
 			name,
 			email: isEmail ? contact : '',
 			phone: isEmail ? '' : contact,
+			message,
 			interest: sanitize(payload.interest),
 			childAge: sanitize(payload.childAge),
 			submittedAt: new Date().toISOString(),
@@ -73,6 +76,7 @@ export async function submitContact(payload: ContactPayload) {
 				react: createElement(ContactNotification, {
 					name,
 					contact,
+					message: message || undefined,
 					interest: sanitize(payload.interest) || undefined,
 					childAge: sanitize(payload.childAge) || undefined,
 					sourcePath: sanitize(payload.sourcePath, 200) || undefined,

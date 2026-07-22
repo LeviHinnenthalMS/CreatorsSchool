@@ -27,6 +27,7 @@ type InfoCard = {
 type Labels = {
 	name?: string | null
 	contact?: string | null
+	message?: string | null
 	interest?: string | null
 	age?: string | null
 	submit?: string | null
@@ -219,6 +220,12 @@ function FormPanel({
 					error={fieldErrors.contact}
 				/>
 
+				<Textarea
+					label={clean(labels.message) || 'Ihre Nachricht'}
+					name="message"
+					placeholder="Wie können wir Ihnen helfen?"
+				/>
+
 				<div>
 					<label className="text-ink-2 flex cursor-pointer items-start gap-3 text-[13px] leading-snug">
 						<input
@@ -295,6 +302,7 @@ function ContactFormInner(props: Props) {
 		const payload = {
 			name: String(fd.get('name') || ''),
 			contact: String(fd.get('contact') || ''),
+			message: String(fd.get('message') || ''),
 			interest: String(fd.get('interest') || ''),
 			childAge: String(fd.get('age') || ''),
 			_hp: String(fd.get('_hp') || ''),
@@ -407,6 +415,28 @@ function Field({
 			{error && (
 				<p className="text-coral-deep text-[12.5px] font-medium">{error}</p>
 			)}
+		</div>
+	)
+}
+
+function Textarea({
+	label,
+	name,
+	placeholder,
+}: {
+	label: string
+	name: string
+	placeholder?: string
+}) {
+	return (
+		<div className="flex flex-col gap-2">
+			<label className="text-ink text-[13.5px] font-semibold">{label}</label>
+			<textarea
+				name={name}
+				placeholder={placeholder}
+				rows={5}
+				className="border-line bg-paper-2 text-ink placeholder:text-mute focus:border-coral focus:shadow-[0_0_0_4px_var(--color-coral-tint)] min-h-32 resize-y rounded-[14px] border px-4 py-3.5 text-[14.5px] outline-none transition-[border-color,box-shadow]"
+			/>
 		</div>
 	)
 }

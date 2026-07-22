@@ -126,7 +126,7 @@ export default function HeroCreators(props: Props) {
 							{testimonial && quote && (
 								<div className="bg-paper border-line shadow-md absolute bottom-[4%] right-[-2%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4">
 									<Stars className="mb-2.5 flex gap-0.5" />
-									<p className="text-ink text-[13px] leading-snug">„{quote}"</p>
+									<p className="text-ink text-[13px] leading-snug">„{quote}“</p>
 									{testimonial.author?.name && (
 										<p className="text-mute mt-2 text-[12px]">
 											{testimonial.author.name}

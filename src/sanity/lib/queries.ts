@@ -209,6 +209,9 @@ export const MODULES_QUERY = `
 		mapImage{ ${IMAGE_QUERY} },
 		mapLink{ ${LINK_QUERY} }
 	},
+	_type == 'cta-band' => {
+		extraCtas[]{ ${CTA_QUERY} }
+	},
 	_type == 'contact-form' => {
 		privacyUrl,
 		infoCards[]{ ..., link{ ${LINK_QUERY} } },
