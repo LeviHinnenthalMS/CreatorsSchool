@@ -69,21 +69,26 @@ export async function submitContact(payload: ContactPayload) {
 			sourcePath: sanitize(payload.sourcePath, 200),
 		})
 		if (resend && NOTIFY_TO && NOTIFY_FROM) {
-			resend.emails.send({
-				from: NOTIFY_FROM,
-				to: NOTIFY_TO,
-				subject: `Neue Anfrage von ${name}`,
-				react: createElement(ContactNotification, {
-					name,
-					contact,
-					message: message || undefined,
-					interest: sanitize(payload.interest) || undefined,
-					childAge: sanitize(payload.childAge) || undefined,
-					sourcePath: sanitize(payload.sourcePath, 200) || undefined,
-				}),
-			}).catch((e) => console.error('[contactSubmit] Resend error', e))
-		} else if (!resend) {
-			console.warn('[contactSubmit] RESEND_API_KEY not set — email skipped.')
+			try {
+				const { error } = await resend.emails.send({
+					from: NOTIFY_FROM,
+					to: NOTIFY_TO,
+					subject: `Neue Anfrage von ${name}`,
+					react: createElement(ContactNotification, {
+						name,
+						contact,
+						message: message || undefined,
+						interest: sanitize(payload.interest) || undefined,
+						childAge: sanitize(payload.childAge) || undefined,
+						sourcePath: sanitize(payload.sourcePath, 200) || undefined,
+					}),
+				})
+				if (error) console.error('[contactSubmit] Resend error', error)
+			} catch (emailError) {
+				console.error('[contactSubmit] Resend request failed', emailError)
+			}
+		} else {
+			console.warn('[contactSubmit] Email configuration incomplete — notification skipped.')
 		}
 
 		return { ok: true as const, mode: 'saved' as const }

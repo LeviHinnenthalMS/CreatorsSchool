@@ -22,7 +22,7 @@ export default defineType({
 		defineField({
 			name: 'privacyUrl',
 			title: 'Datenschutz page URL',
-			description: 'Link shown in the privacy consent checkbox (e.g. /datenschutz).',
+			description: 'Link shown in the privacy notice below the form fields (e.g. /datenschutz).',
 			type: 'string',
 		}),
 		defineField({
@@ -38,7 +38,8 @@ export default defineType({
 				defineField({ name: 'submit', title: 'Submit button', type: 'string' }),
 				defineField({ name: 'footnote', title: 'Below-button note', type: 'string' }),
 				defineField({ name: 'requiredHint', title: 'Required-field hint', type: 'string' }),
-				defineField({ name: 'privacy', title: 'Privacy consent text', type: 'text', rows: 2 }),
+				defineField({ name: 'privacy', title: 'Privacy notice text', type: 'text', rows: 2 }),
+				defineField({ name: 'privacyLink', title: 'Privacy notice link label', type: 'string' }),
 				defineField({ name: 'successTitle', title: 'Success · title', type: 'string' }),
 				defineField({ name: 'successText', title: 'Success · text', type: 'string' }),
 				defineField({ name: 'errorText', title: 'Error · text', type: 'string' }),

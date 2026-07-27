@@ -34,6 +34,7 @@ type Labels = {
 	footnote?: string | null
 	requiredHint?: string | null
 	privacy?: string | null
+	privacyLink?: string | null
 	successTitle?: string | null
 	successText?: string | null
 	errorText?: string | null
@@ -226,24 +227,17 @@ function FormPanel({
 					placeholder="Wie können wir Ihnen helfen?"
 				/>
 
-				<div>
-					<label className="text-ink-2 flex cursor-pointer items-start gap-3 text-[13px] leading-snug">
-						<input
-							type="checkbox"
-							name="privacy"
-							className="mt-0.5 shrink-0 accent-coral"
-						/>
-						<span>
-							{clean(labels.privacy) || 'Ich stimme der Verarbeitung meiner Angaben zur Kontaktaufnahme zu'}
-							{privacyUrl ? (
-								<> (<Link href={privacyUrl} className="text-coral underline">Datenschutz</Link>).</>
-							) : '.'}
-						</span>
-					</label>
-					{fieldErrors.privacy && (
-						<p className="text-coral-deep mt-1.5 text-[12.5px] font-medium">{fieldErrors.privacy}</p>
+				<p className="text-ink-2 text-[13px] leading-relaxed">
+					{clean(labels.privacy) || 'Informationen zur Verarbeitung Ihrer Angaben finden Sie in unserer'}{' '}
+					{privacyUrl ? (
+						<Link href={privacyUrl} className="text-coral underline">
+							{clean(labels.privacyLink) || 'Datenschutzerklärung'}
+						</Link>
+					) : (
+						clean(labels.privacyLink) || 'Datenschutzerklärung'
 					)}
-				</div>
+					.
+				</p>
 
 				<button
 					type="submit"
@@ -291,8 +285,6 @@ function ContactFormInner(props: Props) {
 			errors.name = 'Bitte geben Sie Ihren Namen ein.'
 		if (!String(fd.get('contact') || '').trim())
 			errors.contact = 'Bitte geben Sie Ihre Telefonnummer oder E-Mail-Adresse ein.'
-		if (!fd.get('privacy'))
-			errors.privacy = 'Bitte stimmen Sie der Datenschutzerklärung zu.'
 		if (Object.keys(errors).length) {
 			setFieldErrors(errors)
 			return
