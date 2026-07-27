@@ -16,34 +16,77 @@ const FILTER_LABELS: Record<string, string> = {
 	einzelunterricht: 'Einzelunterricht',
 }
 
-const FILTER_ORDER = ['alle', 'musik', 'tanz', 'frueh', 'erwachsene', 'einzelunterricht']
+const FILTER_ORDER = [
+	'alle',
+	'musik',
+	'tanz',
+	'frueh',
+	'erwachsene',
+	'einzelunterricht',
+]
 
 // inline SVGs to avoid Icon dependency in client bundle
 function ClockIcon() {
 	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3.5 shrink-0">
-			<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.8}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden
+			className="size-3.5 shrink-0"
+		>
+			<circle cx="12" cy="12" r="10" />
+			<polyline points="12 6 12 12 16 14" />
 		</svg>
 	)
 }
 function UsersIcon() {
 	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3.5 shrink-0">
-			<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-			<path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.8}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden
+			className="size-3.5 shrink-0"
+		>
+			<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+			<circle cx="9" cy="7" r="4" />
+			<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+			<path d="M16 3.13a4 4 0 0 1 0 7.75" />
 		</svg>
 	)
 }
 function CalIcon() {
 	return (
-		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="size-3.5 shrink-0">
-			<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-			<line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.8}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden
+			className="size-3.5 shrink-0"
+		>
+			<rect x="3" y="4" width="18" height="18" rx="2" />
+			<line x1="16" y1="2" x2="16" y2="6" />
+			<line x1="8" y1="2" x2="8" y2="6" />
+			<line x1="3" y1="10" x2="21" y2="10" />
 		</svg>
 	)
 }
 
-const META_ICONS = [<ClockIcon key="c" />, <UsersIcon key="u" />, <CalIcon key="k" />]
+const META_ICONS = [
+	<ClockIcon key="c" />,
+	<UsersIcon key="u" />,
+	<CalIcon key="k" />,
+]
 
 function probeHref(
 	kontaktHref: string,
@@ -87,7 +130,9 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 		}
 	}
 
-	const filters = FILTER_ORDER.filter((k) => k === 'alle' || (catCounts[k] ?? 0) >= 1)
+	const filters = FILTER_ORDER.filter(
+		(k) => k === 'alle' || (catCounts[k] ?? 0) >= 1,
+	)
 
 	const visible =
 		active === 'alle'
@@ -97,7 +142,11 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 	return (
 		<div>
 			{/* Filter pills */}
-			<div className="mb-14 flex flex-wrap gap-2.5" role="group" aria-label="Angebote filtern">
+			<div
+				className="mb-14 flex flex-wrap gap-2.5"
+				role="group"
+				aria-label="Angebote filtern"
+			>
 				{filters.map((f) => {
 					const isActive = active === f
 					return (
@@ -115,10 +164,8 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							{FILTER_LABELS[f] ?? f}
 							<span
 								className={cn(
-									'grid min-w-[26px] place-items-center rounded-full px-1.5 py-0.5 text-[12px] font-bold leading-none',
-									isActive
-										? 'bg-coral text-paper'
-										: 'bg-paper-3 text-charcoal',
+									'grid min-w-[26px] place-items-center rounded-full px-1.5 py-0.5 text-[12px] leading-none font-bold',
+									isActive ? 'bg-coral text-paper' : 'bg-paper-3 text-charcoal',
 								)}
 							>
 								{String(catCounts[f] ?? 0).padStart(2, '0')}
@@ -134,7 +181,8 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 					const dark = i % 2 === 0
 					const isContactOnly = o.bookingType === 'kontakt'
 					const [titleMain, titleItalic] = splitTitle(o.title ?? '')
-					const letter = o.decorativeLetter ?? titleItalic?.[0]?.toLowerCase() ?? '·'
+					const letter =
+						o.decorativeLetter ?? titleItalic?.[0]?.toLowerCase() ?? '·'
 					const tag = o.catalogTag ?? o.facts?.[0]?.value
 					const metaRows = o.detailRows?.slice(0, 3) ?? []
 					const ageFact = o.facts?.find((f) =>
@@ -146,7 +194,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							key={o._id}
 							className={cn(
 								'flex flex-col overflow-hidden rounded-[22px] lg:flex-row',
-								dark ? 'bg-ink' : 'bg-paper border border-line',
+								dark ? 'bg-ink' : 'bg-paper border-line border',
 							)}
 						>
 							{/* Left image box */}
@@ -157,7 +205,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 											image={o.heroImage}
 											width={420}
 											className="absolute inset-0 h-full w-full object-cover"
-											alt={o.heroImage.alt ?? o.title ?? ''}
+											alt={o.heroImage.alt || o.title || undefined}
 										/>
 									) : (
 										<div
@@ -170,10 +218,13 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 											<span
 												aria-hidden
 												className={cn(
-													'font-display absolute bottom-4 left-0 right-0 select-none text-center font-bold leading-none',
+													'font-display absolute right-0 bottom-4 left-0 text-center leading-none font-bold select-none',
 													dark ? 'text-white/20' : 'text-ink/20',
 												)}
-												style={{ fontSize: 'clamp(80px,9vw,108px)', fontStyle: 'italic' }}
+												style={{
+													fontSize: 'clamp(80px,9vw,108px)',
+													fontStyle: 'italic',
+												}}
 											>
 												{letter}
 											</span>
@@ -193,7 +244,10 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 												: 'bg-paper-3 text-charcoal',
 										)}
 									>
-										<span aria-hidden className="bg-coral inline-block size-1.5 rounded-full" />
+										<span
+											aria-hidden
+											className="bg-coral inline-block size-1.5 rounded-full"
+										/>
 										{tag}
 									</span>
 								)}
@@ -201,11 +255,25 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 								{o.title && (
 									<h3
 										className={cn(
-											'font-display m-0 text-[clamp(22px,2.4vw,30px)] font-bold leading-tight -tracking-[0.02em]',
+											'font-display m-0 text-[clamp(22px,2.4vw,30px)] leading-tight font-bold -tracking-[0.02em]',
 											dark ? 'text-paper' : 'text-ink',
 										)}
 									>
-										{titleMain}{titleItalic ? <> <em className="text-coral not-italic" style={{ fontStyle: 'italic', fontFamily: 'var(--font-display)' }}>{titleItalic}</em></> : null}
+										{titleMain}
+										{titleItalic ? (
+											<>
+												{' '}
+												<em
+													className="text-coral not-italic"
+													style={{
+														fontStyle: 'italic',
+														fontFamily: 'var(--font-display)',
+													}}
+												>
+													{titleItalic}
+												</em>
+											</>
+										) : null}
 									</h3>
 								)}
 
@@ -239,68 +307,83 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							</div>
 
 							{/* Right price panel */}
-							<div className="p-3 lg:p-4 shrink-0 lg:w-[238px]">
-							<div
-								className={cn(
-									'flex h-full flex-col justify-center gap-5 rounded-[18px] p-6',
-									dark ? 'bg-ink-2' : 'bg-paper-2',
-								)}
-							>
-								{o.priceValue && (
-									<div>
-										{o.priceLabel && (
-											<p
-												className={cn(
-													'm-0 text-[10px] font-bold tracking-[0.1em] uppercase',
-													dark ? 'text-white/35' : 'text-mute',
+							<div className="shrink-0 p-3 lg:w-[238px] lg:p-4">
+								<div
+									className={cn(
+										'flex h-full flex-col justify-center gap-5 rounded-[18px] p-6',
+										dark ? 'bg-ink-2' : 'bg-paper-2',
+									)}
+								>
+									{o.priceValue && (
+										<div>
+											{o.priceLabel && (
+												<p
+													className={cn(
+														'm-0 text-[10px] font-bold tracking-[0.1em] uppercase',
+														dark ? 'text-white/35' : 'text-mute',
+													)}
+												>
+													{o.priceLabel}
+												</p>
+											)}
+											<p className="m-0 flex items-baseline gap-1 leading-none">
+												{o.priceCurrency && (
+													<span
+														className={cn(
+															'font-display text-[20px] font-bold',
+															dark ? 'text-white/70' : 'text-charcoal',
+														)}
+													>
+														{o.priceCurrency}
+													</span>
 												)}
-											>
-												{o.priceLabel}
+												<span
+													className={cn(
+														'font-display text-[clamp(32px,3.5vw,44px)] font-bold -tracking-[0.02em]',
+														dark ? 'text-paper' : 'text-ink',
+													)}
+												>
+													{o.priceValue}
+												</span>
+												{o.priceUnit && (
+													<span
+														className={cn(
+															'text-[14px] font-normal',
+															dark ? 'text-white/40' : 'text-mute',
+														)}
+													>
+														{o.priceUnit}
+													</span>
+												)}
 											</p>
-										)}
-										<p className="m-0 flex items-baseline gap-1 leading-none">
-											{o.priceCurrency && (
-												<span className={cn('font-display text-[20px] font-bold', dark ? 'text-white/70' : 'text-charcoal')}>
-													{o.priceCurrency}
-												</span>
-											)}
-											<span className={cn('font-display text-[clamp(32px,3.5vw,44px)] font-bold -tracking-[0.02em]', dark ? 'text-paper' : 'text-ink')}>
-												{o.priceValue}
-											</span>
-											{o.priceUnit && (
-												<span className={cn('text-[14px] font-normal', dark ? 'text-white/40' : 'text-mute')}>
-													{o.priceUnit}
-												</span>
-											)}
-										</p>
-									</div>
-								)}
+										</div>
+									)}
 
-								<div className="flex flex-col gap-2.5">
-									<Link
-										href={probeHref(kontaktHref, o.title, ageFact)}
-										className={cn(
-											'rounded-full px-5 py-3 text-center text-[13.5px] font-semibold no-underline transition-colors',
-											dark
-												? 'bg-coral text-paper hover:bg-coral-deep'
-												: 'bg-ink text-paper hover:bg-ink-2',
-										)}
-									>
-										{isContactOnly ? 'Kontakt aufnehmen' : 'Probestunde'}
-									</Link>
-									<Link
-										href={offeringHref(o)}
-										className={cn(
-											'rounded-full border px-5 py-3 text-center text-[13.5px] font-semibold no-underline transition-colors',
-											dark
-												? 'border-white/20 text-paper hover:border-white/50'
-												: 'border-line-2 text-ink hover:border-charcoal',
-										)}
-									>
-										Details
-									</Link>
+									<div className="flex flex-col gap-2.5">
+										<Link
+											href={probeHref(kontaktHref, o.title, ageFact)}
+											className={cn(
+												'rounded-full px-5 py-3 text-center text-[13.5px] font-semibold no-underline transition-colors',
+												dark
+													? 'bg-coral text-paper hover:bg-coral-deep'
+													: 'bg-ink text-paper hover:bg-ink-2',
+											)}
+										>
+											{isContactOnly ? 'Kontakt aufnehmen' : 'Probestunde'}
+										</Link>
+										<Link
+											href={offeringHref(o)}
+											className={cn(
+												'rounded-full border px-5 py-3 text-center text-[13.5px] font-semibold no-underline transition-colors',
+												dark
+													? 'text-paper border-white/20 hover:border-white/50'
+													: 'border-line-2 text-ink hover:border-charcoal',
+											)}
+										>
+											Details
+										</Link>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 					)

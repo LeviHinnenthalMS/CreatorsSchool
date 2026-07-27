@@ -1,14 +1,19 @@
 import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
 import { OFFERING_SLUGS_QUERY, getOfferingBySlug } from '@/sanity/lib/creators'
 import { client } from '@/sanity/lib/client'
 import OfferingDetail from '@/ui/modules/OfferingDetail'
 import CTABand from '@/ui/modules/CTABand'
-import { BASE_URL } from '@/lib/env'
 import { DEFAULT_LANG, languages } from '@/lib/i18n'
+import processMetadata from '@/lib/processMetadata'
+import OfferingStructuredData from '@/ui/OfferingStructuredData'
+import { getSite } from '@/sanity/lib/queries'
 
 type Params = { lang: string; slug: string }
 type Props = { params: Promise<Params> }
+
+// Reject unknown locale/slug combinations at the router boundary. Without
+// this, `/angebote/angebote/...` can be mistaken for a localized static route.
+export const dynamicParams = false
 
 export default async function OfferingLangPage({ params }: Props) {
 	const { lang, slug } = await params
@@ -16,9 +21,16 @@ export default async function OfferingLangPage({ params }: Props) {
 
 	const offering = await getOfferingBySlug(slug, lang)
 	if (!offering) notFound()
+	const site = await getSite()
 
 	return (
 		<>
+			<OfferingStructuredData
+				offering={offering}
+				slug={slug}
+				lang={lang}
+				siteName={(site as { title?: string }).title}
+			/>
 			<OfferingDetail
 				_type="offering-detail"
 				_key="offering-detail"
@@ -29,27 +41,27 @@ export default async function OfferingLangPage({ params }: Props) {
 	)
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
 	const { lang, slug } = await params
 	if (!(languages as readonly string[]).includes(lang)) return {}
 
 	const offering = await getOfferingBySlug(slug, lang)
 	if (!offering) return {}
 
-	const langPrefix = lang && lang !== DEFAULT_LANG ? `/${lang}` : ''
-	const url = `${BASE_URL}${langPrefix}/angebote/${slug}`
-
-	return {
-		title: offering.title || undefined,
-		description: offering.lede || undefined,
-		alternates: { canonical: url },
-	}
+	return processMetadata({
+		...offering,
+		metadata: {
+			...offering.metadata,
+			slug: { current: `angebote/${slug}` },
+		},
+	})
 }
 
 export async function generateStaticParams() {
-	const all = await client.fetch<{ slug: string; language?: string }[]>(
-		OFFERING_SLUGS_QUERY,
-	)
+	const all =
+		await client.fetch<{ slug: string; language?: string }[]>(
+			OFFERING_SLUGS_QUERY,
+		)
 	const nonDefault = all.filter(
 		(o) => o.language && o.language !== DEFAULT_LANG && o.slug,
 	)

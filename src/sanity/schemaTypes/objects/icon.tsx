@@ -35,7 +35,11 @@ export default defineType({
 			description: (
 				<span>
 					Courtesy of{' '}
-					<a href="https://react-icons.github.io/react-icons/" target="_blank" rel="noreferrer">
+					<a
+						href="https://react-icons.github.io/react-icons/"
+						target="_blank"
+						rel="noreferrer"
+					>
 						react-icons
 					</a>
 				</span>
@@ -74,7 +78,7 @@ export default defineType({
 		prepare: ({ image, ic0n, size }) => ({
 			title: ic0n,
 			subtitle: size,
-			media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} /> : image,
+			media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} alt="" /> : image,
 		}),
 	},
 })

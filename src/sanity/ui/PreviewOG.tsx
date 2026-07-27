@@ -24,6 +24,7 @@ export default function PreviewOG({ title }: { title?: string }) {
 					</Flex>
 
 					<img
+						alt=""
 						style={{
 							gridArea: '1 / 1 / -1 / -1',
 							position: 'relative',

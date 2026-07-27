@@ -6,6 +6,7 @@ import { client } from '@/sanity/lib/client'
 import { getRequestLang } from '@/lib/requestLang'
 import { BASE_URL } from '@/lib/env'
 import { urlFor } from '@/sanity/lib/image'
+import JsonLd from '@/ui/JsonLd'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -29,12 +30,14 @@ export default async function BlogPostPage({ params }: Props) {
 		datePublished: post.publishedAt,
 		dateModified: post._updatedAt,
 		inLanguage: post.language || lang,
-		author: post.author?.name ? { '@type': 'Person', name: post.author.name } : undefined,
+		author: post.author?.name
+			? { '@type': 'Person', name: post.author.name }
+			: undefined,
 	}
 
 	return (
 		<>
-			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+			<JsonLd value={jsonLd} />
 			<BlogArticle post={post} />
 		</>
 	)
@@ -57,8 +60,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		title,
 		description,
 		alternates: { canonical: url },
-		openGraph: { type: 'article', url, title, description, publishedTime: post.publishedAt || undefined, images: image ? [image] : undefined },
-		twitter: { card: 'summary_large_image', title, description, images: image ? [image] : undefined },
+		openGraph: {
+			type: 'article',
+			url,
+			title,
+			description,
+			publishedTime: post.publishedAt || undefined,
+			images: image ? [image] : undefined,
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title,
+			description,
+			images: image ? [image] : undefined,
+		},
 	}
 }
 

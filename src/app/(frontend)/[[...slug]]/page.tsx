@@ -26,6 +26,7 @@ export async function generateStaticParams() {
 
 async function getPage(params: Params) {
 	const { slug, lang } = processSlug(params.slug)
+	if (slug === 'components') return null
 
 	return await fetchSanityLive<PAGE_QUERY_RESULT>({
 		query: PAGE_QUERY,

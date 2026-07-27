@@ -30,17 +30,16 @@ export default function CTA({
 
 	const cleanVariant = stegaClean(variant) as SanityCTA['variant']
 	const cleanSize = stegaClean(size) as SanityCTA['size']
-	const cleanIconPosition = stegaClean(iconPosition) as SanityCTA['iconPosition']
+	const cleanIconPosition = stegaClean(
+		iconPosition,
+	) as SanityCTA['iconPosition']
 	const cleanIcon = icon ? stegaClean(icon) : undefined
 	const labelText = resolveCtaLabel({ link })
 
 	if (!children && !labelText) return null
 
 	const label =
-		children ||
-		link?.label ||
-		link?.internal?.title ||
-		link?.external
+		children || link?.label || link?.internal?.title || link?.external
 
 	const href =
 		link?.type === 'internal' && link.internal
@@ -98,7 +97,11 @@ export default function CTA({
 		return <Link href={href} {...props} />
 
 	if (link?.type === 'external' && href)
-		return <a href={href} {...props} />
+		return (
+			<a href={href} className={props.className} {...rest}>
+				{label}
+			</a>
+		)
 
 	return <div {...(props as ComponentProps<'div'>)} />
 }

@@ -11,8 +11,12 @@ import resolveUrl from '@/lib/resolveUrl'
 import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
 import OfferingCatalog from './OfferingCatalog'
 import TanzCarousel from './TanzCarousel'
+import { commonLabels } from '@/lib/uiLabels'
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -37,6 +41,7 @@ function offeringHref(o: { slug?: string | null; language?: string | null }) {
 
 export default async function OfferingList(props: Props) {
 	const lang = await getServerLang()
+	const labels = commonLabels(lang)
 	const all = await getOfferings(lang)
 	const bereich = stegaClean(props.bereich || 'alle')
 	const layout = stegaClean(props.layout || 'prog')
@@ -62,10 +67,7 @@ export default async function OfferingList(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className={cn(
-				'py-[clamp(44px,8vw,120px)]',
-				tinted && 'bg-warm-white',
-			)}
+			className={cn('py-[clamp(44px,8vw,120px)]', tinted && 'bg-warm-white')}
 		>
 			<div className="wrap">
 				<SectionHead
@@ -94,14 +96,17 @@ export default async function OfferingList(props: Props) {
 											)}
 										>
 											{i === 0 && (
-												<span aria-hidden className="bg-coral inline-block size-1.5 rounded-full" />
+												<span
+													aria-hidden
+													className="bg-coral inline-block size-1.5 rounded-full"
+												/>
 											)}
 											{f.value}
 										</span>
 									))}
 								</div>
 								{o.title && (
-									<h3 className="text-ink font-display m-0 text-[clamp(26px,2.6vw,34px)] font-semibold leading-[1.05] -tracking-[0.015em]">
+									<h3 className="text-ink font-display m-0 text-[clamp(26px,2.6vw,34px)] leading-[1.05] font-semibold -tracking-[0.015em]">
 										{o.title}
 									</h3>
 								)}
@@ -118,7 +123,12 @@ export default async function OfferingList(props: Props) {
 												className="text-coral-deep inline-flex items-center gap-2.5 text-[14px] font-semibold"
 											>
 												<span className="bg-blush flex size-6 shrink-0 items-center justify-center rounded-md">
-													<Icon name="check" size={12} className="text-coral-deep" strokeWidth={2.5} />
+													<Icon
+														name="check"
+														size={12}
+														className="text-coral-deep"
+														strokeWidth={2.5}
+													/>
 												</span>
 												{f.value}
 											</span>
@@ -145,7 +155,8 @@ export default async function OfferingList(props: Props) {
 					<OfferingCatalog
 						items={items}
 						kontaktHref={
-							props.catalogKontaktLink?.type === 'internal' && props.catalogKontaktLink.internal
+							props.catalogKontaktLink?.type === 'internal' &&
+							props.catalogKontaktLink.internal
 								? resolveUrl(props.catalogKontaktLink.internal)
 								: '/kontakt'
 						}
@@ -158,16 +169,19 @@ export default async function OfferingList(props: Props) {
 							<Link
 								key={o._id}
 								href={offeringHref(o)}
-								className="bg-paper border-line hover:border-coral group/prog relative flex min-h-[270px] flex-col gap-3.5 overflow-hidden rounded-card border p-6 text-ink no-underline transition-[transform,border-color] duration-300 hover:-translate-y-1"
+								className="bg-paper border-line hover:border-coral group/prog rounded-card text-ink relative flex min-h-[270px] flex-col gap-3.5 overflow-hidden border p-6 no-underline transition-[transform,border-color] duration-300 hover:-translate-y-1"
 							>
 								{o.facts?.[0]?.value && (
 									<span className="bg-paper-2 text-ink-2 border-line inline-flex items-center gap-2 self-start rounded-full border px-3.5 py-1.5 text-[12.5px] font-semibold">
-										<span aria-hidden className="bg-coral inline-block size-1.5 rounded-full" />
+										<span
+											aria-hidden
+											className="bg-coral inline-block size-1.5 rounded-full"
+										/>
 										{o.facts[0].value}
 									</span>
 								)}
 								{o.title && (
-									<h3 className="text-ink font-display m-0 text-[22px] font-bold leading-tight -tracking-[0.02em]">
+									<h3 className="text-ink font-display m-0 text-[22px] leading-tight font-bold -tracking-[0.02em]">
 										{o.title}
 									</h3>
 								)}
@@ -178,11 +192,11 @@ export default async function OfferingList(props: Props) {
 								)}
 								<div className="border-line-2 mt-auto flex items-center justify-between border-t border-dashed pt-4">
 									<span className="text-mute text-[12.5px] font-semibold">
-										{o.bereich === 'musik' ? 'Music' : 'Dance'}
+										{o.bereich === 'musik' ? labels.music : labels.dance}
 									</span>
 									<span
 										aria-hidden
-										className="bg-paper-2 text-ink grid size-9 place-items-center rounded-full transition-[background,color,transform] duration-300 group-hover/prog:bg-coral group-hover/prog:text-paper group-hover/prog:-rotate-45"
+										className="bg-paper-2 text-ink group-hover/prog:bg-coral group-hover/prog:text-paper grid size-9 place-items-center rounded-full transition-[background,color,transform] duration-300 group-hover/prog:-rotate-45"
 									>
 										<Icon name="arrow" size={14} strokeWidth={2.5} />
 									</span>

@@ -243,7 +243,15 @@ export const SITE_QUERY = defineQuery(groq`
 		ctas[]{ ${CTA_QUERY} },
 		ctaKontakt{ ${CTA_QUERY} },
 		ctaProbestunde{ ${CTA_QUERY} },
-		'ogimage': ogimage.asset->url
+		'ogimage': ogimage.asset->url,
+		'logoUrl': coalesce(
+			logo.image.default.asset->url,
+			logo.image.dark.asset->url,
+			logo.image.light.asset->url
+		),
+		'sameAs': *[_type == 'footer' && language == "de"][0].socials[]{
+			'external': external
+		}.external
 	}
 `)
 
@@ -262,7 +270,8 @@ export async function getSite() {
 	return site
 }
 
-export const NAVIGATION_DOC_QUERY = defineQuery(groq`*[_type == 'navigation' && language == $lang][0]{
+export const NAVIGATION_DOC_QUERY =
+	defineQuery(groq`*[_type == 'navigation' && language == $lang][0]{
 	${NAVIGATION_QUERY}
 }`)
 
@@ -273,7 +282,8 @@ export async function getNavigation(lang: string) {
 	})
 }
 
-export const FOOTER_QUERY = defineQuery(groq`*[_type == 'footer' && language == $lang][0]{
+export const FOOTER_QUERY =
+	defineQuery(groq`*[_type == 'footer' && language == $lang][0]{
 	...,
 	columns[]{
 		...,
@@ -291,7 +301,8 @@ export async function getFooter(lang: string) {
 	})
 }
 
-export const ALL_TRANSLATIONS_QUERY = defineQuery(groq`*[_type == 'page' && defined(language)]{
+export const ALL_TRANSLATIONS_QUERY =
+	defineQuery(groq`*[_type == 'page' && defined(language)]{
 	'slug': '/' + select(
 		metadata.slug.current != 'index' => metadata.slug.current,
 		''
@@ -332,6 +343,10 @@ export const PAGE_SLUGS_QUERY = defineQuery(groq`*[
 	_type == 'page'
 	&& defined(metadata.slug.current)
 	&& !(metadata.slug.current in ['index'])
+	&& count(*[
+		_type == 'offering'
+		&& metadata.slug.current == ^.metadata.slug.current
+	]) == 0
 ]{
 	'slug': metadata.slug.current
 }`)
@@ -358,12 +373,13 @@ export const PAGE_QUERY = defineQuery(groq`*[
 	),
 	metadata {
 		...,
-		'ogimage': image.asset->url + '?w=1200'
+		'ogimage': image.asset->url + '?w=1200&fit=crop&h=630&auto=format'
 	},
 	${TRANSLATIONS_QUERY},
 }`)
 
-export const NOT_FOUND_QUERY = defineQuery(groq`*[_type == 'page' && metadata.slug.current == '404' && language == $lang][0]{
+export const NOT_FOUND_QUERY =
+	defineQuery(groq`*[_type == 'page' && metadata.slug.current == '404' && language == $lang][0]{
 	...,
 	'modules': (
 		// global modules (before)
@@ -381,7 +397,11 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 	'pages': *[
 		_type == 'page' &&
 		!(metadata.slug.current in ['404']) &&
-		metadata.noIndex != true
+		metadata.noIndex != true &&
+		count(*[
+			_type == 'offering' &&
+			metadata.slug.current == ^.metadata.slug.current
+		]) == 0
 	]|order(metadata.slug.current){
 		language,
 		'url': (
@@ -409,17 +429,53 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 			)
 		}
 	},
+	'offerings': *[
+		_type == 'offering' &&
+		defined(slug.current) &&
+		metadata.noIndex != true
+	]|order(order asc, title asc){
+		language,
+		'url': (
+			$baseUrl
+			+ select(defined(language) && language != $defaultLang => language + '/', '')
+			+ 'angebote/'
+			+ slug.current
+		),
+		'lastModified': _updatedAt,
+		'priority': 0.7,
+		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			language,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ 'angebote/'
+				+ slug.current
+			)
+		}
+	},
 	'blogPosts': *[
-		_type == 'blogPost' && defined(slug.current)
+		_type == 'blogPost' &&
+		defined(slug.current) &&
+		metadata.noIndex != true
 	]|order(publishedAt desc){
 		language,
 		'url': (
 			$baseUrl
+			+ select(defined(language) && language != $defaultLang => language + '/', '')
 			+ 'blog/'
 			+ slug.current
 		),
 		'lastModified': _updatedAt,
-		'priority': 0.6
+		'priority': 0.6,
+		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			language,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ 'blog/'
+				+ slug.current
+			)
+		}
 	},
 }`)
 
@@ -449,12 +505,14 @@ export const SEARCH_QUERY = defineQuery(groq`*[
 	metadata
 }`)
 
-export const ANNOUNCEMENTS_QUERY = defineQuery(groq`*[_type == 'site'][0].announcements[]->{
+export const ANNOUNCEMENTS_QUERY =
+	defineQuery(groq`*[_type == 'site'][0].announcements[]->{
 	...,
 	cta{ ${LINK_QUERY} },
 }`)
 
-export const GLOBAL_MODULES_QUERY = defineQuery(groq`*[_type == 'global-module']{
+export const GLOBAL_MODULES_QUERY =
+	defineQuery(groq`*[_type == 'global-module']{
 	_id,
 	path,
 	excludePaths[]

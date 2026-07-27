@@ -19,13 +19,11 @@ export default defineType({
 		defineField({
 			name: 'slug',
 			type: 'slug',
-			description: 'URL path or permalink — keine führenden / (z.B. "videos/job" nicht "/videos/job")',
+			description:
+				'URL path or permalink — keine führenden / (z.B. "videos/job" nicht "/videos/job")',
 			options: {
 				source: (doc: any) =>
-					doc.title ||
-					doc.titel ||
-					doc.name ||
-					doc.metadata?.title,
+					doc.title || doc.titel || doc.name || doc.metadata?.title,
 				slugify: (input: string) =>
 					input
 						.toLowerCase()
@@ -73,10 +71,10 @@ export default defineType({
 			description:
 				'Headline shown by search engines and social cards. Keep under 60 characters so it does not get truncated.',
 			validation: (Rule) => [
-				Rule.required().warning(
+				Rule.required().error(
 					'SEO title is missing — search engines will fall back to the page heading.',
 				),
-				Rule.max(60).warning('SEO title should be under 60 characters.'),
+				Rule.max(60).error('SEO title should be under 60 characters.'),
 			],
 			components: {
 				input: (props) => (
@@ -92,12 +90,10 @@ export default defineType({
 			description:
 				'1–2 sentence summary shown by search engines and social cards. Keep under 160 characters.',
 			validation: (Rule) => [
-				Rule.required().warning(
+				Rule.required().error(
 					'SEO description is missing — search engines may show a snippet from the page body instead.',
 				),
-				Rule.max(160).warning(
-					'SEO description should be under 160 characters.',
-				),
+				Rule.max(160).error('SEO description should be under 160 characters.'),
 			],
 			components: {
 				input: (props) => (

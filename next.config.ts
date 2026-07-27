@@ -1,7 +1,7 @@
 import { createClient, groq } from 'next-sanity'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 // import { token } from '@/lib/sanity/token'
-import { DEFAULT_LANG, supportedLanguages } from '@/lib/i18n'
+import { DEFAULT_LANG } from '@/lib/i18n'
 import type { NextConfig } from 'next'
 
 const client = createClient({

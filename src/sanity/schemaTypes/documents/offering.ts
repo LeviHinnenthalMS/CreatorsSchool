@@ -85,7 +85,8 @@ export default defineType({
 		defineField({
 			name: 'bookingType',
 			title: 'CTA type',
-			description: 'Determines which call-to-action button is shown on this offering page.',
+			description:
+				'Determines which call-to-action button is shown on this offering page.',
 			type: 'string',
 			options: {
 				list: [
@@ -267,6 +268,7 @@ export default defineType({
 			title: 'Metadata',
 			type: 'metadata',
 			group: 'seo',
+			validation: (Rule) => Rule.required(),
 		}),
 
 		defineField({
@@ -292,7 +294,9 @@ export default defineType({
 		},
 		prepare: ({ title, subtitle, media, language }) => ({
 			title,
-			subtitle: [language && `[${language}]`, subtitle].filter(Boolean).join(' · '),
+			subtitle: [language && `[${language}]`, subtitle]
+				.filter(Boolean)
+				.join(' · '),
 			media,
 		}),
 	},

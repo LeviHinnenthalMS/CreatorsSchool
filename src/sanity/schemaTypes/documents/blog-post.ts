@@ -60,7 +60,7 @@ export default defineType({
 					name: 'alt',
 					title: 'Alternative text',
 					type: 'string',
-					validation: (Rule) => Rule.required().warning(),
+					validation: (Rule) => Rule.required().error(),
 				}),
 			],
 		}),

@@ -48,17 +48,27 @@ export default defineType({
 							type: 'string',
 						}),
 						defineField({
-								name: 'image',
-								title: 'Image',
-								type: 'image',
-								options: { hotspot: true },
-								fields: [
-									defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-								],
-							}),
-							defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
+							name: 'image',
+							title: 'Image',
+							type: 'image',
+							options: { hotspot: true },
+							fields: [
+								defineField({
+									name: 'alt',
+									title: 'Alt text',
+									type: 'string',
+									validation: (Rule) =>
+										Rule.required().error('Alt text is required.'),
+								}),
+							],
+						}),
+						defineField({ name: 'text', title: 'Text', type: 'text', rows: 3 }),
 						defineField({ name: 'link', title: 'Link', type: 'link' }),
-						defineField({ name: 'linkLabel', title: 'Link label', type: 'string' }),
+						defineField({
+							name: 'linkLabel',
+							title: 'Link label',
+							type: 'string',
+						}),
 					],
 					preview: { select: { title: 'title', subtitle: 'variant' } },
 				}),
@@ -68,6 +78,9 @@ export default defineType({
 	],
 	preview: {
 		select: { eyebrow: 'eyebrow' },
-		prepare: ({ eyebrow }) => ({ title: eyebrow || 'Two-worlds split', subtitle: 'Two-worlds split (Music / Dance)' }),
+		prepare: ({ eyebrow }) => ({
+			title: eyebrow || 'Two-worlds split',
+			subtitle: 'Two-worlds split (Music / Dance)',
+		}),
 	},
 })

@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react'
 import moduleProps from '@/lib/moduleProps'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
-import { cn } from '@/lib/utils'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
 type TimelineItem = {
@@ -20,7 +19,13 @@ type Props = SanityModule & {
 	items?: TimelineItem[] | null
 }
 
-export default function Timeline({ eyebrow, title, intro, items, ...props }: Props) {
+export default function Timeline({
+	eyebrow,
+	title,
+	intro,
+	items,
+	...props
+}: Props) {
 	const ref = useRef<HTMLElement>(null)
 
 	useEffect(() => {
@@ -91,7 +96,7 @@ export default function Timeline({ eyebrow, title, intro, items, ...props }: Pro
 							}}
 						>
 							{/* Year */}
-							<span className="font-display text-coral pt-0.5 text-right text-[clamp(18px,2.2vw,26px)] font-bold leading-none">
+							<span className="font-display text-coral pt-0.5 text-right text-[clamp(18px,2.2vw,26px)] leading-none font-bold">
 								{item.year}
 							</span>
 
@@ -107,7 +112,7 @@ export default function Timeline({ eyebrow, title, intro, items, ...props }: Pro
 										title={item.title}
 										tone="coral"
 										as="h3"
-										className="!text-[clamp(15px,1.6vw,18px)] font-bold leading-snug -tracking-[0.01em]"
+										className="!text-[clamp(15px,1.6vw,18px)] leading-snug font-bold -tracking-[0.01em]"
 									/>
 								)}
 								{item.text && (

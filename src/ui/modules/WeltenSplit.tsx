@@ -21,7 +21,10 @@ type Card = {
 	linkLabel?: string | null
 }
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -33,7 +36,8 @@ type Props = SanityModule & {
 function hrefFor(link?: SanityLink | null) {
 	if (!link) return undefined
 	if (link.type === 'internal') {
-		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.internal)
+			return resolveUrl(link.internal, { params: link.params ?? undefined })
 		if (link.params) return stegaClean(link.params)
 	}
 	return link.external ?? undefined
@@ -44,10 +48,7 @@ export default function WeltenSplit(props: Props) {
 	if (!cards?.length) return null
 
 	return (
-		<section
-			{...moduleProps(props)}
-			className="py-[clamp(60px,7vw,100px)]"
-		>
+		<section {...moduleProps(props)} className="py-[clamp(60px,7vw,100px)]">
 			<div className="wrap">
 				<SectionHead
 					eyebrow={props.eyebrow}
@@ -66,7 +67,7 @@ export default function WeltenSplit(props: Props) {
 								{c.eyebrow && (
 									<span
 										className={cn(
-											'inline-flex items-center gap-2.5 self-start text-[12.5px] font-semibold uppercase tracking-[0.08em]',
+											'inline-flex items-center gap-2.5 self-start text-[12.5px] font-semibold tracking-[0.08em] uppercase',
 											dark ? 'text-blush' : 'text-coral-deep',
 										)}
 									>
@@ -84,7 +85,7 @@ export default function WeltenSplit(props: Props) {
 									{c.title && (
 										<h3
 											className={cn(
-												'font-display m-0 text-[clamp(38px,4.6vw,60px)] font-semibold leading-none -tracking-[0.02em]',
+												'font-display m-0 text-[clamp(38px,4.6vw,60px)] leading-none font-semibold -tracking-[0.02em]',
 												dark ? 'text-paper' : 'text-ink',
 											)}
 										>
@@ -103,10 +104,13 @@ export default function WeltenSplit(props: Props) {
 									)}
 								</div>
 								{c.image?.asset && (
-									<div className="w-full overflow-hidden rounded-2xl" style={{ aspectRatio: '4/3' }}>
+									<div
+										className="w-full overflow-hidden rounded-2xl"
+										style={{ aspectRatio: '4/3' }}
+									>
 										<Img
 											image={c.image}
-											alt={c.image.alt ?? ''}
+											alt={c.image.alt || undefined}
 											width={800}
 											className="size-full object-cover"
 										/>

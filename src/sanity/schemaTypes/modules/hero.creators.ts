@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity'
 import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({

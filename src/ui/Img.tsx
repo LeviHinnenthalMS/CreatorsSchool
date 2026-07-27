@@ -1,8 +1,5 @@
 import { preload } from 'react-dom'
-import {
-	getImageDimensions,
-	type SanityImageSource,
-} from '@sanity/asset-utils'
+import { getImageDimensions, type SanityImageSource } from '@sanity/asset-utils'
 import { urlFor } from '@/sanity/lib/image'
 import NextImage, { getImageProps, type ImageProps } from 'next/image'
 import { stegaClean } from 'next-sanity'
@@ -10,6 +7,10 @@ import type { ComponentProps } from 'react'
 import type { SanityImage, SanityImg } from '@/sanity/typeHelpers'
 
 type ImgProps = { alt?: string } & Omit<ImageProps, 'src' | 'alt'>
+
+function nonEmpty(value?: string | null) {
+	return value?.trim() || undefined
+}
 
 export function Img({
 	image,
@@ -33,14 +34,14 @@ export function Img({
 		stegaClean(decorative ?? image.decorative ?? undefined) === true
 	const resolvedAlt = isDecorative
 		? ''
-		: (alt ?? image.alt ?? image.assetAlt ?? '')
+		: (nonEmpty(alt) ?? nonEmpty(image.alt) ?? nonEmpty(image.assetAlt) ?? '')
 
 	if (
 		process.env.NODE_ENV !== 'production' &&
 		!isDecorative &&
 		alt === undefined &&
-		!image.alt &&
-		!image.assetAlt
+		!nonEmpty(image.alt) &&
+		!nonEmpty(image.assetAlt)
 	) {
 		console.warn(
 			'[Img] Rendering an image with no alt text. Pass `alt=""` explicitly ' +
@@ -114,11 +115,7 @@ export function ResponsiveImg({
 			{responsive?.map(
 				(r, key) =>
 					r && (
-						<Source
-							image={r.image}
-							media={r.media ?? undefined}
-							key={key}
-						/>
+						<Source image={r.image} media={r.media ?? undefined} key={key} />
 					),
 			)}
 			<Img

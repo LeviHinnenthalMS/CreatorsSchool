@@ -23,12 +23,13 @@ export default async function GalleryMasonry(props: Props) {
 	const all = await getGallery(lang)
 
 	const filter = stegaClean(props.bereich || 'alle')
-	const items = filter === 'alle' ? all : all.filter((g) => g.bereich === filter)
+	const items =
+		filter === 'alle' ? all : all.filter((g) => g.bereich === filter)
 
 	return (
 		<section
 			{...moduleProps(props)}
-			className="pb-[clamp(50px,6vw,90px)] pt-[clamp(20px,3vw,40px)]"
+			className="pt-[clamp(20px,3vw,40px)] pb-[clamp(50px,6vw,90px)]"
 		>
 			<div className="wrap">
 				{items.length === 0 ? (
@@ -46,21 +47,23 @@ export default async function GalleryMasonry(props: Props) {
 								<figure
 									key={g._id}
 									className={cn(
-										'relative m-0 overflow-hidden rounded-[18px] bg-paper-2',
+										'bg-paper-2 relative m-0 overflow-hidden rounded-[18px]',
 										spanCls[span] || '',
 									)}
-									style={{ minHeight: span === 'tall' || span === 'big' ? 480 : 240 }}
+									style={{
+										minHeight: span === 'tall' || span === 'big' ? 480 : 240,
+									}}
 								>
 									{g.image && (
 										<Img
 											image={g.image}
-											alt={g.caption ?? ''}
+											alt={g.caption || undefined}
 											className="size-full object-cover"
 											sizes="(min-width: 1024px) 25vw, 50vw"
 										/>
 									)}
 									{g.caption && (
-										<figcaption className="absolute bottom-3 left-3.5 z-[2] rounded-full bg-ink/65 px-2.5 py-1.5 text-[11.5px] font-semibold tracking-[0.02em] text-paper backdrop-blur-sm">
+										<figcaption className="bg-ink/65 text-paper absolute bottom-3 left-3.5 z-[2] rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold tracking-[0.02em] backdrop-blur-sm">
 											{g.caption}
 										</figcaption>
 									)}

@@ -7,7 +7,13 @@ import { stegaClean } from 'next-sanity'
 import resolveUrl from '@/lib/resolveUrl'
 import MapEmbed from './MapEmbed'
 import { getSite } from '@/sanity/lib/queries'
-import type { SanityImage, SanityLink, SanityModule } from '@/sanity/typeHelpers'
+import type {
+	SanityImage,
+	SanityLink,
+	SanityModule,
+} from '@/sanity/typeHelpers'
+import getServerLang from '@/lib/getServerLang'
+import { commonLabels } from '@/lib/uiLabels'
 
 type Direction = {
 	_key?: string
@@ -15,7 +21,10 @@ type Direction = {
 	title?: string | null
 	text?: string | null
 }
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -31,14 +40,16 @@ type Props = SanityModule & {
 function href(link?: SanityLink | null) {
 	if (!link) return undefined
 	if (link.type === 'internal') {
-		if (link.internal) return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.internal)
+			return resolveUrl(link.internal, { params: link.params ?? undefined })
 		if (link.params) return stegaClean(link.params)
 	}
 	return link.external ?? undefined
 }
 
 export default async function LocationCard(props: Props) {
-	const site = await getSite() as { mapEmbedUrl?: string | null }
+	const labels = commonLabels(await getServerLang())
+	const site = (await getSite()) as { mapEmbedUrl?: string | null }
 	const mapHref = href(props.mapLink)
 	const embedUrl = props.mapEmbedUrl ?? site.mapEmbedUrl
 
@@ -47,18 +58,21 @@ export default async function LocationCard(props: Props) {
 			{...moduleProps(props)}
 			className="px-[clamp(8px,1.5vw,24px)] pb-[clamp(60px,7vw,100px)]"
 		>
-			<div className="bg-paper-2 border-line overflow-hidden rounded-band border md:grid md:grid-cols-[1fr_1.2fr]">
+			<div className="bg-paper-2 border-line rounded-band overflow-hidden border md:grid md:grid-cols-[1fr_1.2fr]">
 				<div className="flex flex-col justify-center p-[clamp(40px,5vw,70px)]">
 					{props.eyebrow && (
-						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold uppercase tracking-[0.08em]">
-							<span aria-hidden className="bg-coral inline-block size-2 rounded-full" />
+						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold tracking-[0.08em] uppercase">
+							<span
+								aria-hidden
+								className="bg-coral inline-block size-2 rounded-full"
+							/>
 							{props.eyebrow}
 						</span>
 					)}
 					<RichTitle
 						title={props.title}
 						as="h2"
-						className="text-ink font-display m-0 text-[clamp(32px,4vw,52px)] font-bold leading-[1.02] -tracking-[0.025em]"
+						className="text-ink font-display m-0 text-[clamp(32px,4vw,52px)] leading-[1.02] font-bold -tracking-[0.025em]"
 					/>
 					{props.text && (
 						<p className="text-ink-2 my-6 max-w-[42ch] text-[16px]">
@@ -89,7 +103,7 @@ export default async function LocationCard(props: Props) {
 					)}
 					{mapHref && (
 						<Btn href={mapHref} variant="ink" target="_blank">
-							{props.mapLinkLabel || 'Open in Maps'}
+							{props.mapLinkLabel || labels.openInMaps}
 						</Btn>
 					)}
 				</div>
@@ -100,7 +114,7 @@ export default async function LocationCard(props: Props) {
 					) : props.mapImage ? (
 						<Img
 							image={props.mapImage}
-							alt={props.mapImage.alt ?? ''}
+							alt={props.mapImage.alt || undefined}
 							className="size-full object-cover"
 							sizes="(min-width: 768px) 50vw, 100vw"
 						/>

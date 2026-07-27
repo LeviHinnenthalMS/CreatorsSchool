@@ -31,13 +31,14 @@ export function TextInputWithPresets({
 	suffix?: string
 	presets?: Preset[]
 } & StringInputProps<StringSchemaType>) {
+	const { onChange } = elementProps
 	const handleChange = useCallback(
 		(value: string) => {
-			elementProps.onChange({
+			onChange({
 				currentTarget: { value },
 			} as FormEvent<HTMLInputElement>)
 		},
-		[elementProps.onChange],
+		[onChange],
 	)
 
 	const [prefixWidth, setPrefixWidth] = useState(0)

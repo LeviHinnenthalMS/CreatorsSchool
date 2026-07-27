@@ -17,6 +17,15 @@ const OFFERING_FIELDS = `
 
 const OFFERING_DETAIL_FIELDS = `
 	${OFFERING_FIELDS},
+	metadata {
+		...,
+		'ogimage': image.asset->url
+	},
+	${/* language metadata is stored on the parent offering document */ ''}
+	'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+		'slug': 'angebote/' + slug.current,
+		language
+	},
 	forWhoTitle, forWhoLead,
 	forWho[]{ _key, title, text },
 	learnTitle,
@@ -63,8 +72,18 @@ export type OfferingListItem = {
 	eyebrow?: string | null
 	lede?: string | null
 	order?: number | null
-	heroImage?: { _type?: string; asset?: unknown; alt?: string | null; lqip?: string | null; assetAlt?: string | null } | null
-	facts?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
+	heroImage?: {
+		_type?: string
+		asset?: unknown
+		alt?: string | null
+		lqip?: string | null
+		assetAlt?: string | null
+	} | null
+	facts?: Array<{
+		_key?: string
+		key?: string | null
+		value?: string | null
+	}> | null
 	categories?: string[] | null
 	catalogTag?: string | null
 	decorativeLetter?: string | null
@@ -73,7 +92,11 @@ export type OfferingListItem = {
 	priceCurrency?: string | null
 	priceValue?: string | null
 	priceUnit?: string | null
-	detailRows?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
+	detailRows?: Array<{
+		_key?: string
+		key?: string | null
+		value?: string | null
+	}> | null
 }
 
 type TitleBlock = {
@@ -83,28 +106,54 @@ type TitleBlock = {
 }
 
 export type OfferingDetail = OfferingListItem & {
+	metadata?: {
+		slug?: { current?: string | null } | null
+		title?: string | null
+		description?: string | null
+		ogimage?: string | null
+		noIndex?: boolean | null
+	} | null
+	translations?: Array<{
+		slug?: string | null
+		language?: string | null
+	} | null> | null
 	forWhoTitle?: TitleBlock[] | null
 	forWhoLead?: string | null
-	forWho?: Array<{ _key?: string; title?: string | null; text?: string | null }> | null
+	forWho?: Array<{
+		_key?: string
+		title?: string | null
+		text?: string | null
+	}> | null
 	learnTitle?: TitleBlock[] | null
-	learn?: Array<{ _key?: string; icon?: string | null; title?: string | null; text?: string | null }> | null
+	learn?: Array<{
+		_key?: string
+		icon?: string | null
+		title?: string | null
+		text?: string | null
+	}> | null
 	detailsTitle?: TitleBlock[] | null
 	detailsLead?: string | null
 	priceLabel?: string | null
 	priceCurrency?: string | null
 	priceValue?: string | null
 	priceUnit?: string | null
-	detailRows?: Array<{ _key?: string; key?: string | null; value?: string | null }> | null
+	detailRows?: Array<{
+		_key?: string
+		key?: string | null
+		value?: string | null
+	}> | null
 	faqTitle?: TitleBlock[] | null
 	faqLead?: string | null
 	faq?: Array<{ _key?: string; q?: string | null; a?: string | null }> | null
 }
 
 export async function getOfferings(lang: string) {
-	return (await fetchSanityLive<OfferingListItem[]>({
-		query: OFFERINGS_BY_LANG_QUERY,
-		params: { lang },
-	})) || []
+	return (
+		(await fetchSanityLive<OfferingListItem[]>({
+			query: OFFERINGS_BY_LANG_QUERY,
+			params: { lang },
+		})) || []
+	)
 }
 
 export async function getOfferingBySlug(slug: string, lang: string) {
@@ -157,15 +206,21 @@ export type ScheduleSlotResult = {
 		_id: string
 		name?: string | null
 		role?: string | null
-		photo?: { asset?: unknown; alt?: string | null; lqip?: string | null } | null
+		photo?: {
+			asset?: unknown
+			alt?: string | null
+			lqip?: string | null
+		} | null
 	} | null
 }
 
 export async function getSchedule(lang: string) {
-	return (await fetchSanityLive<ScheduleSlotResult[]>({
-		query: SCHEDULE_BY_LANG_QUERY,
-		params: { lang },
-	})) || []
+	return (
+		(await fetchSanityLive<ScheduleSlotResult[]>({
+			query: SCHEDULE_BY_LANG_QUERY,
+			params: { lang },
+		})) || []
+	)
 }
 
 // ── Gallery ──────────────────────────────────────────────
@@ -187,10 +242,12 @@ export type GalleryItem = {
 }
 
 export async function getGallery(lang: string) {
-	return (await fetchSanityLive<GalleryItem[]>({
-		query: GALLERY_BY_LANG_QUERY,
-		params: { lang },
-	})) || []
+	return (
+		(await fetchSanityLive<GalleryItem[]>({
+			query: GALLERY_BY_LANG_QUERY,
+			params: { lang },
+		})) || []
+	)
 }
 
 // ── Performances ─────────────────────────────────────────
@@ -266,10 +323,12 @@ export type JobDoc = {
 }
 
 export async function getJobs(lang: string) {
-	return (await fetchSanityLive<JobDoc[]>({
-		query: JOBS_BY_LANG_QUERY,
-		params: { lang },
-	})) || []
+	return (
+		(await fetchSanityLive<JobDoc[]>({
+			query: JOBS_BY_LANG_QUERY,
+			params: { lang },
+		})) || []
+	)
 }
 
 // ── Event badge from siteSettings (links to featured performance) ──

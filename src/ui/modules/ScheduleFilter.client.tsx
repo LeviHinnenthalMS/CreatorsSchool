@@ -59,7 +59,7 @@ export default function ScheduleFilter({
 	const visible = slots.filter((s) => matches(s, active))
 
 	const Filters = (
-		<div className="bg-paper border-line shadow-sm flex w-fit flex-wrap gap-2 rounded-full border p-2">
+		<div className="bg-paper border-line flex w-fit flex-wrap gap-2 rounded-full border p-2 shadow-sm">
 			{filters.map((f) => (
 				<button
 					key={f}
@@ -107,10 +107,10 @@ export default function ScheduleFilter({
 						return (
 							<div key={d}>
 								<div className="border-line-2 mb-4.5 flex items-baseline gap-5 border-b-2 border-dashed pb-4">
-									<div className="text-ink font-display text-[clamp(36px,4.5vw,56px)] font-bold leading-none -tracking-[0.03em]">
+									<h2 className="text-ink font-display m-0 text-[clamp(36px,4.5vw,56px)] leading-none font-bold -tracking-[0.03em]">
 										<span className="text-coral font-medium italic">{it}</span>
 										{rest}
-									</div>
+									</h2>
 									<span className="bg-paper-2 border-line text-ink-2 ml-auto rounded-full border px-3.5 py-1.5 text-[13px] font-semibold">
 										{list.length}
 									</span>
@@ -138,7 +138,7 @@ export default function ScheduleFilter({
 		<>
 			<div className="mb-7">{Filters}</div>
 
-			<div className="bg-paper border-line overflow-hidden rounded-panel border">
+			<div className="bg-paper border-line rounded-panel overflow-hidden border">
 				{visible.length === 0 && (
 					<div className="text-mute px-7 py-12 text-center text-[15px]">
 						{emptyText || 'Keine Termine für diesen Filter.'}
@@ -179,7 +179,11 @@ function SlotRow({
 				: 'bg-coral-tint text-coral-deep'
 
 	const bereichBar =
-		bereich === 'tanz' ? 'bg-coral' : bereich === 'instrument' ? 'bg-ink' : 'bg-mute'
+		bereich === 'tanz'
+			? 'bg-coral'
+			: bereich === 'instrument'
+				? 'bg-ink'
+				: 'bg-mute'
 
 	const Wrapper: 'a' | 'div' = href ? 'a' : 'div'
 	const wrapperProps = href ? { href } : {}
@@ -188,17 +192,19 @@ function SlotRow({
 		return (
 			<Wrapper
 				{...wrapperProps}
-				className="border-line hover:bg-paper-2 grid grid-cols-[14px_1fr_70px] items-center gap-3.5 border-b px-4.5 py-4.5 text-ink no-underline last:border-b-0 md:grid-cols-[56px_1.7fr_1fr_1fr_100px] md:gap-6 md:px-7 md:py-5"
+				className="border-line hover:bg-paper-2 text-ink grid grid-cols-[14px_1fr_70px] items-center gap-3.5 border-b px-4.5 py-4.5 no-underline last:border-b-0 md:grid-cols-[56px_1.7fr_1fr_1fr_100px] md:gap-6 md:px-7 md:py-5"
 			>
-				<span className={cn('h-9 w-1.5 justify-self-center rounded', bereichBar)} />
-				<div className="text-ink font-display text-[18px] font-semibold leading-tight -tracking-[0.01em]">
+				<span
+					className={cn('h-9 w-1.5 justify-self-center rounded', bereichBar)}
+				/>
+				<h3 className="text-ink font-display m-0 text-[18px] leading-tight font-semibold -tracking-[0.01em]">
 					{slot.name}
 					{slot.ageRange && (
 						<span className="text-mute font-body mt-0.5 block text-[13.5px] font-medium">
 							{ageLabel(slot)}
 						</span>
 					)}
-				</div>
+				</h3>
 				<span className="text-mute hidden text-[14px] md:block">
 					<strong className="text-ink font-semibold">
 						{(slot.weekday || '').toString().toUpperCase()}
@@ -206,16 +212,24 @@ function SlotRow({
 					· {slot.time}
 				</span>
 				<span className="text-mute hidden text-[14px] md:block">
-					{slot.room && <strong className="text-ink font-semibold">{slot.room}</strong>}
+					{slot.room && (
+						<strong className="text-ink font-semibold">{slot.room}</strong>
+					)}
 					{slot.teacher?.name && ` · ${slot.teacher.name}`}
 				</span>
 				<span
 					className={cn(
-						'justify-self-end rounded-full px-3 py-1.5 text-[11.5px] font-bold uppercase tracking-[0.06em]',
-						bereich === 'tanz' ? 'bg-blush text-coral-deep' : 'bg-paper-2 text-charcoal border-line border',
+						'justify-self-end rounded-full px-3 py-1.5 text-[11.5px] font-bold tracking-[0.06em] uppercase',
+						bereich === 'tanz'
+							? 'bg-blush text-coral-deep'
+							: 'bg-paper-2 text-charcoal border-line border',
 					)}
 				>
-					{bereich === 'tanz' ? 'Tanz' : bereich === 'instrument' ? 'Instrument' : 'Musik'}
+					{bereich === 'tanz'
+						? 'Tanz'
+						: bereich === 'instrument'
+							? 'Instrument'
+							: 'Musik'}
 				</span>
 			</Wrapper>
 		)
@@ -225,13 +239,13 @@ function SlotRow({
 	return (
 		<Wrapper
 			{...wrapperProps}
-			className="bg-paper border-line hover:border-coral grid grid-cols-[80px_1fr_80px] items-center gap-3.5 rounded-card-sm border px-4.5 py-4 text-ink no-underline transition-[transform,border-color] duration-300 hover:translate-x-1 lg:grid-cols-[130px_80px_1fr_200px_200px_90px] lg:gap-4.5 lg:px-6 lg:py-5.5"
+			className="bg-paper border-line hover:border-coral rounded-card-sm text-ink grid grid-cols-[80px_1fr_80px] items-center gap-3.5 border px-4.5 py-4 no-underline transition-[transform,border-color] duration-300 hover:translate-x-1 lg:grid-cols-[130px_80px_1fr_200px_200px_90px] lg:gap-4.5 lg:px-6 lg:py-5.5"
 		>
 			<div className="flex flex-col items-start gap-0.5">
-				<span className="font-display text-[18px] font-bold leading-none -tracking-[0.02em] lg:text-[24px]">
+				<span className="font-display text-[18px] leading-none font-bold -tracking-[0.02em] lg:text-[24px]">
 					{slot.time}
 				</span>
-				<span className="text-mute mt-1 text-[12px] uppercase tracking-[0.06em]">
+				<span className="text-mute mt-1 text-[12px] tracking-[0.06em] uppercase">
 					{slot.duration}
 				</span>
 			</div>
@@ -247,17 +261,25 @@ function SlotRow({
 					)}
 				>
 					<Icon
-						name={bereich === 'tanz' ? 'dance' : bereich === 'instrument' ? 'smile' : 'music'}
+						name={
+							bereich === 'tanz'
+								? 'dance'
+								: bereich === 'instrument'
+									? 'smile'
+									: 'music'
+						}
 						size={22}
 					/>
 				</span>
 			</div>
 			<div>
-				<h3 className="font-display m-0 text-[20px] font-bold leading-tight -tracking-[0.015em]">
+				<h3 className="font-display m-0 text-[20px] leading-tight font-bold -tracking-[0.015em]">
 					{slot.name}
 				</h3>
 				<div className="text-mute mt-1 flex flex-wrap gap-3.5 text-[13px]">
-					{slot.ageRange && <span className="text-coral font-semibold">{slot.ageRange}</span>}
+					{slot.ageRange && (
+						<span className="text-coral font-semibold">{slot.ageRange}</span>
+					)}
 					{slot.subInfo && <span>{slot.subInfo}</span>}
 				</div>
 			</div>
@@ -281,18 +303,22 @@ function SlotRow({
 				{slot.room && (
 					<span>
 						<strong className="block font-semibold">{slot.room}</strong>
-						{slot.floor && <span className="text-mute text-[12px]">{slot.floor}</span>}
+						{slot.floor && (
+							<span className="text-mute text-[12px]">{slot.floor}</span>
+						)}
 					</span>
 				)}
 			</div>
 			<div className="text-right">
 				<span
 					className={cn(
-						'inline-block rounded-full px-3 py-1.5 text-[11.5px] font-semibold uppercase tracking-[0.04em]',
+						'inline-block rounded-full px-3 py-1.5 text-[11.5px] font-semibold tracking-[0.04em] uppercase',
 						statusBg,
 					)}
 				>
-					{slot.statusLabel ? stegaClean(slot.statusLabel) : statusLabels[status]}
+					{slot.statusLabel
+						? stegaClean(slot.statusLabel)
+						: statusLabels[status]}
 				</span>
 				{slot.capacity && (
 					<div className="text-mute mt-1.5 text-[12px]">{slot.capacity}</div>

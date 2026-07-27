@@ -32,7 +32,7 @@ export default defineType({
 		prepare: ({ title, subtitle, ic0n, image }) => ({
 			title: title || 'Feature',
 			subtitle,
-			media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} /> : image,
+			media: ic0n ? <img src={`https://ic0n.dev/${ic0n}`} alt="" /> : image,
 		}),
 	},
 })

@@ -14,7 +14,10 @@ import { DEFAULT_LANG } from './i18n'
 
 type LabelMap<T extends Record<string, string>> = Record<Lang, T>
 
-function pick<T extends Record<string, string>>(map: LabelMap<T>, lang: string): T {
+function pick<T extends Record<string, string>>(
+	map: LabelMap<T>,
+	lang: string,
+): T {
 	return lang in map ? map[lang as Lang] : map[DEFAULT_LANG]
 }
 
@@ -23,10 +26,16 @@ const COMMON_LABELS = {
 	de: {
 		readMore: 'Mehr lesen',
 		close: 'Schließen',
+		music: 'Musik',
+		dance: 'Tanz',
+		openInMaps: 'In Google Maps öffnen',
 	},
 } as const satisfies LabelMap<{
 	readMore: string
 	close: string
+	music: string
+	dance: string
+	openInMaps: string
 }>
 
 export const commonLabels = (lang: string) => pick(COMMON_LABELS, lang)

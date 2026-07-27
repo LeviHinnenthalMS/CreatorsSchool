@@ -36,6 +36,7 @@ export default defineType({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',
+			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'language',
@@ -65,7 +66,7 @@ export default defineType({
 				(slug === 'index' && VscHome) ||
 				(slug === '404' && VscQuestion) ||
 				(slug === 'search' && VscSearch) ||
-(slug.startsWith('docs') && VscMortarBoard) ||
+				(slug.startsWith('docs') && VscMortarBoard) ||
 				(noindex && VscEyeClosed),
 		}),
 	},

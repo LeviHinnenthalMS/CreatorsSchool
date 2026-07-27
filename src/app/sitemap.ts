@@ -6,14 +6,17 @@ import { BASE_URL } from '@/lib/env'
 
 type RawEntry = MetadataRoute.Sitemap[number] & {
 	language?: string | null
-	alternates?: Array<{ language?: string | null; url?: string | null } | null> | null
+	alternates?: Array<{
+		language?: string | null
+		url?: string | null
+	} | null> | null
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const data = await fetchSanityLive<Record<string, RawEntry[]>>({
 		query: SITEMAP_QUERY,
 		params: {
-			baseUrl: process.env.NEXT_PUBLIC_BASE_URL + '/',
+			baseUrl: `${BASE_URL.replace(/\/$/, '')}/`,
 			defaultLang: DEFAULT_LANG,
 		},
 	})
@@ -24,7 +27,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			const langs = [
 				...(alternates ?? []),
 				language && entry.url ? { language, url: entry.url } : null,
-			].filter((a): a is { language: string; url: string } => !!a?.language && !!a?.url)
+			].filter(
+				(a): a is { language: string; url: string } =>
+					!!a?.language && !!a?.url,
+			)
 
 			if (!langs.length) return entry
 
@@ -40,12 +46,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			}
 		})
 
+	const blogPosts = data.blogPosts ?? []
 	return [
 		...entries,
-		{
-			url: `${BASE_URL}/blog`,
-			changeFrequency: 'weekly',
-			priority: 0.7,
-		},
+		...(blogPosts.length
+			? [
+					{
+						url: `${BASE_URL}/blog`,
+						changeFrequency: 'weekly',
+						priority: 0.7,
+					} as const,
+				]
+			: []),
 	]
 }
