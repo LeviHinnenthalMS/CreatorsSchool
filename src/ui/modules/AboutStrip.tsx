@@ -1,12 +1,17 @@
 import moduleProps from '@/lib/moduleProps'
+import { cn } from '@/lib/utils'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
 import CTAs from '@/ui/creators/CTAs'
+import { Img } from '@/ui/Img'
 import { stegaClean } from 'next-sanity'
-import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
+import type { SanityCTA, SanityImage, SanityModule } from '@/sanity/typeHelpers'
 
 type Stat = { _key?: string; value?: string | null; label?: string | null }
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -20,29 +25,38 @@ type Props = SanityModule & {
 		lastName?: string | null
 		role?: string | null
 		quote?: string | null
+		backgroundImage?: SanityImage | null
+		backgroundImageOpacity?: number | null
 	} | null
 }
 
 export default function AboutStrip(props: Props) {
 	const { profile } = props
+	const hasBackgroundImage = Boolean(profile?.backgroundImage?.asset)
+	const cleanedOverlayOpacity = stegaClean(profile?.backgroundImageOpacity)
+	const overlayOpacity =
+		typeof cleanedOverlayOpacity === 'number'
+			? Math.min(Math.max(cleanedOverlayOpacity, 10), 60) / 100
+			: 0.35
+
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink text-paper relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
+			className="bg-ink text-paper rounded-band relative mx-[clamp(20px,3.5vw,48px)] mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] overflow-hidden py-[clamp(40px,4vw,64px)]"
 		>
 			<span
 				aria-hidden
 				className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_45%_at_calc(100%+5%)_-5%,rgba(207,28,32,0.38),transparent)]"
 			/>
 			<div className="wrap relative z-10">
-				<div className="grid items-center gap-8 md:gap-14 md:grid-cols-2">
+				<div className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
 					<div>
 						{props.eyebrow && <Eyebrow tone="blush">{props.eyebrow}</Eyebrow>}
 						<RichTitle
 							title={props.title}
 							as="h2"
 							tone="blush"
-							className="text-paper mt-4 font-display text-[clamp(34px,4.2vw,58px)] font-semibold leading-[1.04] -tracking-[0.02em]"
+							className="text-paper font-display mt-4 text-[clamp(34px,4.2vw,58px)] leading-[1.04] font-semibold -tracking-[0.02em]"
 						/>
 						{props.body && (
 							<p className="text-paper/70 mt-6 max-w-[50ch] text-[16.5px] leading-relaxed">
@@ -50,16 +64,16 @@ export default function AboutStrip(props: Props) {
 							</p>
 						)}
 						{props.stats && props.stats.length > 0 && (
-							<div className="max-sm:flex max-sm:flex-wrap mt-7 grid grid-cols-3 gap-2.5">
+							<div className="mt-7 grid grid-cols-3 gap-2.5 max-sm:flex max-sm:flex-wrap">
 								{props.stats.map((s, i) => (
 									<div
 										key={s._key ?? i}
 										className="rounded-[20px] border border-white/10 bg-white/[0.03] p-5"
 									>
-										<div className="text-paper font-display text-[30px] font-semibold leading-none -tracking-[0.015em]">
+										<div className="text-paper font-display text-[30px] leading-none font-semibold -tracking-[0.015em]">
 											{s.value}
 										</div>
-										<div className="text-paper/55 mt-2.5 text-[12px] uppercase tracking-[0.04em]">
+										<div className="text-paper/55 mt-2.5 text-[12px] tracking-[0.04em] uppercase">
 											{s.label}
 										</div>
 									</div>
@@ -76,11 +90,36 @@ export default function AboutStrip(props: Props) {
 					</div>
 
 					{profile && (
-						<div className="from-coral to-coral-deep relative flex md:min-h-[480px] h-full flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 bg-gradient-to-br p-6 md:p-9">
-							<span
-								aria-hidden
-								className="pointer-events-none absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.12)_1.5px,transparent_1.5px)] [background-size:24px_24px] [mask-image:radial-gradient(80%_80%_at_50%_50%,black,transparent)]"
-							/>
+						<div
+							className={cn(
+								'relative flex h-full flex-col justify-between overflow-hidden rounded-[32px] border border-white/15 p-6 md:min-h-[480px] md:p-9',
+								hasBackgroundImage
+									? 'bg-ink'
+									: 'from-coral to-coral-deep bg-gradient-to-br',
+							)}
+						>
+							{hasBackgroundImage && (
+								<>
+									<Img
+										image={profile.backgroundImage}
+										decorative
+										width={1200}
+										sizes="(max-width: 767px) calc(100vw - 80px), 50vw"
+										className="pointer-events-none absolute inset-0 size-full object-cover"
+									/>
+									<span
+										aria-hidden
+										className="pointer-events-none absolute inset-0 bg-black"
+										style={{ opacity: overlayOpacity }}
+									/>
+								</>
+							)}
+							{!hasBackgroundImage && (
+								<span
+									aria-hidden
+									className="pointer-events-none absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.12)_1.5px,transparent_1.5px)] [mask-image:radial-gradient(80%_80%_at_50%_50%,black,transparent)] [background-size:24px_24px]"
+								/>
+							)}
 							<div className="relative z-10">
 								{profile.tags && profile.tags.length > 0 && (
 									<div className="flex flex-wrap gap-2">
@@ -96,7 +135,7 @@ export default function AboutStrip(props: Props) {
 								)}
 							</div>
 							<div className="relative z-10">
-								<h3 className="text-paper font-display m-0 text-[clamp(40px,5vw,60px)] font-semibold leading-[0.98] -tracking-[0.02em]">
+								<h3 className="text-paper font-display m-0 text-[clamp(40px,5vw,60px)] leading-[0.98] font-semibold -tracking-[0.02em]">
 									{profile.firstName}
 									{profile.lastName && (
 										<>
@@ -108,13 +147,13 @@ export default function AboutStrip(props: Props) {
 									)}
 								</h3>
 								{profile.role && (
-									<div className="text-paper/85 mt-2.5 text-[13px] uppercase tracking-[0.04em]">
+									<div className="text-paper/85 mt-2.5 text-[13px] tracking-[0.04em] uppercase">
 										{profile.role}
 									</div>
 								)}
 								{profile.quote && (
-									<p className="text-paper font-display mt-6 max-w-[40ch] text-[18px] font-normal italic leading-snug">
-										<span className="text-blush font-display text-[40px] md:text-[60px] leading-[0.4] -tracking-[0.01em] mr-2 align-text-bottom italic">
+									<p className="text-paper font-display mt-6 max-w-[40ch] text-[18px] leading-snug font-normal italic">
+										<span className="text-blush font-display mr-2 align-text-bottom text-[40px] leading-[0.4] -tracking-[0.01em] italic md:text-[60px]">
 											&ldquo;
 										</span>
 										{profile.quote}

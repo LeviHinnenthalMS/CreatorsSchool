@@ -44,7 +44,7 @@ export const structure = structureTool({
 				group(S, 'Creators School', [
 					languageList(S, 'offering', 'Offerings').icon(GoNote),
 					languageList(S, 'scheduleSlot', 'Schedule').icon(VscCalendar),
-					languageList(S, 'galleryImage', 'Gallery').icon(VscDeviceCamera),
+					singleton(S, 'gallery', 'Gallery').icon(VscDeviceCamera),
 					languageList(S, 'performance', 'Performances').icon(VscMegaphone),
 					languageList(S, 'teacher', 'Teachers').icon(GoPerson),
 					languageList(S, 'job', 'Jobs').icon(VscBriefcase),

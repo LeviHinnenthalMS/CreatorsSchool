@@ -59,7 +59,7 @@ export default function LinkList({
 						// desktop: floating card
 						'lg:rounded-2xl lg:border lg:border-line lg:p-3 lg:shadow-xl lg:min-w-80 lg:gap-1',
 						// mobile: flat inline list, indented with left accent
-						'max-lg:pl-4 max-lg:border-l-2 max-lg:border-coral/25 max-lg:ml-1 max-lg:mb-2 max-lg:gap-0',
+						'max-lg:pl-4 max-lg:border-coral/25 max-lg:ml-1 max-lg:mb-2 max-lg:gap-0',
 					)}
 				>
 					{links?.map((sublink, key) => (

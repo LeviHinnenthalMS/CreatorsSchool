@@ -1,6 +1,7 @@
 import { groq } from 'next-sanity'
 import { fetchSanityLive } from './fetch'
 import { IMAGE_QUERY, LINK_QUERY } from './queries'
+import type { SanityImage } from '../typeHelpers'
 
 const OFFERING_FIELDS = `
 	_id, _type, title, language,
@@ -226,16 +227,33 @@ export async function getSchedule(lang: string) {
 // ── Gallery ──────────────────────────────────────────────
 
 export const GALLERY_BY_LANG_QUERY = groq`
-	*[_type == 'galleryImage' && language == $lang] | order(order asc){
-		_id,
-		image{ ${IMAGE_QUERY} },
-		caption, bereich, span
+	*[_type == 'gallery' && _id == 'gallery'][0].images[]{
+		'_id': _key,
+		'image': select(asset->_type == 'sanity.imageAsset' => {
+			'_type': _type,
+			asset,
+			crop,
+			hotspot,
+			'lqip': asset->metadata.lqip,
+			'assetAlt': asset->altText
+		}),
+		'videoUrl': select(asset->_type == 'sanity.fileAsset' => asset->url),
+		'mimeType': select(asset->_type == 'sanity.fileAsset' => asset->mimeType),
+		poster{
+			${IMAGE_QUERY}
+		},
+		'caption': caption[$lang],
+		bereich,
+		span
 	}
 `
 
 export type GalleryItem = {
 	_id: string
-	image?: { asset?: unknown; alt?: string | null; lqip?: string | null } | null
+	image?: SanityImage | null
+	videoUrl?: string | null
+	mimeType?: string | null
+	poster?: SanityImage | null
 	caption?: string | null
 	bereich?: string | null
 	span?: 'normal' | 'wide' | 'tall' | 'big' | null

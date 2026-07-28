@@ -2,6 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'
 import { Img } from '@/ui/Img'
+import GalleryVideo from './GalleryVideo.client'
 import getServerLang from '@/lib/getServerLang'
 import { getGallery } from '@/sanity/lib/creators'
 import type { SanityModule } from '@/sanity/typeHelpers'
@@ -54,16 +55,38 @@ export default async function GalleryMasonry(props: Props) {
 										minHeight: span === 'tall' || span === 'big' ? 480 : 240,
 									}}
 								>
-									{g.image && (
+									{g.videoUrl ? (
+										<>
+											{g.poster?.asset && (
+												<Img
+													image={g.poster}
+													decorative
+													className="size-full object-cover"
+													sizes="(min-width: 1024px) 25vw, 50vw"
+												/>
+											)}
+											<GalleryVideo
+												src={g.videoUrl}
+												mimeType={g.mimeType}
+												caption={g.caption}
+												hasPoster={Boolean(g.poster?.asset)}
+											/>
+										</>
+									) : g.image ? (
 										<Img
 											image={g.image}
 											alt={g.caption || undefined}
 											className="size-full object-cover"
 											sizes="(min-width: 1024px) 25vw, 50vw"
 										/>
-									)}
+									) : null}
 									{g.caption && (
-										<figcaption className="bg-ink/65 text-paper absolute bottom-3 left-3.5 z-[2] rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold tracking-[0.02em] backdrop-blur-sm">
+										<figcaption
+											className={cn(
+												'bg-ink/65 text-paper absolute left-3.5 z-[2] rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold tracking-[0.02em] backdrop-blur-sm',
+												g.videoUrl ? 'top-3' : 'bottom-3',
+											)}
+										>
 											{g.caption}
 										</figcaption>
 									)}

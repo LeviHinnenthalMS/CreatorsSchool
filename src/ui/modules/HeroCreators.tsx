@@ -83,18 +83,18 @@ export default function HeroCreators(props: Props) {
 		>
 			<span
 				aria-hidden
-				className="bg-blush pointer-events-none absolute top-[8%] -left-[8%] size-[320px] rounded-full opacity-70 blur-[20px]"
+				className="bg-blush pointer-events-none absolute top-[8%] -left-[8%] size-[320px] rounded-full opacity-70 blur-[20px] max-lg:hidden"
 			/>
 			<span
 				aria-hidden
-				className="bg-warm-white pointer-events-none absolute right-[18%] -bottom-[8%] size-[280px] rounded-full opacity-90 blur-[30px]"
+				className="bg-warm-white pointer-events-none absolute right-[18%] -bottom-[8%] size-[280px] rounded-full opacity-90 blur-[30px] max-lg:hidden"
 			/>
 
 			<div className="wrap relative z-10">
-				<div className="grid items-center gap-[clamp(2rem,4vw,3.5rem)] lg:grid-cols-[1.05fr_1fr]">
-					<div>
+				<div className="grid items-center gap-[clamp(2rem,4vw,3.5rem)] max-lg:bg-ink max-lg:relative max-lg:overflow-hidden max-lg:rounded-[28px] max-lg:px-[clamp(20px,4vw,48px)] max-lg:py-[clamp(44px,7vw,72px)] lg:grid-cols-[1.05fr_1fr]">
+					<div className="max-lg:relative max-lg:z-10">
 						{eyebrow && (
-							<span className="bg-paper-2 border-line text-charcoal mb-5 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold">
+							<span className="bg-paper-2 border-line text-charcoal mb-5 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold max-lg:border-paper/25 max-lg:bg-paper/12 max-lg:text-paper max-lg:backdrop-blur-sm">
 								<span className="bg-coral inline-block size-[7px] rounded-full shadow-[0_0_0_4px_var(--color-coral-tint)]" />
 								{eyebrow}
 							</span>
@@ -103,11 +103,11 @@ export default function HeroCreators(props: Props) {
 						<RichTitle
 							title={title}
 							as="h1"
-							className="text-ink font-display m-0 text-[clamp(40px,5vw,92px)] leading-[1] font-semibold tracking-[-0.02em]"
+							className="text-ink font-display m-0 text-[clamp(40px,5vw,92px)] leading-[1] font-semibold tracking-[-0.02em] max-lg:text-paper"
 						/>
 
 						{sub && (
-							<p className="text-charcoal mt-5 max-w-[48ch] text-[clamp(15px,1.3vw,18.5px)] leading-relaxed lg:mt-7">
+							<p className="text-charcoal mt-5 max-w-[48ch] text-[clamp(15px,1.3vw,18.5px)] leading-relaxed max-lg:text-paper/85 lg:mt-7">
 								{sub}
 							</p>
 						)}
@@ -124,12 +124,12 @@ export default function HeroCreators(props: Props) {
 								<Stars />
 								<div>
 									{reviewTitle && (
-										<div className="text-ink text-[14.5px] font-semibold">
+										<div className="text-ink text-[14.5px] font-semibold max-lg:text-paper">
 											{reviewTitle}
 										</div>
 									)}
 									{reviewSubtitle && (
-										<div className="text-mute text-[12.5px]">
+										<div className="text-mute text-[12.5px] max-lg:text-paper/70">
 											{reviewSubtitle}
 										</div>
 									)}
@@ -140,21 +140,25 @@ export default function HeroCreators(props: Props) {
 
 					{/* One responsive hero image avoids duplicate eager downloads. */}
 					{image && (
-						<div className="relative mx-auto aspect-[16/10] w-full lg:aspect-[4/5] lg:min-h-[480px]">
-							<div className="from-blush to-warm-white border-line absolute inset-0 -z-10 translate-x-3.5 translate-y-3.5 rounded-[28px] border bg-gradient-to-br" />
+						<div className="relative mx-auto aspect-[4/5] min-h-[480px] w-full max-lg:absolute max-lg:inset-0 max-lg:z-0 max-lg:aspect-auto max-lg:min-h-0">
+							<div className="from-blush to-warm-white border-line absolute inset-0 -z-10 translate-x-3.5 translate-y-3.5 rounded-[28px] border bg-gradient-to-br max-lg:hidden" />
 							<div className="bg-ink absolute inset-0 overflow-hidden rounded-[28px] shadow-lg">
 								<Img
 									image={image}
-									className="size-full object-cover"
+									className="size-full object-cover max-lg:opacity-65"
 									alt={image.alt || undefined}
-									sizes="50vw"
+									sizes="(min-width: 64rem) 50vw, 100vw"
 									loading="eager"
 									fetchPriority="high"
+								/>
+								<span
+									aria-hidden
+									className="from-ink/50 via-ink/25 to-ink/15 pointer-events-none absolute inset-0 bg-gradient-to-r lg:hidden"
 								/>
 							</div>
 
 							{testimonial && quote && (
-								<div className="bg-paper border-line absolute right-[-2%] bottom-[4%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4 shadow-md">
+								<div className="bg-paper border-line absolute right-[-2%] bottom-[4%] z-10 max-w-[240px] rounded-[18px] border px-4.5 py-4 shadow-md max-lg:hidden">
 									<Stars className="mb-2.5 flex gap-0.5" />
 									<p className="text-ink text-[13px] leading-snug">„{quote}“</p>
 									{testimonial.author?.name && (

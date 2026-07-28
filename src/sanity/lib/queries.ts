@@ -93,6 +93,12 @@ export const MODULES_QUERY = `
 		personName,
 		personRole,
 	},
+	_type == 'about-strip' => {
+		profile{
+			...,
+			backgroundImage{ ${IMAGE_QUERY} }
+		}
+	},
 	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'comparison-cards' => {
 		positiveCard{

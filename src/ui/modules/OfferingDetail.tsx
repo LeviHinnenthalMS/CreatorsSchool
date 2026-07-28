@@ -63,7 +63,7 @@ export default async function OfferingDetail(props: Props) {
 			{/* page header */}
 			<section
 				{...moduleProps(props)}
-				className="relative overflow-hidden pb-[clamp(40px,5vw,70px)] pt-[calc(var(--header-height)+14px+clamp(30px,4vw,55px))]"
+				className="relative overflow-hidden pt-[calc(var(--header-height)+60px)] pb-[clamp(40px,5vw,70px)] lg:pt-[calc(var(--header-height)+74px)]"
 			>
 				<span
 					aria-hidden

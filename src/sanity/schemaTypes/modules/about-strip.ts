@@ -69,12 +69,33 @@ export default defineType({
 					type: 'text',
 					rows: 3,
 				}),
+				defineField({
+					name: 'backgroundImage',
+					title: 'Background image',
+					description:
+						'Optional decorative image behind the profile content. A dark overlay keeps the text readable.',
+					type: 'image',
+					options: { hotspot: true, metadata: ['lqip'] },
+				}),
+				defineField({
+					name: 'backgroundImageOpacity',
+					title: 'Dark overlay opacity',
+					description:
+						'Controls how much black is placed over the image. Increase it when the text needs more contrast.',
+					type: 'number',
+					initialValue: 35,
+					validation: (Rule) => Rule.min(10).max(60),
+					hidden: ({ parent }) => !parent?.backgroundImage?.asset,
+				}),
 			],
 		}),
 		defineField({ name: 'options', type: 'module-options' }),
 	],
 	preview: {
 		select: { eyebrow: 'eyebrow' },
-		prepare: ({ eyebrow }) => ({ title: eyebrow || 'About strip', subtitle: 'About strip (dark)' }),
+		prepare: ({ eyebrow }) => ({
+			title: eyebrow || 'About strip',
+			subtitle: 'About strip (dark)',
+		}),
 	},
 })

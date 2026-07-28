@@ -13,7 +13,7 @@ import offering from './documents/offering'
 import teacher from './documents/teacher'
 import performance from './documents/performance'
 import scheduleSlot from './documents/scheduleSlot'
-import galleryImage from './documents/galleryImage'
+import gallery from './documents/gallery'
 import job from './documents/job'
 import contactSubmission from './documents/contactSubmission'
 import blogPost from './documents/blog-post'
@@ -94,7 +94,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	teacher,
 	performance,
 	scheduleSlot,
-	galleryImage,
+	gallery,
 	job,
 	contactSubmission,
 	blogPost,

@@ -19,7 +19,7 @@ import { schemaTypes } from './src/sanity/schemaTypes'
 import resolveUrl from '@/lib/resolveUrl'
 import type { PageOrPost } from '@/sanity/typeHelpers'
 
-const singletonTypes = ['site']
+const singletonTypes = ['site', 'gallery']
 
 export default defineConfig({
 	title: 'Creators School',
@@ -53,7 +53,6 @@ export default defineConfig({
 				'teacher',
 				'performance',
 				'scheduleSlot',
-				'galleryImage',
 				'job',
 				'blogPost',
 			],
