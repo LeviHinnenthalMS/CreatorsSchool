@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Icon } from '@/ui/creators/Icon'
+import Button from '@/ui/Button'
 
 function hasMapsConsent(): boolean {
 	if (typeof window === 'undefined') return false
@@ -15,7 +16,13 @@ function hasMapsConsent(): boolean {
 	return val.includes('functional:yes') || val.includes('analytics:yes')
 }
 
-export default function MapEmbed({ src, title = 'Google Maps' }: { src: string; title?: string }) {
+export default function MapEmbed({
+	src,
+	title = 'Google Maps',
+}: {
+	src: string
+	title?: string
+}) {
 	const [consented, setConsented] = useState<boolean | null>(null)
 
 	useEffect(() => {
@@ -30,7 +37,7 @@ export default function MapEmbed({ src, title = 'Google Maps' }: { src: string; 
 
 	if (!consented) {
 		return (
-			<div className="grid size-full place-items-center bg-paper-3 p-8 text-center">
+			<div className="bg-paper-3 grid size-full place-items-center p-8 text-center">
 				<div className="flex flex-col items-center gap-4">
 					<span className="bg-paper border-line grid size-14 place-items-center rounded-full border">
 						<Icon name="pin" size={22} className="text-coral" />
@@ -38,12 +45,17 @@ export default function MapEmbed({ src, title = 'Google Maps' }: { src: string; 
 					<p className="text-mute max-w-[28ch] text-[14px] leading-relaxed">
 						Für die Kartenansicht sind funktionale Cookies erforderlich.
 					</p>
-					<button
-						onClick={() => (window as { revisitCkyConsent?: () => void }).revisitCkyConsent?.()}
-						className="action-base bg-ink text-paper hover:bg-ink/85"
+					<Button
+						onClick={() =>
+							(
+								window as { revisitCkyConsent?: () => void }
+							).revisitCkyConsent?.()
+						}
+						variant="ink"
+						size="action"
 					>
 						Cookie-Einstellungen
-					</button>
+					</Button>
 				</div>
 			</div>
 		)

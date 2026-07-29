@@ -13,7 +13,10 @@ type HourRow = {
 	closed?: boolean | null
 }
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -38,7 +41,7 @@ export default function OpeningHours(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink relative mx-[clamp(20px,3.5vw,48px)] mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] overflow-hidden rounded-band py-[clamp(40px,4vw,64px)]"
+			className="bg-ink rounded-band relative mx-auto mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] w-[calc(100%-clamp(40px,7vw,96px))] max-w-[1440px] overflow-hidden py-[clamp(40px,4vw,64px)]"
 		>
 			{/* Subtle red glow top-right */}
 			<span
@@ -54,7 +57,7 @@ export default function OpeningHours(props: Props) {
 						title={props.title}
 						as="h2"
 						tone="blush"
-						className="text-paper font-display m-0 mt-3 text-[clamp(34px,4.5vw,56px)] font-bold leading-[1.02] -tracking-[0.025em]"
+						className="text-paper font-display m-0 mt-3 text-[clamp(34px,4.5vw,56px)] leading-[1.02] font-bold -tracking-[0.025em]"
 					/>
 					{props.text && (
 						<p className="text-paper/45 mt-5 max-w-[40ch] text-[15px] leading-relaxed">
@@ -88,20 +91,20 @@ export default function OpeningHours(props: Props) {
 											className="bg-coral inline-block size-[7px] shrink-0 rounded-full"
 										/>
 									)}
-									<span className="font-display text-[15px] font-bold leading-none text-paper sm:text-[16px]">
+									<span className="font-display text-paper text-[15px] leading-none font-bold sm:text-[16px]">
 										{row.label}
 									</span>
 								</span>
 
 								{/* Badge — col2 row1 on mobile, col3 on sm */}
-								<span className="col-[2] row-[1] inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.07em] text-paper/80 sm:col-[3] sm:px-3.5 sm:py-1.5 sm:text-[11px]">
+								<span className="text-paper/80 col-[2] row-[1] inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-bold tracking-[0.07em] uppercase sm:col-[3] sm:px-3.5 sm:py-1.5 sm:text-[11px]">
 									{isToday ? 'Heute' : isClosed ? 'Zu' : 'Offen'}
 								</span>
 
 								{/* Time — spans both cols row2 on mobile, col2 on sm */}
 								<span
 									className={cn(
-										'col-span-2 row-[2] text-[13px] text-paper/70 sm:col-[2] sm:col-span-1 sm:row-[1] sm:text-[15px]',
+										'text-paper/70 col-span-2 row-[2] text-[13px] sm:col-[2] sm:col-span-1 sm:row-[1] sm:text-[15px]',
 										isClosed && 'italic',
 									)}
 								>

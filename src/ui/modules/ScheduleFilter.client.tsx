@@ -21,6 +21,22 @@ const WEEKDAY_FULL: Record<string, [string, string]> = {
 	so: ['So', 'nntag'],
 }
 
+function weekdayLabel(weekday?: string | null) {
+	const cleanWeekday = stegaClean(weekday ?? '')
+	const parts = WEEKDAY_FULL[cleanWeekday]
+	return parts ? parts.join('') : cleanWeekday
+}
+
+function getTodayKey() {
+	return new Intl.DateTimeFormat('de-DE', {
+		weekday: 'short',
+		timeZone: 'Europe/Berlin',
+	})
+		.format(new Date())
+		.toLowerCase()
+		.replace('.', '')
+}
+
 function matches(slot: ScheduleSlotResult, f: Filter) {
 	if (f === 'all') return true
 	const bereich = stegaClean(slot.bereich ?? '')
@@ -30,11 +46,6 @@ function matches(slot: ScheduleSlotResult, f: Filter) {
 	return cats.includes(f)
 }
 
-function statusKey(s?: string | null): 'open' | 'few' | 'full' {
-	const v = stegaClean(s ?? 'open')
-	return v === 'few' || v === 'full' ? v : 'open'
-}
-
 function ageLabel(slot: ScheduleSlotResult) {
 	return [slot.ageRange, slot.subInfo].filter(Boolean).join(' · ')
 }
@@ -42,7 +53,6 @@ function ageLabel(slot: ScheduleSlotResult) {
 export default function ScheduleFilter({
 	slots,
 	filterLabels,
-	statusLabels,
 	layout = 'preview',
 	detailHref,
 	emptyText,
@@ -55,11 +65,18 @@ export default function ScheduleFilter({
 	emptyText?: string
 }) {
 	const [active, setActive] = useState<Filter>('all')
+	const todayKey = getTodayKey()
 	const filters: Filter[] = ['all', 'musik', 'tanz', 'frueh', 'erwachsene']
 	const visible = slots.filter((s) => matches(s, active))
 
 	const Filters = (
-		<div className="bg-paper border-line flex w-fit flex-wrap gap-2 rounded-full border p-2 shadow-sm">
+		<div
+			className={cn(
+				layout === 'full'
+					? 'border-line md:bg-paper flex w-full [scrollbar-width:none] flex-nowrap gap-2 overflow-x-auto px-0.5 pb-2 md:w-fit md:flex-wrap md:overflow-visible md:rounded-full md:border md:p-2 md:shadow-sm [&::-webkit-scrollbar]:hidden'
+					: 'bg-paper border-line flex w-fit flex-wrap gap-2 rounded-full border p-2 shadow-sm',
+			)}
+		>
 			{filters.map((f) => (
 				<button
 					key={f}
@@ -67,10 +84,16 @@ export default function ScheduleFilter({
 					aria-pressed={active === f}
 					onClick={() => setActive(f)}
 					className={cn(
-						'rounded-full px-5 py-2.5 text-[13.5px] font-semibold transition-colors',
+						'shrink-0 rounded-full font-semibold transition-colors',
+						layout === 'full'
+							? 'px-4 py-2 text-[13px] md:px-5 md:py-2.5 md:text-[13.5px]'
+							: 'px-5 py-2.5 text-[13.5px]',
 						active === f
 							? 'bg-ink text-paper'
 							: 'text-ink-2 hover:bg-paper-2 bg-transparent',
+						layout === 'full' &&
+							active !== f &&
+							'bg-paper ring-line ring-1 ring-inset md:bg-transparent md:ring-0',
 					)}
 				>
 					{filterLabels[f]}
@@ -89,44 +112,74 @@ export default function ScheduleFilter({
 			{},
 		)
 		const order = ['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so']
-		const days = order.filter((d) => byDay[d]?.length)
+		const scheduledDays = new Set(
+			slots.map((slot) => stegaClean(slot.weekday || 'mo')),
+		)
+		const days = order.filter((d) => scheduledDays.has(d))
 
 		return (
 			<>
 				<div className="mt-9">{Filters}</div>
 
-				<div className="mt-12 space-y-[clamp(32px,4vw,48px)]">
+				<div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
 					{days.length === 0 && (
-						<p className="text-mute text-center text-[15px]">
+						<p className="text-mute text-center text-[15px] md:col-span-2 xl:col-span-5">
 							{emptyText || 'Keine Termine für diesen Filter.'}
 						</p>
 					)}
 					{days.map((d) => {
-						const [it, rest] = WEEKDAY_FULL[d] || [d, '']
-						const list = byDay[d]
+						const list = byDay[d] ?? []
+						const isToday = d === todayKey
 						return (
-							<div key={d}>
-								<div className="border-line-2 mb-4.5 flex items-baseline gap-5 border-b-2 border-dashed pb-4">
-									<h2 className="text-ink font-display m-0 text-[clamp(36px,4.5vw,56px)] leading-none font-bold -tracking-[0.03em]">
-										<span className="text-coral font-medium italic">{it}</span>
-										{rest}
+							<section
+								key={d}
+								className={cn(
+									'bg-paper border-line flex min-h-40 flex-col overflow-hidden rounded-[20px] border',
+									isToday &&
+										'border-coral/40 shadow-[0_12px_32px_-26px_var(--color-coral)]',
+								)}
+							>
+								<header
+									className={cn(
+										'bg-paper-2 border-line flex items-center justify-between gap-3 border-b px-4 py-3.5',
+										isToday && 'bg-coral-tint',
+									)}
+								>
+									<h2 className="text-ink font-display m-0 flex items-center gap-2 text-[21px] leading-none font-bold -tracking-[0.02em]">
+										{isToday && (
+											<span
+												aria-hidden
+												className="bg-coral inline-block size-[7px] shrink-0 rounded-full"
+											/>
+										)}
+										{weekdayLabel(d)}
 									</h2>
-									<span className="bg-paper-2 border-line text-ink-2 ml-auto rounded-full border px-3.5 py-1.5 text-[13px] font-semibold">
-										{list.length}
+									<span
+										className={cn(
+											'bg-paper border-line text-mute rounded-full border px-2.5 py-1 text-[11.5px] font-semibold',
+											isToday &&
+												'border-coral/20 bg-paper text-coral-deep tracking-[0.05em] uppercase',
+										)}
+									>
+										{isToday ? 'Heute' : list.length}
 									</span>
+								</header>
+								<div className="flex flex-1 flex-col">
+									{list.length > 0 ? (
+										list.map((slot) => (
+											<CalendarSlot
+												key={slot._id}
+												slot={slot}
+												href={detailHref}
+											/>
+										))
+									) : (
+										<p className="text-mute m-auto px-4 py-8 text-center text-[12.5px]">
+											Keine Kurse
+										</p>
+									)}
 								</div>
-								<div className="space-y-2.5">
-									{list.map((slot) => (
-										<SlotRow
-											key={slot._id}
-											slot={slot}
-											statusLabels={statusLabels}
-											href={detailHref}
-											variant="full"
-										/>
-									))}
-								</div>
-							</div>
+							</section>
 						)
 					})}
 				</div>
@@ -145,38 +198,15 @@ export default function ScheduleFilter({
 					</div>
 				)}
 				{visible.map((slot) => (
-					<SlotRow
-						key={slot._id}
-						slot={slot}
-						statusLabels={statusLabels}
-						href={detailHref}
-						variant="preview"
-					/>
+					<SlotRow key={slot._id} slot={slot} href={detailHref} />
 				))}
 			</div>
 		</>
 	)
 }
 
-function SlotRow({
-	slot,
-	statusLabels,
-	href,
-	variant,
-}: {
-	slot: ScheduleSlotResult
-	statusLabels: StatusLabels
-	href?: string
-	variant: 'preview' | 'full'
-}) {
+function SlotRow({ slot, href }: { slot: ScheduleSlotResult; href?: string }) {
 	const bereich = stegaClean(slot.bereich ?? '')
-	const status = statusKey(slot.status)
-	const statusBg =
-		status === 'open'
-			? 'bg-warm-white text-ink-2'
-			: status === 'few'
-				? 'bg-coral-tint text-coral-deep'
-				: 'bg-coral-tint text-coral-deep'
 
 	const bereichBar =
 		bereich === 'tanz'
@@ -188,142 +218,97 @@ function SlotRow({
 	const Wrapper: 'a' | 'div' = href ? 'a' : 'div'
 	const wrapperProps = href ? { href } : {}
 
-	if (variant === 'preview') {
-		return (
-			<Wrapper
-				{...wrapperProps}
-				className="border-line hover:bg-paper-2 text-ink grid grid-cols-[14px_1fr_70px] items-center gap-3.5 border-b px-4.5 py-4.5 no-underline last:border-b-0 md:grid-cols-[56px_1.7fr_1fr_1fr_100px] md:gap-6 md:px-7 md:py-5"
-			>
-				<span
-					className={cn('h-9 w-1.5 justify-self-center rounded', bereichBar)}
-				/>
-				<h3 className="text-ink font-display m-0 text-[18px] leading-tight font-semibold -tracking-[0.01em]">
-					{slot.name}
-					{slot.ageRange && (
-						<span className="text-mute font-body mt-0.5 block text-[13.5px] font-medium">
-							{ageLabel(slot)}
-						</span>
-					)}
-				</h3>
-				<span className="text-mute hidden text-[14px] md:block">
-					<strong className="text-ink font-semibold">
-						{(slot.weekday || '').toString().toUpperCase()}
-					</strong>{' '}
-					· {slot.time}
-				</span>
-				<span className="text-mute hidden text-[14px] md:block">
-					{slot.room && (
-						<strong className="text-ink font-semibold">{slot.room}</strong>
-					)}
-					{slot.teacher?.name && ` · ${slot.teacher.name}`}
-				</span>
-				<span
-					className={cn(
-						'justify-self-end rounded-full px-3 py-1.5 text-[11.5px] font-bold tracking-[0.06em] uppercase',
-						bereich === 'tanz'
-							? 'bg-blush text-coral-deep'
-							: 'bg-paper-2 text-charcoal border-line border',
-					)}
-				>
-					{bereich === 'tanz'
-						? 'Tanz'
-						: bereich === 'instrument'
-							? 'Instrument'
-							: 'Musik'}
-				</span>
-			</Wrapper>
-		)
-	}
-
-	// full layout
 	return (
 		<Wrapper
 			{...wrapperProps}
-			className="bg-paper border-line hover:border-coral rounded-card-sm text-ink grid grid-cols-[80px_1fr_80px] items-center gap-3.5 border px-4.5 py-4 no-underline transition-[transform,border-color] duration-300 hover:translate-x-1 lg:grid-cols-[130px_80px_1fr_200px_200px_90px] lg:gap-4.5 lg:px-6 lg:py-5.5"
+			className="border-line hover:bg-paper-2 text-ink grid grid-cols-[14px_1fr_70px] items-center gap-3.5 border-b px-4.5 py-4.5 no-underline last:border-b-0 md:grid-cols-[56px_1.7fr_1fr_1fr_100px] md:gap-6 md:px-7 md:py-5"
 		>
-			<div className="flex flex-col items-start gap-0.5">
-				<span className="font-display text-[18px] leading-none font-bold -tracking-[0.02em] lg:text-[24px]">
-					{slot.time}
+			<span
+				className={cn('h-9 w-1.5 justify-self-center rounded', bereichBar)}
+			/>
+			<h3 className="text-ink font-display m-0 text-[18px] leading-tight font-semibold -tracking-[0.01em]">
+				{slot.name}
+				<span className="text-coral-deep font-body mt-1 block text-[13.5px] font-semibold md:hidden">
+					{weekdayLabel(slot.weekday)} · {slot.time} Uhr
 				</span>
-				<span className="text-mute mt-1 text-[12px] tracking-[0.06em] uppercase">
-					{slot.duration}
-				</span>
-			</div>
-			<div className="hidden size-15 place-items-center rounded-[16px] lg:grid">
-				<span
-					className={cn(
-						'grid size-15 place-items-center rounded-[16px]',
-						bereich === 'tanz'
-							? 'bg-coral text-paper'
-							: bereich === 'instrument'
-								? 'bg-ink text-paper'
-								: 'bg-coral-tint text-coral-deep',
-					)}
-				>
-					<Icon
-						name={
-							bereich === 'tanz'
-								? 'dance'
-								: bereich === 'instrument'
-									? 'smile'
-									: 'music'
-						}
-						size={22}
-					/>
-				</span>
-			</div>
-			<div>
-				<h3 className="font-display m-0 text-[20px] leading-tight font-bold -tracking-[0.015em]">
-					{slot.name}
-				</h3>
-				<div className="text-mute mt-1 flex flex-wrap gap-3.5 text-[13px]">
-					{slot.ageRange && (
-						<span className="text-coral font-semibold">{slot.ageRange}</span>
-					)}
-					{slot.subInfo && <span>{slot.subInfo}</span>}
-				</div>
-			</div>
-			<div className="hidden items-center gap-2.5 lg:flex">
-				{slot.teacher?.name && (
-					<>
-						<div className="bg-paper-2 border-line font-display grid size-9 place-items-center rounded-full border text-[14px] font-bold">
-							{slot.teacher.name.charAt(0)}
-						</div>
-						<div className="text-[13px] leading-tight">
-							<div className="font-semibold">{slot.teacher.name}</div>
-							{slot.teacher.role && (
-								<div className="text-mute text-[12px]">{slot.teacher.role}</div>
-							)}
-						</div>
-					</>
+				{slot.ageRange && (
+					<span className="text-mute font-body mt-0.5 block text-[13.5px] font-medium">
+						{ageLabel(slot)}
+					</span>
 				)}
-			</div>
-			<div className="text-ink-2 hidden items-center gap-2 text-[13.5px] lg:flex">
-				<Icon name="pin" size={14} className="text-mute" />
+			</h3>
+			<span className="text-mute hidden text-[14px] md:block">
+				<strong className="text-ink font-semibold">
+					{weekdayLabel(slot.weekday)}
+				</strong>{' '}
+				· {slot.time}
+			</span>
+			<span className="text-mute hidden text-[14px] md:block">
 				{slot.room && (
-					<span>
-						<strong className="block font-semibold">{slot.room}</strong>
-						{slot.floor && (
-							<span className="text-mute text-[12px]">{slot.floor}</span>
-						)}
+					<strong className="text-ink font-semibold">{slot.room}</strong>
+				)}
+				{slot.teacher?.name && ` · ${slot.teacher.name}`}
+			</span>
+			<span
+				className={cn(
+					'justify-self-end rounded-full px-3 py-1.5 text-[11.5px] font-bold tracking-[0.06em] uppercase',
+					bereich === 'tanz'
+						? 'bg-blush text-coral-deep'
+						: 'bg-paper-2 text-charcoal border-line border',
+				)}
+			>
+				{bereich === 'tanz'
+					? 'Tanz'
+					: bereich === 'instrument'
+						? 'Instrument'
+						: 'Musik'}
+			</span>
+		</Wrapper>
+	)
+}
+
+function CalendarSlot({
+	slot,
+	href,
+}: {
+	slot: ScheduleSlotResult
+	href?: string
+}) {
+	const Wrapper: 'a' | 'div' = href ? 'a' : 'div'
+	const wrapperProps = href ? { href } : {}
+
+	return (
+		<Wrapper
+			{...wrapperProps}
+			className="border-line text-ink hover:bg-paper-2 block border-b px-4 py-3.5 no-underline transition-colors last:border-b-0"
+		>
+			<div className="flex items-baseline justify-between gap-3">
+				<time className="font-display text-[18px] leading-none font-bold -tracking-[0.02em]">
+					{slot.time}
+				</time>
+				{slot.duration && (
+					<span className="text-mute text-[10.5px] font-semibold tracking-[0.05em] uppercase">
+						{slot.duration}
 					</span>
 				)}
 			</div>
-			<div className="text-right">
-				<span
-					className={cn(
-						'inline-block rounded-full px-3 py-1.5 text-[11.5px] font-semibold tracking-[0.04em] uppercase',
-						statusBg,
-					)}
-				>
-					{slot.statusLabel
-						? stegaClean(slot.statusLabel)
-						: statusLabels[status]}
-				</span>
-				{slot.capacity && (
-					<div className="text-mute mt-1.5 text-[12px]">{slot.capacity}</div>
-				)}
-			</div>
+			<h3 className="font-display mt-2.5 text-[16px] leading-tight font-bold -tracking-[0.01em]">
+				{slot.name}
+			</h3>
+			{(slot.ageRange || slot.subInfo) && (
+				<p className="text-coral-deep mt-1 text-[12px] font-semibold">
+					{ageLabel(slot)}
+				</p>
+			)}
+			{(slot.room || slot.teacher?.name) && (
+				<div className="text-mute mt-2 flex items-center gap-1.5 text-[11.5px]">
+					<Icon name="pin" size={12} />
+					<span>
+						{slot.room}
+						{slot.teacher?.name && ` · ${slot.teacher.name}`}
+					</span>
+				</div>
+			)}
 		</Wrapper>
 	)
 }

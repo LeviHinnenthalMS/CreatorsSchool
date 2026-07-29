@@ -32,12 +32,14 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'caption',
-							title: 'Caption / Alt text',
+							title: 'Alt text',
 							type: 'localizedString',
 							description:
-								'Describe the image for screen readers. This is also shown as the image caption.',
+								'Describe the image for screen readers. This text is not shown on the website.',
 							validation: (Rule) =>
-								Rule.required().error('Caption is required for accessibility.'),
+								Rule.required().error(
+									'Alt text is required for accessibility.',
+								),
 						}),
 						defineField({
 							name: 'bereich',

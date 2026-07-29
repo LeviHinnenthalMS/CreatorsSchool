@@ -47,13 +47,13 @@ export default async function Header() {
 	const eventBadgeActive = site.eventBadge?.active !== false
 
 	return (
-		<Wrapper className="z-100 fixed inset-x-0 top-0 lg:top-3.5 lg:px-2">
+		<Wrapper className="z-100 fixed inset-x-0 top-0">
 			<div
 				className={cn(
 					css.header,
 					'border-line bg-paper shadow-sm',
 					'max-lg:flex max-lg:max-h-[100dvh] max-lg:w-full max-lg:flex-col max-lg:border-b',
-					'lg:mx-auto lg:max-w-wrap lg:items-center lg:gap-x-4 lg:rounded-pill lg:border lg:pl-6 lg:pr-3 lg:h-15',
+					'lg:mx-auto lg:max-w-wrap lg:items-center lg:gap-x-4 lg:rounded-b-[24px] lg:border-x lg:border-b lg:pl-6 lg:pr-3 lg:h-[70px]',
 				)}
 			>
 				<div className="max-lg:relative max-lg:z-10 max-lg:flex max-lg:h-18 max-lg:shrink-0 max-lg:items-center max-lg:gap-x-4 max-lg:bg-paper max-lg:px-5 lg:contents">

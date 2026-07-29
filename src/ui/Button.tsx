@@ -2,11 +2,19 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import type { ComponentProps, ReactNode } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'pill' | 'pill-dark'
-export type ButtonSize = 'small' | 'medium' | 'large'
+export type ButtonVariant =
+	| 'primary'
+	| 'secondary'
+	| 'tertiary'
+	| 'pill'
+	| 'pill-dark'
+	| 'ink'
+	| 'blush'
+	| 'paper-outline'
+export type ButtonSize = 'small' | 'medium' | 'large' | 'action'
 
 const base =
-	'inline-flex items-center justify-center whitespace-nowrap rounded-button font-semibold ' +
+	'group/btn inline-flex items-center justify-center whitespace-nowrap rounded-button font-semibold ' +
 	'transition-[background-color,color,border-color] duration-150 motion-reduce:transition-none ' +
 	'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ' +
 	'disabled:pointer-events-none disabled:opacity-50 select-none'
@@ -17,9 +25,13 @@ const variants: Record<ButtonVariant, string> = {
 	secondary:
 		'bg-canvas text-ink border-2 border-border-strong hover:bg-canvas-muted',
 	tertiary:
-		'bg-transparent text-ink border-2 border-transparent hover:bg-canvas-muted',
+		'bg-canvas text-ink border-2 border-transparent hover:bg-canvas-muted',
 	pill: 'bg-canvas text-ink border-2 border-line gap-0 pr-1 hover:bg-canvas-muted',
 	'pill-dark': 'bg-ink text-ink-inverse gap-0 pr-1 hover:bg-ink/85',
+	ink: 'bg-ink text-paper border-2 border-ink hover:bg-ink/85',
+	blush: 'bg-blush text-plum border-2 border-blush hover:bg-paper',
+	'paper-outline':
+		'bg-transparent text-paper border-2 border-paper/40 hover:bg-paper hover:text-ink',
 }
 
 const sizes: Record<ButtonSize, string> = {
@@ -29,12 +41,25 @@ const sizes: Record<ButtonSize, string> = {
 		'gap-[var(--btn-gap)] px-[var(--btn-md-px)] py-[var(--btn-md-py)] text-[length:var(--btn-md-text)] leading-[var(--btn-md-leading)]',
 	large:
 		'gap-[var(--btn-gap)] px-[var(--btn-lg-px)] py-[var(--btn-lg-py)] text-[length:var(--btn-lg-text)] leading-[var(--btn-lg-leading)]',
+	action: 'min-h-11 gap-3 px-[1.1rem] py-3 text-[15px] leading-none',
 }
 
 const iconSizes: Record<ButtonSize, string> = {
 	small: 'var(--btn-sm-icon-size)',
 	medium: 'var(--btn-icon-size)',
 	large: 'var(--btn-icon-size)',
+	action: 'var(--btn-icon-size)',
+}
+
+const arrowColors: Record<ButtonVariant, string> = {
+	primary: 'bg-canvas text-accent',
+	secondary: 'bg-accent text-ink-inverse',
+	tertiary: 'bg-ink text-paper',
+	pill: 'bg-accent text-ink-inverse',
+	'pill-dark': 'bg-canvas text-ink',
+	ink: 'bg-coral-soft text-ink',
+	blush: 'bg-plum text-blush',
+	'paper-outline': 'bg-paper text-ink',
 }
 
 function ButtonIcon({
@@ -51,7 +76,7 @@ function ButtonIcon({
 			src={src}
 			alt=""
 			aria-hidden
-			className="shrink-0 block w-auto"
+			className="block w-auto shrink-0"
 			style={{ height: height ? `${height}px` : defaultHeight }}
 		/>
 	)
@@ -64,6 +89,7 @@ type StyleProps = {
 	iconAspectRatio?: number
 	iconHeight?: number
 	iconPosition?: 'leading' | 'trailing'
+	withArrow?: boolean
 	className?: string
 	children?: ReactNode
 }
@@ -86,6 +112,7 @@ export default function Button({
 	iconAspectRatio,
 	iconHeight,
 	iconPosition = 'leading',
+	withArrow = false,
 	className,
 	children,
 	...rest
@@ -110,16 +137,49 @@ export default function Button({
 					defaultHeight={defaultIconHeight}
 				/>
 			)}
+			{withArrow && variant !== 'pill' && variant !== 'pill-dark' && (
+				<span
+					aria-hidden
+					className={cn(
+						'ml-1 grid size-7 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover/btn:-rotate-45',
+						arrowColors[variant],
+					)}
+				>
+					<svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+						<path
+							d="M3 8h10M9 4l4 4-4 4"
+							stroke="currentColor"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</span>
+			)}
 			{(variant === 'pill' || variant === 'pill-dark') && (
 				<span
 					aria-hidden
 					className={cn(
-						'ml-3 shrink-0 flex items-center justify-center size-9 rounded-full',
-						variant === 'pill' ? 'bg-accent text-ink-inverse' : 'bg-canvas text-ink',
+						'ml-3 flex size-9 shrink-0 items-center justify-center rounded-full',
+						variant === 'pill'
+							? 'bg-accent text-ink-inverse'
+							: 'bg-canvas text-ink',
 					)}
 				>
-					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-						<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 16 16"
+						fill="none"
+						aria-hidden
+					>
+						<path
+							d="M3 8h10M9 4l4 4-4 4"
+							stroke="currentColor"
+							strokeWidth="1.75"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
 					</svg>
 				</span>
 			)}
@@ -149,7 +209,11 @@ export default function Button({
 	}
 
 	return (
-		<button type="button" className={classes} {...(rest as ComponentProps<'button'>)}>
+		<button
+			type="button"
+			className={classes}
+			{...(rest as ComponentProps<'button'>)}
+		>
 			{content}
 		</button>
 	)

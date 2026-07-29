@@ -1,12 +1,15 @@
 import moduleProps from '@/lib/moduleProps'
 import { getSite } from '@/sanity/lib/queries'
 import { Icon } from '@/ui/creators/Icon'
-import CTAs from '@/ui/creators/CTAs'
+import Button from '@/ui/Button'
+import CTAList from '@/ui/CTAList'
 import RichTitle from '@/ui/creators/RichTitle'
-import Btn from '@/ui/creators/Btn'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -38,9 +41,9 @@ export default async function CTABand(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(20px,3.5vw,48px)]"
+			className="mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] px-[clamp(20px,3.5vw,48px)]"
 		>
-			<div className="bg-coral text-paper relative grid items-center gap-10 max-sm:gap-6 overflow-hidden rounded-band p-6 md:p-[clamp(48px,6vw,80px)] md:grid-cols-[1.4fr_1fr]">
+			<div className="bg-coral text-paper rounded-band relative mx-auto grid max-w-[1440px] items-center gap-10 overflow-hidden p-6 max-sm:gap-6 md:grid-cols-[1.4fr_1fr] md:p-[clamp(48px,6vw,80px)]">
 				<span
 					aria-hidden
 					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_55%_at_110%_-10%,rgba(244,199,126,0.55),transparent)]"
@@ -52,8 +55,11 @@ export default async function CTABand(props: Props) {
 
 				<div className="relative z-10">
 					{eyebrow && (
-						<span className="text-paper mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase tracking-[0.06em]">
-							<span aria-hidden className="bg-coral-soft shadow-[0_0_0_4px_rgba(232,71,74,0.30)] inline-block size-2 rounded-full" />
+						<span className="text-paper mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold tracking-[0.06em] uppercase">
+							<span
+								aria-hidden
+								className="bg-coral-soft inline-block size-2 rounded-full shadow-[0_0_0_4px_rgba(232,71,74,0.30)]"
+							/>
 							{eyebrow}
 						</span>
 					)}
@@ -61,7 +67,7 @@ export default async function CTABand(props: Props) {
 						title={title}
 						as="h2"
 						tone="blush"
-						className="text-paper m-0 text-[clamp(32px,4.5vw,60px)] font-display font-bold leading-[1.02] -tracking-[0.03em]"
+						className="text-paper font-display m-0 text-[clamp(32px,4.5vw,60px)] leading-[1.02] font-bold -tracking-[0.03em]"
 					/>
 					{text && (
 						<p className="text-paper/85 mt-5 max-w-[48ch] text-[16.5px]">
@@ -74,7 +80,7 @@ export default async function CTABand(props: Props) {
 					{props.showPhone !== false && site.phone && (
 						<a
 							href={site.phoneTel ? `tel:${site.phoneTel}` : undefined}
-							className="text-paper hover:text-blush font-display text-[clamp(28px,3.4vw,46px)] font-bold leading-none -tracking-[0.02em] no-underline"
+							className="text-paper hover:text-blush font-display text-[clamp(28px,3.4vw,46px)] leading-none font-bold -tracking-[0.02em] no-underline"
 						>
 							{site.phone}
 						</a>
@@ -82,21 +88,37 @@ export default async function CTABand(props: Props) {
 
 					<div className="flex flex-wrap gap-3">
 						{props.showWhatsapp !== false && site.whatsapp && (
-							<a
+							<Button
 								href={`https://wa.me/${site.whatsapp}`}
-								className="action-base bg-paper text-ink hover:bg-paper-2"
+								external
+								variant="tertiary"
+								size="action"
 							>
-								<Icon name="whatsapp" size={22} stroke='1.2' />
-								{props.whatsappLabel || 'WhatsApp'}
-							</a>
+								<span className="flex items-center gap-3">
+									<Icon name="whatsapp" size={22} stroke="1.2" />
+									{props.whatsappLabel || 'WhatsApp'}
+								</span>
+							</Button>
 						)}
 						{props.showEmail !== false && site.email && (
-							<Btn href={`mailto:${site.email}`} variant="ink">
+							<Button
+								href={`mailto:${site.email}`}
+								external
+								target="_self"
+								variant="ink"
+								size="action"
+								withArrow
+							>
 								{props.emailLabel || site.email}
-							</Btn>
+							</Button>
 						)}
 						{props.extraCtas && (
-							<CTAs ctas={props.extraCtas} variants={['paper-outline']} />
+							<CTAList
+								ctas={props.extraCtas}
+								variantOverrides={['paper-outline']}
+								size="action"
+								withArrow
+							/>
 						)}
 					</div>
 				</div>

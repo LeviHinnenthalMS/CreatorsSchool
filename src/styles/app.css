@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
+/* Cookie preferences stay available through the footer link. */
+.cky-btn-revisit-wrapper {
+	display: none !important;
+}
+
 @theme {
 	/* ============================================================
 	 * Creators School — Warm Studio
@@ -334,6 +339,22 @@
 
 @utility anim-marquee {
 	animation: marquee var(--marquee-duration, 55s) linear infinite;
+}
+
+.offerings-marquee-speed {
+	--marquee-duration: var(--marquee-duration-mobile);
+}
+
+@media (min-width: 768px) {
+	.offerings-marquee-speed {
+		--marquee-duration: var(--marquee-duration-desktop);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.offerings-marquee-speed {
+		animation: none;
+	}
 }
 
 @keyframes marquee {

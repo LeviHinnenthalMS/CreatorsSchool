@@ -2,7 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import { Img } from '@/ui/Img'
 import { stegaClean } from 'next-sanity'
 import type { SanityCTA, SanityImage, SanityModule } from '@/sanity/typeHelpers'
@@ -42,7 +42,7 @@ export default function AboutStrip(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink text-paper rounded-band relative mx-[clamp(20px,3.5vw,48px)] mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] overflow-hidden py-[clamp(40px,4vw,64px)]"
+			className="bg-ink text-paper rounded-band relative mx-auto mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] w-[calc(100%-clamp(40px,7vw,96px))] max-w-[1440px] overflow-hidden py-[clamp(40px,4vw,64px)]"
 		>
 			<span
 				aria-hidden
@@ -81,10 +81,12 @@ export default function AboutStrip(props: Props) {
 							</div>
 						)}
 						{props.ctas && props.ctas.length > 0 && (
-							<CTAs
+							<CTAList
 								ctas={props.ctas}
-								variants={['blush']}
+								variantOverrides={['blush']}
 								className="mt-9 flex flex-wrap gap-4"
+								size="action"
+								withArrow
 							/>
 						)}
 					</div>

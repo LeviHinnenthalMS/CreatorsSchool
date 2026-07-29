@@ -3,7 +3,7 @@ import { stegaClean } from 'next-sanity'
 import Link from 'next/link'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import { Icon } from '@/ui/creators/Icon'
 import { getOfferingById } from '@/sanity/lib/creators'
 import { getSite } from '@/sanity/lib/queries'
@@ -50,11 +50,15 @@ export default async function OfferingDetail(props: Props) {
 
 	const [offering, site] = await Promise.all([
 		getOfferingById(id),
-		getSite() as Promise<{ ctaProbestunde?: SanityCTA | null; ctaKontakt?: SanityCTA | null }>,
+		getSite() as Promise<{
+			ctaProbestunde?: SanityCTA | null
+			ctaKontakt?: SanityCTA | null
+		}>,
 	])
 	if (!offering) return null
 
-	const bookingCta = offering.bookingType === 'kontakt' ? site.ctaKontakt : site.ctaProbestunde
+	const bookingCta =
+		offering.bookingType === 'kontakt' ? site.ctaKontakt : site.ctaProbestunde
 
 	const parentHref = stegaClean(props.breadcrumbParentHref || '/angebote')
 
@@ -70,21 +74,34 @@ export default async function OfferingDetail(props: Props) {
 					className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_35%_at_calc(100%+5%)_-8%,var(--color-blush),transparent)] opacity-45"
 				/>
 				<div className="wrap">
-					<nav className="text-mute mb-7 flex flex-wrap items-center gap-2 text-[13px]" aria-label="Breadcrumb">
+					<nav
+						className="text-mute mb-7 flex flex-wrap items-center gap-2 text-[13px]"
+						aria-label="Breadcrumb"
+					>
 						<Link href="/" className="text-mute hover:text-coral no-underline">
 							{props.breadcrumbHomeLabel || 'Home'}
 						</Link>
-						<span aria-hidden className="text-line-2">/</span>
-						<Link href={parentHref} className="text-mute hover:text-coral no-underline">
+						<span aria-hidden className="text-line-2">
+							/
+						</span>
+						<Link
+							href={parentHref}
+							className="text-mute hover:text-coral no-underline"
+						>
 							{props.breadcrumbParentLabel || 'Angebote'}
 						</Link>
-						<span aria-hidden className="text-line-2">/</span>
+						<span aria-hidden className="text-line-2">
+							/
+						</span>
 						<span className="text-ink-2">{offering.title}</span>
 					</nav>
 
 					{offering.eyebrow && (
 						<span className="bg-paper-2 border-line text-ink-2 mb-7 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold tracking-[0.04em]">
-							<span aria-hidden className="bg-coral inline-block size-2 rounded-full" />
+							<span
+								aria-hidden
+								className="bg-coral inline-block size-2 rounded-full"
+							/>
 							{offering.eyebrow}
 						</span>
 					)}
@@ -108,10 +125,10 @@ export default async function OfferingDetail(props: Props) {
 									key={f._key ?? i}
 									className="bg-paper-2 border-line flex min-w-[130px] flex-col gap-1 rounded-[16px] border px-5 py-3.5"
 								>
-									<span className="text-mute text-[11.5px] font-semibold uppercase tracking-[0.06em]">
+									<span className="text-mute text-[11.5px] font-semibold tracking-[0.06em] uppercase">
 										{f.key}
 									</span>
-									<span className="text-ink font-display text-[21px] font-semibold leading-none -tracking-[0.01em]">
+									<span className="text-ink font-display text-[21px] leading-none font-semibold -tracking-[0.01em]">
 										{f.value}
 									</span>
 								</div>
@@ -121,11 +138,16 @@ export default async function OfferingDetail(props: Props) {
 
 					<div className="mt-9 flex flex-wrap items-center gap-5">
 						{(props.ctas?.length || bookingCta) && (
-							<CTAs ctas={withKurs(
-								props.ctas ?? (bookingCta ? [bookingCta] : null),
-								offering.title ?? '',
-								offering.facts?.find((f) => /alter|age/i.test(f.key ?? ''))?.value,
-							)} />
+							<CTAList
+								ctas={withKurs(
+									props.ctas ?? (bookingCta ? [bookingCta] : null),
+									offering.title ?? '',
+									offering.facts?.find((f) => /alter|age/i.test(f.key ?? ''))
+										?.value,
+								)}
+								size="action"
+								withArrow
+							/>
 						)}
 						{props.backLinkLabel && props.backLinkHref && (
 							<Link
@@ -168,7 +190,9 @@ export default async function OfferingDetail(props: Props) {
 												{it.title}
 											</strong>
 										)}
-										<span className="text-[14.5px] leading-relaxed">{it.text}</span>
+										<span className="text-[14.5px] leading-relaxed">
+											{it.text}
+										</span>
 									</span>
 								</li>
 							))}
@@ -238,7 +262,7 @@ export default async function OfferingDetail(props: Props) {
 							/>
 							<div className="relative z-10">
 								{offering.priceLabel && (
-									<div className="text-paper/55 mb-2.5 text-[12px] font-semibold uppercase tracking-[0.06em]">
+									<div className="text-paper/55 mb-2.5 text-[12px] font-semibold tracking-[0.06em] uppercase">
 										{offering.priceLabel}
 									</div>
 								)}
@@ -249,7 +273,7 @@ export default async function OfferingDetail(props: Props) {
 												{offering.priceCurrency}
 											</span>
 										)}
-										<span className="text-paper font-display text-[clamp(36px,8vw,56px)] font-bold leading-none -tracking-[0.03em]">
+										<span className="text-paper font-display text-[clamp(36px,8vw,56px)] leading-none font-bold -tracking-[0.03em]">
 											{offering.priceValue}
 										</span>
 										{offering.priceUnit && (
@@ -275,10 +299,15 @@ export default async function OfferingDetail(props: Props) {
 									</div>
 								)}
 								{(props.panelCtas?.length || bookingCta) && (
-									<CTAs
-										ctas={withKurs(props.panelCtas ?? (bookingCta ? [bookingCta] : null), offering.title ?? '')}
-										variants={['coral', 'paper-outline']}
+									<CTAList
+										ctas={withKurs(
+											props.panelCtas ?? (bookingCta ? [bookingCta] : null),
+											offering.title ?? '',
+										)}
+										variantOverrides={['primary', 'paper-outline']}
 										className="mt-7 flex flex-wrap gap-2.5"
+										size="action"
+										withArrow
 									/>
 								)}
 							</div>
@@ -289,7 +318,7 @@ export default async function OfferingDetail(props: Props) {
 
 			{/* FAQ */}
 			{offering.faq && offering.faq.length > 0 && (
-				<section className="pb-[clamp(70px,8vw,110px)] pt-[clamp(50px,6vw,90px)]">
+				<section className="pt-[clamp(50px,6vw,90px)] pb-[clamp(70px,8vw,110px)]">
 					<div className="wrap grid gap-[clamp(32px,4vw,60px)] md:grid-cols-[1fr_1.4fr]">
 						<div>
 							<Eyebrow>FAQ</Eyebrow>
@@ -310,7 +339,7 @@ export default async function OfferingDetail(props: Props) {
 									key={qa._key ?? i}
 									open={i === 0}
 									name="offering-faq"
-									className="bg-paper border-line group/faq rounded-[20px] border px-6 py-5.5 transition-[border-color,background] open:border-coral-soft open:bg-coral-tint"
+									className="bg-paper border-line group/faq open:border-coral-soft open:bg-coral-tint rounded-[20px] border px-6 py-5.5 transition-[border-color,background]"
 								>
 									<summary className="text-ink font-display flex cursor-pointer items-center justify-between gap-4 text-[18px] font-semibold -tracking-[0.015em] [&::-webkit-details-marker]:hidden">
 										<span>{qa.q}</span>

@@ -1,9 +1,5 @@
-'use client'
-
 import moduleProps from '@/lib/moduleProps'
 import SectionHead from '@/ui/creators/SectionHead'
-import { Icon } from '@/ui/creators/Icon'
-import { useRef } from 'react'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
 type Testimonial = {
@@ -69,22 +65,11 @@ function Attribution({ author }: { author?: Testimonial['author'] }) {
 }
 
 export default function TestimonialCards(props: Props) {
-	const trackRef = useRef<HTMLUListElement>(null)
 	const items: Testimonial[] = (props.testimonials ?? [])
 		.flatMap((t) => t?.items ?? [])
 		.filter(Boolean) as Testimonial[]
 
 	if (!items.length) return null
-
-	function scroll(direction: 1 | -1) {
-		const track = trackRef.current
-		if (!track) return
-		const slide = track.querySelector<HTMLElement>('[data-slide]')
-		track.scrollBy({
-			left: direction * (slide?.offsetWidth ?? track.clientWidth),
-			behavior: 'smooth',
-		})
-	}
 
 	return (
 		<section {...moduleProps(props)} className="py-[clamp(44px,9vw,130px)]">
@@ -95,65 +80,28 @@ export default function TestimonialCards(props: Props) {
 					tagline={props.tagline}
 				/>
 
-				<ul
-					ref={trackRef}
-					role="region"
-					aria-roledescription="carousel"
-					aria-label="Stimmen aus der Schule"
-					tabIndex={0}
-					onKeyDown={(event) => {
-						if (event.key === 'ArrowRight') scroll(1)
-						if (event.key === 'ArrowLeft') scroll(-1)
-					}}
-					className="border-line-2 divide-line-2 m-0 flex [scrollbar-width:none] list-none divide-x overflow-x-auto border-y p-0 [&::-webkit-scrollbar]:hidden"
-					style={{ scrollSnapType: 'x mandatory' }}
-				>
+				<ul className="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
 					{items.map((testimonial, index) => (
-						<li
-							key={testimonial._id ?? index}
-							data-slide
-							className="w-[88%] shrink-0 px-6 py-9 sm:w-[60%] sm:px-9 lg:w-[42%] lg:px-[clamp(36px,4vw,64px)] lg:py-12 xl:w-[36%]"
-							style={{ scrollSnapAlign: 'start' }}
-						>
-							<article className="flex h-full flex-col">
-								<span
+						<li key={testimonial._id ?? index}>
+							<article className="border-line bg-paper flex h-full flex-col rounded-[18px] border p-6 shadow-sm sm:p-8">
+								<div
 									aria-hidden
-									className="text-coral font-display block h-7 text-[64px] leading-[0.62] italic"
+									className="text-coral mb-5 text-[14px] tracking-[0.16em]"
 								>
-									&ldquo;
-								</span>
-								<blockquote className="text-ink font-display m-0 mt-5 text-[clamp(20px,2vw,27px)] leading-[1.3] font-medium -tracking-[0.01em]">
+									★★★★★
+								</div>
+								<blockquote className="text-ink font-display m-0 text-[clamp(18px,1.6vw,22px)] leading-[1.4] font-medium -tracking-[0.008em]">
+									<span aria-hidden>&ldquo;</span>
 									{plainText(testimonial.content)}
+									<span aria-hidden>&rdquo;</span>
 								</blockquote>
-								<Attribution author={testimonial.author} />
+								<div className="mt-auto">
+									<Attribution author={testimonial.author} />
+								</div>
 							</article>
 						</li>
 					))}
 				</ul>
-
-				<div className="mt-5 flex justify-end gap-3">
-					<button
-						type="button"
-						onClick={() => scroll(-1)}
-						className="bg-paper border-line hover:bg-paper-2 focus-visible:outline-coral grid size-11 place-items-center rounded-full border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-						aria-label="Vorherige Stimme"
-					>
-						<Icon
-							name="arrow"
-							size={14}
-							strokeWidth={2.5}
-							className="rotate-180"
-						/>
-					</button>
-					<button
-						type="button"
-						onClick={() => scroll(1)}
-						className="bg-paper border-line hover:bg-paper-2 focus-visible:outline-coral grid size-11 place-items-center rounded-full border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
-						aria-label="Nächste Stimme"
-					>
-						<Icon name="arrow" size={14} strokeWidth={2.5} />
-					</button>
-				</div>
 			</div>
 		</section>
 	)

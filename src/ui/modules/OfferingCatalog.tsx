@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import type { OfferingListItem } from '@/sanity/lib/creators'
-import { Img } from '@/ui/Img'
 
 const FILTER_LABELS: Record<string, string> = {
 	alle: 'Alle',
@@ -176,13 +175,11 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 			</div>
 
 			{/* Cards */}
-			<div className="flex flex-col gap-5">
+			<div className="grid auto-rows-fr grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
 				{visible.map((o, i) => {
 					const dark = i % 2 === 0
 					const isContactOnly = o.bookingType === 'kontakt'
 					const [titleMain, titleItalic] = splitTitle(o.title ?? '')
-					const letter =
-						o.decorativeLetter ?? titleItalic?.[0]?.toLowerCase() ?? '·'
 					const tag = o.catalogTag ?? o.facts?.[0]?.value
 					const metaRows = o.detailRows?.slice(0, 3) ?? []
 					const ageFact = o.facts?.find((f) =>
@@ -193,48 +190,12 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 						<div
 							key={o._id}
 							className={cn(
-								'flex flex-col overflow-hidden rounded-[22px] lg:flex-row',
+								'flex h-full flex-col overflow-hidden rounded-[22px]',
 								dark ? 'bg-ink' : 'bg-paper border-line border',
 							)}
 						>
-							{/* Left image box */}
-							<div className="hidden shrink-0 p-3 lg:block lg:w-[222px] lg:p-4">
-								<div className="relative min-h-[120px] w-full overflow-hidden rounded-[18px] lg:h-full lg:min-h-[160px]">
-									{o.heroImage?.asset ? (
-										<Img
-											image={o.heroImage}
-											width={420}
-											className="absolute inset-0 h-full w-full object-cover"
-											alt={o.heroImage.alt || o.title || undefined}
-										/>
-									) : (
-										<div
-											className="flex h-full min-h-[120px] w-full flex-col p-5 lg:min-h-[160px]"
-											style={{ background: 'var(--color-coral)' }}
-										>
-											<span className="font-display text-[13px] font-bold tracking-[0.06em] text-white/80">
-												N° {String(i + 1).padStart(2, '0')}
-											</span>
-											<span
-												aria-hidden
-												className={cn(
-													'font-display absolute right-0 bottom-4 left-0 text-center leading-none font-bold select-none',
-													dark ? 'text-white/20' : 'text-ink/20',
-												)}
-												style={{
-													fontSize: 'clamp(80px,9vw,108px)',
-													fontStyle: 'italic',
-												}}
-											>
-												{letter}
-											</span>
-										</div>
-									)}
-								</div>
-							</div>
-
-							{/* Middle content */}
-							<div className="flex flex-1 flex-col justify-center gap-3 p-7 lg:py-9">
+							{/* Content */}
+							<div className="flex flex-1 flex-col justify-center gap-3 p-7">
 								{tag && (
 									<span
 										className={cn(
@@ -306,8 +267,8 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 								)}
 							</div>
 
-							{/* Right price panel */}
-							<div className="shrink-0 p-3 lg:w-[238px] lg:p-4">
+							{/* Price panel */}
+							<div className="shrink-0 p-3">
 								<div
 									className={cn(
 										'flex h-full flex-col justify-center gap-5 rounded-[18px] p-6',

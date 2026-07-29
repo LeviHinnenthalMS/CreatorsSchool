@@ -1,11 +1,19 @@
 import moduleProps from '@/lib/moduleProps'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
-type QA = { _key?: string; q?: string | null; a?: string | null; defaultOpen?: boolean | null }
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type QA = {
+	_key?: string
+	q?: string | null
+	a?: string | null
+	defaultOpen?: boolean | null
+}
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	eyebrow?: string | null
@@ -21,7 +29,7 @@ export default function SvcFaq(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="pb-[clamp(70px,8vw,110px)] pt-[clamp(50px,6vw,90px)]"
+			className="pt-[clamp(50px,6vw,90px)] pb-[clamp(70px,8vw,110px)]"
 		>
 			<div className="wrap grid gap-[clamp(32px,4vw,60px)] md:grid-cols-[1fr_1.4fr]">
 				<div>
@@ -37,7 +45,12 @@ export default function SvcFaq(props: Props) {
 						</p>
 					)}
 					{props.ctas && props.ctas.length > 0 && (
-						<CTAs ctas={props.ctas} className="mt-7 flex flex-wrap gap-4" />
+						<CTAList
+							ctas={props.ctas}
+							className="mt-7 flex flex-wrap gap-4"
+							size="action"
+							withArrow
+						/>
 					)}
 				</div>
 
@@ -47,7 +60,7 @@ export default function SvcFaq(props: Props) {
 							key={qa._key ?? i}
 							name={`faq-${props._key ?? 'group'}`}
 							open={qa.defaultOpen || undefined}
-							className="bg-paper border-line group/faq rounded-[20px] border px-6 py-5.5 transition-[border-color,background] open:border-coral-soft open:bg-coral-tint"
+							className="bg-paper border-line group/faq open:border-coral-soft open:bg-coral-tint rounded-[20px] border px-6 py-5.5 transition-[border-color,background]"
 						>
 							<summary className="text-ink font-display flex cursor-pointer items-center justify-between gap-4 text-[18px] font-semibold -tracking-[0.015em] [&::-webkit-details-marker]:hidden">
 								<span>{qa.q}</span>

@@ -1,13 +1,20 @@
 import moduleProps from '@/lib/moduleProps'
 import getServerLang from '@/lib/getServerLang'
-import { getFeaturedPerformance, getPerformanceById } from '@/sanity/lib/creators'
+import {
+	getFeaturedPerformance,
+	getPerformanceById,
+} from '@/sanity/lib/creators'
 import { getSite } from '@/sanity/lib/queries'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle from '@/ui/creators/RichTitle'
 import { Icon } from '@/ui/creators/Icon'
+import Button from '@/ui/Button'
 import type { SanityModule } from '@/sanity/typeHelpers'
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	performance?: { _ref?: string } | null
@@ -21,7 +28,9 @@ type Props = SanityModule & {
 export default async function HeroPerformance(props: Props) {
 	const lang = await getServerLang()
 	const id = (props.performance as { _ref?: string } | null)?._ref ?? null
-	const perf = id ? await getPerformanceById(id) : await getFeaturedPerformance(lang)
+	const perf = id
+		? await getPerformanceById(id)
+		: await getFeaturedPerformance(lang)
 
 	const site = (await getSite()) as {
 		phone?: string | null
@@ -31,7 +40,9 @@ export default async function HeroPerformance(props: Props) {
 	}
 
 	// Split bigNumber on "&" → e.g. "5 & 6" → ["5 ", " 6"]
-	const bigParts = perf?.bigNumber ? perf.bigNumber.split('&').map((s) => s.trim()) : []
+	const bigParts = perf?.bigNumber
+		? perf.bigNumber.split('&').map((s) => s.trim())
+		: []
 
 	// Strip year from monthLabel: "September 2026" → "September"
 	const month = perf?.monthLabel?.replace(/\s+\d{4}$/, '') ?? ''
@@ -39,12 +50,12 @@ export default async function HeroPerformance(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="bg-ink relative overflow-hidden pb-[clamp(70px,8vw,120px)] pt-[calc(var(--header-height)+14px+clamp(70px,8vw,120px))]"
+			className="bg-ink relative overflow-hidden pt-[calc(var(--header-height)+14px+clamp(70px,8vw,120px))] pb-[clamp(70px,8vw,120px)]"
 		>
 			{/* Gradient blob top-right */}
 			<span
 				aria-hidden
-				className="pointer-events-none absolute -right-[120px] -top-[160px] size-[600px] rounded-full bg-[radial-gradient(circle,rgba(196,70,80,0.48),transparent_55%)]"
+				className="pointer-events-none absolute -top-[160px] -right-[120px] size-[600px] rounded-full bg-[radial-gradient(circle,rgba(196,70,80,0.48),transparent_55%)]"
 			/>
 
 			<div className="wrap relative z-10 flex flex-col gap-6">
@@ -64,7 +75,7 @@ export default async function HeroPerformance(props: Props) {
 						title={props.title}
 						as="h1"
 						tone="blush"
-						className="text-paper font-display m-0 md:max-w-3/4 text-[clamp(38px,5.5vw,80px)] font-bold leading-[1.02] -tracking-[0.025em]"
+						className="text-paper font-display m-0 text-[clamp(38px,5.5vw,80px)] leading-[1.02] font-bold -tracking-[0.025em] md:max-w-3/4"
 					/>
 				)}
 
@@ -111,22 +122,29 @@ export default async function HeroPerformance(props: Props) {
 				{/* CTAs */}
 				<div className="mt-2 flex flex-wrap items-center gap-4">
 					{site.whatsapp && (
-						<a
+						<Button
 							href={`https://wa.me/${site.whatsapp}`}
-							className="action-base bg-paper text-ink hover:bg-paper-2"
+							external
+							variant="tertiary"
+							size="action"
 						>
-							<Icon name="whatsapp" size={20} stroke="1.2" />
-							{props.whatsappLabel ?? 'Karten per WhatsApp'}
-						</a>
+							<span className="flex items-center gap-3">
+								<Icon name="whatsapp" size={20} stroke="1.2" />
+								{props.whatsappLabel ?? 'Karten per WhatsApp'}
+							</span>
+						</Button>
 					)}
 					{site.email && (
-						<a
+						<Button
 							href={`mailto:${site.email}`}
-							className="action-base border border-white/30 bg-transparent text-paper hover:bg-white/10"
+							external
+							target="_self"
+							variant="paper-outline"
+							size="action"
+							withArrow
 						>
 							{props.emailLabel ?? 'Karten per E-Mail'}
-							<span aria-hidden className="ml-1.5">→</span>
-						</a>
+						</Button>
 					)}
 					{site.phone && (
 						<a

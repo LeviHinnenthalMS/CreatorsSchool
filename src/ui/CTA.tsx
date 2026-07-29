@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
-import Button from './Button'
+import Button, { type ButtonSize, type ButtonVariant } from './Button'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import { resolveCtaLabel } from '@/lib/resolveCtaLabel'
@@ -22,10 +22,18 @@ export default function CTA({
 	iconAspectRatio,
 	iconHeight,
 	iconPosition,
+	variantOverride,
+	sizeOverride,
+	withArrow,
 	className,
 	children,
 	...rest
-}: SanityCTA & ComponentProps<'a'>) {
+}: SanityCTA &
+	ComponentProps<'a'> & {
+		variantOverride?: ButtonVariant
+		sizeOverride?: ButtonSize
+		withArrow?: boolean
+	}) {
 	if (active === false) return null
 
 	const cleanVariant = stegaClean(variant) as SanityCTA['variant']
@@ -35,6 +43,8 @@ export default function CTA({
 	) as SanityCTA['iconPosition']
 	const cleanIcon = icon ? stegaClean(icon) : undefined
 	const labelText = resolveCtaLabel({ link })
+	const resolvedVariant = variantOverride ?? cleanVariant
+	const resolvedSize = sizeOverride ?? cleanSize
 
 	if (!children && !labelText) return null
 
@@ -54,15 +64,16 @@ export default function CTA({
 					? stegaClean(link.external)
 					: undefined
 
-	if (cleanVariant) {
+	if (resolvedVariant) {
 		if (!href) {
 			return (
 				<Button
-					variant={cleanVariant}
-					size={cleanSize ?? undefined}
+					variant={resolvedVariant}
+					size={resolvedSize ?? undefined}
 					icon={icon ?? undefined}
 					iconHeight={iconHeight ?? undefined}
 					iconPosition={cleanIconPosition ?? undefined}
+					withArrow={withArrow}
 					className={className}
 				>
 					{label}
@@ -71,12 +82,13 @@ export default function CTA({
 		}
 		return (
 			<Button
-				variant={cleanVariant}
-				size={cleanSize ?? undefined}
+				variant={resolvedVariant}
+				size={resolvedSize ?? undefined}
 				icon={cleanIcon}
 				iconAspectRatio={iconAspectRatio ?? undefined}
 				iconHeight={iconHeight ?? undefined}
 				iconPosition={cleanIconPosition ?? undefined}
+				withArrow={withArrow}
 				href={href}
 				external={link?.type === 'external'}
 				className={className}

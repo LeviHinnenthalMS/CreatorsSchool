@@ -1,6 +1,6 @@
 import moduleProps from '@/lib/moduleProps'
 import { Img } from '@/ui/Img'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import RichTitle from '@/ui/creators/RichTitle'
 import type { SanityImage, SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
@@ -91,10 +91,10 @@ export default function HeroCreators(props: Props) {
 			/>
 
 			<div className="wrap relative z-10">
-				<div className="grid items-center gap-[clamp(2rem,4vw,3.5rem)] max-lg:bg-ink max-lg:relative max-lg:overflow-hidden max-lg:rounded-[28px] max-lg:px-[clamp(20px,4vw,48px)] max-lg:py-[clamp(44px,7vw,72px)] lg:grid-cols-[1.05fr_1fr]">
+				<div className="max-lg:bg-ink grid items-center gap-[clamp(2rem,4vw,3.5rem)] max-lg:relative max-lg:overflow-hidden max-lg:rounded-[28px] max-lg:px-[clamp(20px,4vw,48px)] max-lg:py-[clamp(44px,7vw,72px)] lg:grid-cols-[1.05fr_1fr]">
 					<div className="max-lg:relative max-lg:z-10">
 						{eyebrow && (
-							<span className="bg-paper-2 border-line text-charcoal mb-5 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold max-lg:border-paper/25 max-lg:bg-paper/12 max-lg:text-paper max-lg:backdrop-blur-sm">
+							<span className="bg-paper-2 border-line text-charcoal max-lg:border-paper/25 max-lg:bg-paper/12 max-lg:text-paper mb-5 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold max-lg:backdrop-blur-sm">
 								<span className="bg-coral inline-block size-[7px] rounded-full shadow-[0_0_0_4px_var(--color-coral-tint)]" />
 								{eyebrow}
 							</span>
@@ -103,19 +103,21 @@ export default function HeroCreators(props: Props) {
 						<RichTitle
 							title={title}
 							as="h1"
-							className="text-ink font-display m-0 text-[clamp(40px,5vw,92px)] leading-[1] font-semibold tracking-[-0.02em] max-lg:text-paper"
+							className="text-ink font-display max-lg:text-paper m-0 text-[clamp(40px,5vw,92px)] leading-[1] font-semibold tracking-[-0.02em]"
 						/>
 
 						{sub && (
-							<p className="text-charcoal mt-5 max-w-[48ch] text-[clamp(15px,1.3vw,18.5px)] leading-relaxed max-lg:text-paper/85 lg:mt-7">
+							<p className="text-charcoal max-lg:text-paper/85 mt-5 max-w-[48ch] text-[clamp(15px,1.3vw,18.5px)] leading-relaxed lg:mt-7">
 								{sub}
 							</p>
 						)}
 
 						{ctas && ctas.length > 0 && (
-							<CTAs
+							<CTAList
 								ctas={ctas}
 								className="mt-6 flex flex-wrap items-center gap-6 lg:mt-10"
+								size="action"
+								withArrow
 							/>
 						)}
 
@@ -124,12 +126,12 @@ export default function HeroCreators(props: Props) {
 								<Stars />
 								<div>
 									{reviewTitle && (
-										<div className="text-ink text-[14.5px] font-semibold max-lg:text-paper">
+										<div className="text-ink max-lg:text-paper text-[14.5px] font-semibold">
 											{reviewTitle}
 										</div>
 									)}
 									{reviewSubtitle && (
-										<div className="text-mute text-[12.5px] max-lg:text-paper/70">
+										<div className="text-mute max-lg:text-paper/70 text-[12.5px]">
 											{reviewSubtitle}
 										</div>
 									)}

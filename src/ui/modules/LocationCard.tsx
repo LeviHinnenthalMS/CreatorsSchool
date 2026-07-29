@@ -2,7 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import { Img } from '@/ui/Img'
 import { Icon } from '@/ui/creators/Icon'
 import RichTitle from '@/ui/creators/RichTitle'
-import Btn from '@/ui/creators/Btn'
+import Button from '@/ui/Button'
 import { stegaClean } from 'next-sanity'
 import resolveUrl from '@/lib/resolveUrl'
 import MapEmbed from './MapEmbed'
@@ -102,9 +102,15 @@ export default async function LocationCard(props: Props) {
 						</div>
 					)}
 					{mapHref && (
-						<Btn href={mapHref} variant="ink" target="_blank">
+						<Button
+							href={mapHref}
+							external
+							variant="ink"
+							size="action"
+							withArrow
+						>
 							{props.mapLinkLabel || labels.openInMaps}
-						</Btn>
+						</Button>
 					)}
 				</div>
 

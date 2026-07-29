@@ -1,12 +1,18 @@
 import moduleProps from '@/lib/moduleProps'
 import getServerLang from '@/lib/getServerLang'
-import { getFeaturedPerformance, getPerformanceById } from '@/sanity/lib/creators'
+import {
+	getFeaturedPerformance,
+	getPerformanceById,
+} from '@/sanity/lib/creators'
 import Eyebrow from '@/ui/creators/Eyebrow'
 import RichTitle, { richTitlePlainText } from '@/ui/creators/RichTitle'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
-type Block = { _type?: string; children?: Array<{ text?: string; marks?: string[] }> }
+type Block = {
+	_type?: string
+	children?: Array<{ text?: string; marks?: string[] }>
+}
 
 type Props = SanityModule & {
 	performance?: { _ref?: string } | { _id?: string } | null
@@ -33,9 +39,9 @@ export default async function PerformanceBanner(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="mb-[clamp(50px,6vw,90px)] mt-[clamp(25px,3vw,45px)] px-[clamp(20px,3.5vw,48px)]"
+			className="mt-[clamp(25px,3vw,45px)] mb-[clamp(50px,6vw,90px)] px-[clamp(20px,3.5vw,48px)]"
 		>
-			<div className="bg-plum text-paper relative overflow-hidden rounded-[40px] p-6 md:p-[clamp(48px,6vw,96px)]">
+			<div className="bg-plum text-paper relative mx-auto max-w-[1440px] overflow-hidden rounded-[40px] p-6 md:p-[clamp(48px,6vw,96px)]">
 				<span
 					aria-hidden
 					className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_50%_at_calc(100%+5%)_-8%,rgba(251,227,227,0.25),transparent)]"
@@ -49,12 +55,12 @@ export default async function PerformanceBanner(props: Props) {
 					{(perf.bigNumber || perf.monthLabel || perf.venue) && (
 						<div className="rounded-[28px] border border-white/15 bg-white/[0.04] p-[clamp(28px,3vw,44px)] text-center">
 							{perf.bigNumber && (
-								<div className="text-paper font-display text-[clamp(64px,8vw,116px)] font-semibold leading-[0.9] -tracking-[0.02em]">
+								<div className="text-paper font-display text-[clamp(64px,8vw,116px)] leading-[0.9] font-semibold -tracking-[0.02em]">
 									{perf.bigNumber}
 								</div>
 							)}
 							{perf.monthLabel && (
-								<div className="text-blush mt-3.5 text-[14px] font-semibold uppercase tracking-[0.24em]">
+								<div className="text-blush mt-3.5 text-[14px] font-semibold tracking-[0.24em] uppercase">
 									{perf.monthLabel}
 								</div>
 							)}
@@ -74,10 +80,10 @@ export default async function PerformanceBanner(props: Props) {
 								title={props.title}
 								as="h2"
 								tone="blush"
-								className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] font-semibold leading-[1.04] -tracking-[0.02em]"
+								className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] leading-[1.04] font-semibold -tracking-[0.02em]"
 							/>
 						) : perf.title ? (
-							<h2 className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] font-semibold leading-[1.04] -tracking-[0.02em]">
+							<h2 className="text-paper font-display m-0 mt-4 text-[clamp(30px,3.7vw,52px)] leading-[1.04] font-semibold -tracking-[0.02em]">
 								{perf.title}
 							</h2>
 						) : null}
@@ -95,10 +101,12 @@ export default async function PerformanceBanner(props: Props) {
 						)}
 
 						{props.ctas && props.ctas.length > 0 && (
-							<CTAs
+							<CTAList
 								ctas={props.ctas}
-								variants={['blush', 'paper-outline']}
+								variantOverrides={['blush', 'paper-outline']}
 								className="mt-8 flex flex-wrap items-center gap-5"
+								size="action"
+								withArrow
 							/>
 						)}
 					</div>

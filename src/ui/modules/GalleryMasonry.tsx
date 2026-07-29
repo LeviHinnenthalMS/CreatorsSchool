@@ -80,16 +80,7 @@ export default async function GalleryMasonry(props: Props) {
 											sizes="(min-width: 1024px) 25vw, 50vw"
 										/>
 									) : null}
-									{g.caption && (
-										<figcaption
-											className={cn(
-												'bg-ink/65 text-paper absolute left-3.5 z-[2] rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold tracking-[0.02em] backdrop-blur-sm',
-												g.videoUrl ? 'top-3' : 'bottom-3',
-											)}
-										>
-											{g.caption}
-										</figcaption>
-									)}
+								
 								</figure>
 							)
 						})}

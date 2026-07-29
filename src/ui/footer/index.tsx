@@ -35,6 +35,7 @@ export default async function Footer() {
 
 	const bottomLinks = footer?.bottomLinks ?? []
 	const socials = footer?.socials ?? []
+	const cookieSettingsEnabled = Boolean(process.env.NEXT_PUBLIC_COOKIEYES_SRC)
 
 	return (
 		<Wrapper className="bg-ink text-canvas">
@@ -87,7 +88,7 @@ export default async function Footer() {
 				<div className="mt-6 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-4">
 					<div className="text-canvas/70 text-small flex flex-wrap items-start justify-center gap-x-3 gap-y-1 leading-5 md:items-center">
 						<span>{copyrightText}</span>
-						{!!bottomLinks.length && (
+						{(!!bottomLinks.length || cookieSettingsEnabled) && (
 							<>
 								<span aria-hidden className="max-md:hidden">
 									-
@@ -96,16 +97,26 @@ export default async function Footer() {
 									{bottomLinks.map((link, i, arr) => (
 										<li key={i} className="flex items-center gap-3">
 											<CTA
-												className="hover:text-canvas underline-offset-4 hover:underline"
+												className="hover:text-canvas inline-flex min-h-11 items-center underline-offset-4 hover:underline"
 												link={link}
 											/>
-											{i < arr.length - 1 && (
+											{(i < arr.length - 1 || cookieSettingsEnabled) && (
 												<span aria-hidden className="text-canvas/30">
 													|
 												</span>
 											)}
 										</li>
 									))}
+									{cookieSettingsEnabled && (
+										<li>
+											<button
+												type="button"
+												className="cky-banner-element hover:text-canvas inline-flex min-h-11 cursor-pointer items-center underline-offset-4 hover:underline"
+											>
+												Cookie-Einstellungen
+											</button>
+										</li>
+									)}
 								</ul>
 							</>
 						)}

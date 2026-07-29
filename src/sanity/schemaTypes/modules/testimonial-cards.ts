@@ -3,9 +3,9 @@ import { richTitleField } from '../fragments/rich-title'
 
 export default defineType({
 	name: 'testimonial-cards',
-	title: 'Testimonials · slider',
+	title: 'Testimonial cards',
 	description:
-		'A simple testimonial slider with transparent slides and subtle dividers.',
+		'A simple grid of testimonial cards with quotes and author details.',
 	type: 'object',
 	fields: [
 		defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string' }),
@@ -32,7 +32,7 @@ export default defineType({
 		select: { eyebrow: 'eyebrow' },
 		prepare: ({ eyebrow }) => ({
 			title: eyebrow || 'Testimonials',
-			subtitle: 'Testimonials · slider',
+			subtitle: 'Testimonial cards',
 		}),
 	},
 })

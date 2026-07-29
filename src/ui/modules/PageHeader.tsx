@@ -1,6 +1,6 @@
 import moduleProps from '@/lib/moduleProps'
 import RichTitle from '@/ui/creators/RichTitle'
-import CTAs from '@/ui/creators/CTAs'
+import CTAList from '@/ui/CTAList'
 import type { SanityCTA, SanityModule } from '@/sanity/typeHelpers'
 
 type Fact = { _key?: string; key?: string | null; value?: string | null }
@@ -67,9 +67,11 @@ export default function PageHeader(props: Props) {
 				)}
 
 				{ctas && ctas.length > 0 && (
-					<CTAs
+					<CTAList
 						ctas={ctas}
 						className="mt-9 flex flex-wrap items-center gap-5"
+						size="action"
+						withArrow
 					/>
 				)}
 			</div>
