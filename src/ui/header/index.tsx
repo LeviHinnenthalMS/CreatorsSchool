@@ -10,6 +10,7 @@ import EventBadge from './EventBadge'
 import CTA from '@/ui/CTA'
 import { cn } from '@/lib/utils'
 import css from './Header.module.css'
+import { FaInstagram } from 'react-icons/fa6'
 import type { NAVIGATION_DOC_QUERY_RESULT } from '@/sanity/types'
 import type { SanityCTA, SanityLink } from '@/sanity/typeHelpers'
 
@@ -27,6 +28,7 @@ export default async function Header() {
 			sub?: string | null
 			link?: SanityLink | null
 		} | null
+		sameAs?: Array<string | null> | null
 	}
 	const lang = await getServerLang()
 	const nav = await getNavigation(lang)
@@ -45,6 +47,9 @@ export default async function Header() {
 		(site.logo?.image as { dark?: unknown; default?: unknown } | undefined)?.default
 	const homeHref = lang && lang !== DEFAULT_LANG ? `/${lang}` : '/'
 	const eventBadgeActive = site.eventBadge?.active !== false
+	const instagramHref = site.sameAs?.find((url) =>
+		url?.includes('instagram.com'),
+	)
 
 	return (
 		<Wrapper className="z-100 fixed inset-x-0 top-0">
@@ -111,14 +116,28 @@ export default async function Header() {
 						{eventBadgeActive && site.eventBadge && (
 							<EventBadge badge={site.eventBadge} />
 						)}
-						{ctaItems.map((cta, key) => (
-							<CTA
-								{...(cta as SanityCTA)}
-								size="small"
-								className="max-lg:w-full"
-								key={key}
-							/>
-						))}
+						<div className="flex items-center gap-2.5 max-lg:w-full">
+							{ctaItems.map((cta, key) => (
+								<CTA
+									{...(cta as SanityCTA)}
+									size="small"
+									className="max-lg:flex-1"
+									key={key}
+								/>
+							))}
+							{instagramHref && (
+								<a
+									href={instagramHref}
+									target="_blank"
+									rel="noreferrer"
+									aria-label="Instagram-Profil öffnen"
+									title="Instagram"
+									className="border-line-2 text-ink hover:border-coral hover:bg-blush hover:text-coral-deep focus-visible:ring-coral inline-flex size-10 shrink-0 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+								>
+									<FaInstagram className="size-[18px]" aria-hidden />
+								</a>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -10,7 +10,7 @@ The site **should provide a clearly visible link to the relevant privacy informa
 
 Suggested German copy:
 
-> Informationen zur Verarbeitung Ihrer Angaben finden Sie in unserer [Datenschutzerklärung].
+> Informationen zur Verarbeitung deiner Angaben findest du in unserer [Datenschutzerklärung].
 
 ## Legal basis for answering inquiries
 

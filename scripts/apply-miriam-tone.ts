@@ -22,13 +22,15 @@ const documents: Record<string, Changes> = {
 		'stage[_key=="k426"].sub':
 			'Von den ersten Klangerlebnissen bis zur eigenen Präsenz auf der Bühne: Wir verbinden pädagogische Frühförderung mit künstlerischer Ausbildung und geben jedem Menschen Raum für seinen Ausdruck.',
 		'modules[_key=="k452"].tagline':
-			'Vom ersten Klangerlebnis mit 1,5 Jahren bis zur Bühne im Erwachsenenalter: In kleinen Gruppen begleiten wir Menschen aufmerksam, persönlich und mit Raum für ihren eigenen Ausdruck.',
+			'Vom ersten Klangerlebnis mit 1,5 Jahren bis zur Bühne im Erwachsenenalter: In individuell begleiteten Gruppen geben wir Menschen Raum für ihren eigenen Ausdruck.',
 		'modules[_key=="k452"].features[_key=="k457"].text':
-			'In kleinen Gruppen entsteht echte Beziehung. Miriam und ihr Team kennen die Schüler:innen, nehmen ihre Entwicklung wahr und begleiten sie persönlich.',
+			'In individuell begleiteten Gruppen entsteht echte Beziehung. Miriam und ihr Team kennen die Schüler:innen, nehmen ihre Entwicklung wahr und begleiten sie persönlich.',
 		'modules[_key=="k452"].features[_key=="k458"].text':
 			'Eine Probestunde gibt Zeit zum Ankommen und Kennenlernen — ohne Anmeldung und ohne Verpflichtung.',
 		'modules[_key=="k452"].features[_key=="k459"].text':
-			'Mit höchstens sechs Schüler:innen bleibt Raum für das eigene Tempo, persönliche Fragen und individuelle Entwicklung.',
+			'Unsere Gruppen werden passend zum jeweiligen Angebot gestaltet. So bleibt Raum für das eigene Tempo und die persönliche Entwicklung.',
+		'modules[_key=="k452"].features[_key=="k459"].title':
+			'Individuelle Gruppen',
 		'modules[_key=="k452"].features[_key=="k460"].text':
 			'Musik und Tanz werden mit dem ganzen Körper erlebt. Konzerte und Aufführungen machen Mut, den eigenen Ausdruck mit anderen zu teilen.',
 		'modules[_key=="k478"].tagline':
@@ -36,11 +38,11 @@ const documents: Record<string, Changes> = {
 		'modules[_key=="k461"].tagline':
 			'Musik und Tanz gehören für uns zusammen. Beide geben Menschen die Möglichkeit, sich selbst zu spüren und den eigenen Ausdruck weiterzuentwickeln.',
 		'modules[_key=="k461"].cards[_key=="k466"].text':
-			'In Eltern-Kind-Kursen und musikalischer Frühförderung erleben Kinder Klang, Rhythmus und Bewegung. Ab 1,5 Jahren gemeinsam mit einer Bezugsperson, ab vier Jahren in der Gruppe.',
+			'In Eltern-Kind-Kursen und musikalischer Frühförderung erleben Kinder Klang, Rhythmus und Bewegung. Von 1,5 bis 3 Jahren gemeinsam mit einer Bezugsperson, von 3 bis 6 Jahren in der Gruppe.',
 		'modules[_key=="k461"].cards[_key=="k467"].text':
-			'Von der tänzerischen Frühförderung ab drei Jahren über Ballett und Moderndance bis ins Erwachsenenalter. Mit Unterricht, der Entwicklung begleitet und auf echte Bühnenerfahrungen vorbereitet.',
+			'Von der tänzerischen Früherziehung für Drei- bis Sechsjährige über Ballett ab sechs Jahren bis zu Modern-/Contemporary dance ab acht Jahren. Mit Unterricht, der Entwicklung begleitet und auf echte Bühnenerfahrungen vorbereitet.',
 		'modules[_key=="k468"].tagline':
-			'Singen, hören, bewegen und ausprobieren: In kleinen Gruppen bekommen die ersten musikalischen Impulse Zeit, sich zu entfalten.',
+			'Singen, hören, bewegen und ausprobieren: In individuell begleiteten Gruppen bekommen die ersten musikalischen Impulse Zeit, sich zu entfalten.',
 		'modules[_key=="k473"].tagline':
 			'Vom spielerischen Anfang mit drei Jahren bis zum künstlerischen Tanz im Erwachsenenalter. Jede Stufe stärkt Technik, Ausdruck und den Mut zur Bühne.',
 		'modules[_key=="609302752e69"].body[_key=="7b9b023175fa"].children[_key=="b1eba56434a5"].text':
@@ -65,20 +67,28 @@ const documents: Record<string, Changes> = {
 			'Wir beraten dich persönlich und schauen gemeinsam, welches Angebot wirklich zu dir oder deinem Kind passt. Eine unverbindliche Probestunde gibt Zeit, die Schule, die Gruppe und das eigene Gefühl kennenzulernen.',
 	},
 	'page-ueber-uns': {
+		'stage[_key=="k581"].title[_key=="k582"].children[_key=="k583"].text':
+			'Eine Schule mit ',
 		'stage[_key=="k581"].lede':
 			'Die Creators School ist eine inhabergeführte Musik- und Tanzschule. Wir kennen unsere Schüler:innen beim Namen und möchten einen Ort schaffen, an dem Kunst nicht nur gelernt, sondern erlebt und als eigener Ausdruck entdeckt wird.',
+		'modules[_key=="k586"].title[_key=="ast1"].children[_key=="ast1a"].text':
+			'Wo Musik und Tanz mehr werden als Unterricht — sie werden ',
 		'modules[_key=="k586"].body[_key=="asb1"].children[_key=="asb1a"].text':
-			'2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit acht Disziplinen, einem festen Team und über 500 aktiven Schüler:innen.',
+			'2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.',
+		'modules[_key=="k586"].content[_key=="k587"].children[_key=="k588"].text':
+			'Vor mehr als zwanzig Jahren gründete Miriam Schulte die Creators School in Melle, aus dem Forum Musaik Melle, das 2024 umbenannt wurde. Was als kleine Frühförderungsgruppe begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.',
 		'modules[_key=="k586"].body[_key=="asb2"].children[_key=="asb2a"].text':
 			'Geblieben ist die Überzeugung, dass Kunst mehr ist als Technik oder Talent. Sie kann Menschen verbinden, ihnen Halt geben und sichtbar machen, was bereits in ihnen steckt.',
 		'modules[_key=="tl001"].intro':
 			'Eine Schule wächst nicht nur durch Räume und Angebote. Sie wächst mit den Menschen, ihren Ideen und dem Mut, immer wieder etwas Neues entstehen zu lassen.',
 		'modules[_key=="tl001"].items[_key=="tl-i1"].text':
 			'Das Forum Musaik beginnt mit musikalischer Frühförderung in angemieteten Räumen. Die erste Gruppe: vier Kinder, ein Klavier und viel Begeisterung.',
+		'modules[_key=="tl001"].items[_key=="tl-i6"].title[_key=="tl-i6t"].children[_key=="tl-i6ta"].text':
+			'Heute: 6 Disziplinen',
 		'modules[_key=="k597"].tagline':
 			'Unsere pädagogische Haltung ist bewusst: Kinder und Erwachsene bringen bereits etwas Eigenes mit. Wir möchten es wahrnehmen, stärken und ihm Raum geben.',
 		'modules[_key=="k597"].features[_key=="k602"].text':
-			'Kleine Gruppen geben uns die Zeit, genau hinzusehen. Wir begleiten nicht nur Leistungen, sondern den Menschen mit seinem eigenen Tempo und Ausdruck.',
+			'Individuell begleitete Gruppen geben uns die Zeit, genau hinzusehen. Wir begleiten nicht nur Leistungen, sondern den Menschen mit seinem eigenen Tempo und Ausdruck.',
 		'modules[_key=="k597"].features[_key=="k603"].text':
 			'Technik schafft Möglichkeiten, ist aber nicht das Ziel. Entscheidend ist, dass Freude, Neugier und die Verbindung zur Kunst lebendig bleiben.',
 		'modules[_key=="k597"].features[_key=="k604"].text':
@@ -94,9 +104,11 @@ const documents: Record<string, Changes> = {
 		'stage[_key=="k631"].lede':
 			'Wir suchen Menschen, die Musik oder Tanz nicht nur beherrschen, sondern mit Überzeugung weitergeben möchten. Menschen, die aufmerksam begleiten, eigene Ideen einbringen und Entwicklung wichtiger finden als Perfektion.',
 		'modules[_key=="warum-wir"].lead':
-			'Bei uns unterrichtest du in kleinen Gruppen und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
+			'Bei uns unterrichtest du in individuell begleiteten Gruppen und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
+		'modules[_key=="warum-wir"].items[_key=="wi1"].title':
+			'Individuelle Gruppen',
 		'modules[_key=="warum-wir"].items[_key=="wi1"].text':
-			'Maximal sechs Schüler:innen geben dir Zeit, jede Entwicklung aufmerksam zu begleiten.',
+			'Du kennst deine Schüler:innen persönlich und kannst ihre Entwicklung aufmerksam begleiten.',
 		'modules[_key=="warum-wir"].items[_key=="wi2"].text':
 			'Deine Ideen dürfen Form annehmen — im Unterricht, im Team und auf der Bühne.',
 		'modules[_key=="warum-wir"].items[_key=="wi3"].text':
@@ -149,11 +161,19 @@ const documents: Record<string, Changes> = {
 
 const offerings: Record<string, Changes> = {
 	'offering-musikalische-fruehfoerderung': {
-		lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In Gruppen von höchstens sechs Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
+		'facts[_key=="k7"].value': '3–6 Jahre',
+		'facts[_key=="k8"].value': 'Gruppe · bis zu 10 Kinder',
+		'detailRows[_key=="k29"].value': 'Bis zu 10 Kinder',
+		'metadata.description':
+			'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in Gruppen von bis zu 10 Kindern.',
+		lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In Gruppen von bis zu zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
 		forWhoLead:
 			'Kinder bringen Neugier auf Klang und Bewegung bereits mit. In der musikalischen Frühförderung darf daraus spielerisch ein erstes Verständnis für Musik entstehen.',
 		'forWho[_key=="k14"].text':
 			'Singen, hören, bewegen und ausprobieren — ohne Vorkenntnisse und ohne frühen Leistungsdruck.',
+		'forWho[_key=="k14"].title': 'Kinder von drei bis sechs Jahren',
+		'faq[_key=="k36"].a':
+			'Ab drei Jahren können Kinder mitmachen — mit Freude an Musik und Bewegung, ganz ohne Vorkenntnisse.',
 		'forWho[_key=="k15"].text':
 			'Musik spricht Körper, Wahrnehmung und Fantasie zugleich an und schafft eine wertvolle Grundlage vor der Einschulung.',
 		'forWho[_key=="k16"].text':
@@ -166,6 +186,7 @@ const offerings: Record<string, Changes> = {
 			'Klangstäbe, Handtrommeln und einfache Melodieinstrumente laden zum Hören, Ausprobieren und gemeinsamen Gestalten ein.',
 	},
 	'offering-eltern-kind-kurs': {
+		'facts[_key=="k39"].value': '1,5–3 Jahre',
 		lede: 'Lieder, Reime und Bewegung schaffen gemeinsame musikalische Momente für Kind und Bezugsperson. Ohne Erwartungsdruck, aber mit viel Raum für Nähe, Klang und Entdeckung.',
 		forWhoLead:
 			'Kinder begegnen Musik lange bevor sie Worte dafür haben. Im Eltern-Kind-Kurs erleben sie Klang und Bewegung gemeinsam mit einem vertrauten Menschen.',
@@ -183,11 +204,15 @@ const offerings: Record<string, Changes> = {
 			'Beim Tanzen, Schaukeln und Klatschen entdeckt der Körper, wie Musik sich anfühlen kann.',
 	},
 	'offering-taenzerische-fruehfoerderung': {
-		lede: 'Kinder entdecken ihren Körper, den Raum und den Rhythmus der Musik. Geschichten und freie Bewegung geben ihnen einen spielerischen Zugang zur Sprache des Tanzes.',
+		lede: 'Körper, den Raum und den Rhythmus der Musik. Erste Grundlagen des Balletts verbinden sich mit Geschichten, Fantasie und freier Bewegung und eröffnen einen spielerischen Zugang zur Sprache des Tanzes.',
+		'facts[_key=="k71"].value': '3–6 Jahre',
+		'facts[_key=="k73"].value': 'Bis zu 10 Kinder',
+		'detailRows[_key=="k94"].value': 'Bis zu 10 Kinder',
 		forWhoLead:
 			'Kinder bringen Freude an Bewegung und eine ganz eigene Ausdruckskraft mit. Die tänzerische Früherziehung bewahrt diese Lebendigkeit und gibt ihr Raum.',
 		'forWho[_key=="k79"].text':
 			'Bewegung, Musik und Raum werden spielerisch entdeckt — noch ohne feste Technik oder Leistungsdruck.',
+		'forWho[_key=="k79"].title': 'Kinder von drei bis sechs Jahren',
 		'forWho[_key=="k80"].text':
 			'Körpergefühl, Musikalität und gemeinsames Bewegen bereiten behutsam auf den späteren Ballettunterricht vor.',
 		'forWho[_key=="k81"].text':
@@ -200,24 +225,27 @@ const offerings: Record<string, Changes> = {
 			'Improvisation und kleine Geschichten laden dazu ein, eigene Ideen in Bewegung sichtbar zu machen.',
 	},
 	'offering-ballett': {
-		lede: 'Klassisches Ballett verbindet sorgfältig aufgebaute Technik mit Musikalität und Ausdruck. Vom Kinderballett bis zur fortgeschrittenen Klasse wächst jede Stufe auf die jährliche Aufführung hin.',
+		lede: 'Klassisches Ballett verbindet sorgfältig aufgebaute Technik mit Musikalität und Ausdruck. Vom Kinderballett bis zur fortgeschrittenen Klasse wächst jede Stufe auf gemeinsame Aufführungen hin.',
 		forWhoLead:
 			'Ballett braucht Konzentration und Geduld. Gleichzeitig entsteht etwas sehr Persönliches: Haltung, Musikalität und der Mut, den eigenen Ausdruck auf die Bühne zu bringen.',
 		'forWho[_key=="k112"].text':
 			'Für Kinder, die Freude an Musik, klaren Formen und konzentriertem Üben entwickeln möchten.',
 		'forWho[_key=="k113"].text':
-			'Für Tänzer:innen, die ihre Technik vertiefen und sich behutsam an den Spitzentanz heranarbeiten möchten.',
+			'Für Tänzerinnen, die ihre Technik vertiefen und sich weiterentwickeln wollen.',
 		'forWho[_key=="k114"].text':
-			'Die jährliche Aufführung gibt dem gemeinsamen Lernen ein Ziel und macht Entwicklung auf der Bühne sichtbar.',
+			'Aufführungen geben dem gemeinsamen Lernen ein Ziel und machen Entwicklung auf der Bühne sichtbar.',
 		'learn[_key=="k119"].text':
 			'Positionen, Arbeit an der Stange und Körperspannung werden klar, geduldig und altersgerecht aufgebaut.',
 		'learn[_key=="k120"].text':
 			'Bewegung verbindet sich mit Phrasierung, Tempo und Dynamik der Musik.',
 		'learn[_key=="k121"].text':
-			'Choreografien werden gemeinsam entwickelt und sorgfältig für die jährliche Aufführung vorbereitet.',
+			'Choreografien werden gemeinsam entwickelt und sorgfältig für kommende Aufführungen vorbereitet.',
 	},
 	'offering-jazz-musicaldance': {
-		lede: 'Jazz und Musicaldance verbinden Energie, Technik und Bühnenausdruck. Jugendliche und Erwachsene erleben unterschiedliche Stile — von Broadway bis zu moderner Pop-Choreografie.',
+		title: 'Modern-/Contemporary dance',
+		eyebrow: 'Bereich Tanz · Modern/Contemporary',
+		lede: 'Modern- und Contemporary dance verbinden Energie, Technik und Bühnenausdruck. Jugendliche und Erwachsene erleben den Tanz auf allen Ebenen.',
+		'facts[_key=="k138"].value': 'ab 8 Jahren',
 		forWhoLead:
 			'Hier darf Tanz sichtbar, lebendig und charaktervoll werden. Technik schafft die Grundlage, damit Persönlichkeit und Ausdruck auf der Bühne Raum bekommen.',
 		'forWho[_key=="k146"].text':
@@ -226,17 +254,22 @@ const offerings: Record<string, Changes> = {
 			'Drei Levels geben Einsteiger:innen und Fortgeschrittenen den passenden Raum, um sich weiterzuentwickeln.',
 		'forWho[_key=="k148"].text':
 			'Regelmäßige Auftritte machen Ensemblearbeit und die Vorbereitung auf eine große Bühne unmittelbar erlebbar.',
+		'learn[_key=="k153"].title': 'Tanztechnik',
 		'learn[_key=="k153"].text':
-			'Isolationen, Synkopen und dynamische Bewegungsqualitäten bilden die technische Grundlage des Jazz Dance.',
+			'Drehungen, Sprünge und Isolationen — Tanztechnik bildet die Grundlage für den Tanz.',
+		'learn[_key=="k154"].title': 'Ausdruck',
 		'learn[_key=="k154"].text':
-			'Broadway-Stile und Charakterarbeit zeigen, wie Bewegung, Raum und Persönlichkeit zusammenspielen.',
+			'Bewegungscharakterarbeit zeigt, wie Persönlichkeit und Tanz zusammenwirken.',
+		'learn[_key=="k155"].title': 'Choreographie',
 		'learn[_key=="k155"].text':
-			'Choreografien wachsen im Ensemble und werden mit Bühnenbild und Licht für die Jahresaufführung vorbereitet.',
+			'Choreographien entstehen im Ensemble und werden für die Aufführung vorbereitet.',
+		'faq[_key=="k169"].a':
+			'Modern- und Contemporary dance sind freier, sie sind auf Ausdruck und Individualität ausgerichtet.',
 	},
 	'offering-hochzeitsgesang': {
-		lede: 'Ein Lied kann einem besonderen Moment eine eigene Stimme geben. Wir beraten Sie persönlich, proben gemeinsam und begleiten Ihre Trauung auch außerhalb von Melle.',
+		lede: 'Ein Lied kann einem besonderen Moment eine eigene Stimme geben. Wir beraten dich persönlich, proben gemeinsam und begleiten deine Trauung auch außerhalb von Melle.',
 		forWhoLead:
-			'Hochzeitsgesang ist kein Unterrichtsformat, sondern eine persönliche Begleitung. Von der Liedauswahl bis zum Auftritt entsteht etwas, das zu Ihrer Geschichte und Ihrer Feier passt.',
+			'Hochzeitsgesang ist kein Unterrichtsformat, sondern eine persönliche Begleitung. Von der Liedauswahl bis zum Auftritt entsteht etwas, das zu deiner Geschichte und deiner Feier passt.',
 		'forWho[_key=="k179"].text':
 			'Für Brautpaare und Familien, die ihrer Trauung oder Feier mit professionellem Sologesang eine persönliche Stimme geben möchten.',
 		'forWho[_key=="k180"].text':
@@ -244,7 +277,7 @@ const offerings: Record<string, Changes> = {
 		'forWho[_key=="k181"].text':
 			'Ob standesamtlich oder kirchlich: Wir planen den musikalischen Moment passend zum Ort und reisen auch außerhalb von Melle an.',
 		'learn[_key=="k186"].text':
-			'Gemeinsam finden wir ein Lied, das zur Feier, zur Stimme und zu Ihrer persönlichen Geschichte passt.',
+			'Gemeinsam finden wir ein Lied, das zur Feier, zur Stimme und zu deiner persönlichen Geschichte passt.',
 		'learn[_key=="k187"].text':
 			'In den Proben entsteht Sicherheit, damit Musik und Ausdruck am Tag der Trauung frei werden können.',
 		'learn[_key=="k188"].text':
@@ -293,13 +326,13 @@ const offerings: Record<string, Changes> = {
 		'forWho[_key=="k277"].text':
 			'Der nächste Schritt nach dem Kinderballett: technisch differenzierter und mit einem stärkeren Blick auf die Bühne.',
 		'forWho[_key=="k278"].text':
-			'Im Ensemble lernen die Tänzer:innen, eine Choreografie gemeinsam zu tragen und für die Jahresaufführung zu gestalten.',
+			'Im Ensemble lernen die Tänzer:innen, eine Choreografie gemeinsam zu tragen und für Aufführungen zu gestalten.',
 		'learn[_key=="k283"].text':
 			'Arbeit an der Stange, Positionen und Körperspannung werden auf einem höheren Niveau weiterentwickelt.',
 		'learn[_key=="k284"].text':
 			'Phrasierung, Dynamik und Tempo werden bewusster wahrgenommen und in Bewegung übersetzt.',
 		'learn[_key=="k285"].text':
-			'Choreografie und Bühnenpräsenz werden Schritt für Schritt für die Jahresaufführung vorbereitet.',
+			'Choreografie und Bühnenpräsenz werden Schritt für Schritt für Aufführungen vorbereitet.',
 	},
 	'offering-moderndance-ab-10': {
 		lede: 'Kinder lernen erste Techniken des modernen Tanzes kennen und entwickeln daraus Choreografien im Ensemble. Rhythmus, Freude und eigener Ausdruck gehören dabei zusammen.',
@@ -314,7 +347,7 @@ const offerings: Record<string, Changes> = {
 		'learn[_key=="k315"].text':
 			'Aus einzelnen Impulsen entstehen Bewegungsfolgen, die gemeinsam im Ensemble gestaltet werden.',
 		'learn[_key=="k316"].text':
-			'Die Gruppe sammelt Bühnenerfahrung und bereitet sich gemeinsam auf die Jahresaufführung vor.',
+			'Die Gruppe sammelt Bühnenerfahrung und bereitet sich gemeinsam auf Auftritte vor.',
 	},
 	'offering-moderndance-ab-15': {
 		lede: 'Jugendliche vertiefen ihre Technik und entwickeln einen bewussteren künstlerischen Ausdruck. Anspruchsvolle Choreografien und Bühnenarbeit gehören fest zum Unterricht.',
@@ -365,8 +398,16 @@ const offerings: Record<string, Changes> = {
 
 async function main() {
 	const transaction = client.transaction()
+	const retiredOfferingIds = new Set([
+		'offering-ballett-ab-9',
+		'offering-moderndance-ab-10',
+		'offering-moderndance-ab-15',
+		'offering-moderndance-ab-18',
+		'offering-moderndance-ab-30',
+	])
 
 	for (const [id, changes] of Object.entries({ ...documents, ...offerings })) {
+		if (retiredOfferingIds.has(id)) continue
 		transaction.patch(id, (patch) => patch.set(changes))
 	}
 

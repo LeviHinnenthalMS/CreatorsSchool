@@ -81,11 +81,90 @@ function CalIcon() {
 	)
 }
 
-const META_ICONS = [
-	<ClockIcon key="c" />,
-	<UsersIcon key="u" />,
-	<CalIcon key="k" />,
-]
+function LevelIcon() {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.8}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden
+			className="size-3.5 shrink-0"
+		>
+			<path d="M4 20v-4h4v4H4Z" />
+			<path d="M10 20V10h4v10h-4Z" />
+			<path d="M16 20V4h4v16h-4Z" />
+		</svg>
+	)
+}
+
+function LocationIcon() {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={1.8}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			aria-hidden
+			className="size-3.5 shrink-0"
+		>
+			<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+			<circle cx="12" cy="10" r="2.5" />
+		</svg>
+	)
+}
+
+type MetaIconName = 'clock' | 'users' | 'calendar' | 'level' | 'location'
+type DetailRow = NonNullable<OfferingListItem['detailRows']>[number]
+
+function metaIconFor(row: DetailRow): MetaIconName | null {
+	const key = row.key?.trim().toLocaleLowerCase('de') ?? ''
+	const value = row.value?.trim().toLocaleLowerCase('de') ?? ''
+
+	// Billing and per-duration prices repeat the prominent price panel below.
+	if (/abrechnung|preis/.test(key) || value.includes('€')) return null
+	if (/dauer/.test(key)) return 'clock'
+	if (/niveau|level|stufe/.test(key)) return 'level'
+	if (/region|ort/.test(key)) return 'location'
+	if (/gruppe/.test(key) || (/format/.test(key) && /gruppe/.test(value))) {
+		return 'users'
+	}
+	if (
+		/unterricht|häufigkeit/.test(key) ||
+		(/format/.test(key) && /wöchent|projekt/.test(value))
+	) {
+		return 'calendar'
+	}
+
+	return null
+}
+
+function catalogMetaRows(rows: DetailRow[]) {
+	const hasRegion = rows.some((row) =>
+		/region/i.test(row.key?.trim() ?? ''),
+	)
+
+	return rows
+		.filter((row) => !(hasRegion && /^ort$/i.test(row.key?.trim() ?? '')))
+		.map((row) => ({ row, icon: metaIconFor(row) }))
+		.filter(
+			(item): item is { row: DetailRow; icon: MetaIconName } =>
+			item.icon !== null && Boolean(item.row.value),
+		)
+		.slice(0, 3)
+}
+
+function MetaIcon({ name }: { name: MetaIconName }) {
+	if (name === 'clock') return <ClockIcon />
+	if (name === 'users') return <UsersIcon />
+	if (name === 'level') return <LevelIcon />
+	if (name === 'location') return <LocationIcon />
+	return <CalIcon />
+}
 
 function probeHref(
 	kontaktHref: string,
@@ -167,7 +246,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 									isActive ? 'bg-coral text-paper' : 'bg-paper-3 text-charcoal',
 								)}
 							>
-								{String(catCounts[f] ?? 0).padStart(2, '0')}
+								{catCounts[f] ?? 0}
 							</span>
 						</button>
 					)
@@ -181,7 +260,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 					const isContactOnly = o.bookingType === 'kontakt'
 					const [titleMain, titleItalic] = splitTitle(o.title ?? '')
 					const tag = o.catalogTag ?? o.facts?.[0]?.value
-					const metaRows = o.detailRows?.slice(0, 3) ?? []
+					const metaRows = catalogMetaRows(o.detailRows ?? [])
 					const ageFact = o.facts?.find((f) =>
 						/alter|age/i.test(f.key ?? ''),
 					)?.value
@@ -195,7 +274,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 							)}
 						>
 							{/* Content */}
-							<div className="flex flex-1 flex-col justify-center gap-3 p-7">
+							<div className="flex flex-1 flex-col gap-3 p-7">
 								{tag && (
 									<span
 										className={cn(
@@ -251,7 +330,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 
 								{metaRows.length > 0 && (
 									<div className="mt-1 flex flex-wrap gap-x-6 gap-y-1.5">
-										{metaRows.map((row, ri) => (
+										{metaRows.map(({ row, icon }, ri) => (
 											<span
 												key={row._key ?? ri}
 												className={cn(
@@ -259,7 +338,7 @@ export default function OfferingCatalog({ items, kontaktHref }: Props) {
 													dark ? 'text-white/40' : 'text-mute',
 												)}
 											>
-												{META_ICONS[ri]}
+												<MetaIcon name={icon} />
 												{row.value}
 											</span>
 										))}

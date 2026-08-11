@@ -34,7 +34,7 @@ export default defineType({
 				defineField({ name: 'contact', title: 'Phone or E-Mail (combined field)', type: 'string' }),
 				defineField({ name: 'message', title: 'Message', type: 'string' }),
 				defineField({ name: 'interest', title: 'Which offering?', type: 'string' }),
-				defineField({ name: 'age', title: "Child's age", type: 'string' }),
+				defineField({ name: 'age', title: "Participant's age", type: 'string' }),
 				defineField({ name: 'submit', title: 'Submit button', type: 'string' }),
 				defineField({ name: 'footnote', title: 'Below-button note', type: 'string' }),
 				defineField({ name: 'requiredHint', title: 'Required-field hint', type: 'string' }),
@@ -63,7 +63,7 @@ export default defineType({
 		}),
 		defineField({
 			name: 'ageOptions',
-			title: "Child's age · dropdown options",
+			title: "Participant's age · dropdown options",
 			type: 'array',
 			of: [
 				defineArrayMember({

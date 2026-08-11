@@ -70,7 +70,7 @@ export default defineType({
 			name: 'subInfo',
 			title: 'Additional info',
 			description:
-				'Comma-separated tags like "Parent–child, max 6 children, small group".',
+				'Comma-separated tags like "Parent–child, beginners, limited spots".',
 			type: 'string',
 		}),
 		defineField({

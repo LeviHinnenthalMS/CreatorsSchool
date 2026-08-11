@@ -13,7 +13,7 @@ export default defineType({
 		defineField({ name: 'email', title: 'Email', type: 'string' }),
 		defineField({ name: 'phone', title: 'Phone', type: 'string' }),
 		defineField({ name: 'interest', title: 'Interest', type: 'string' }),
-		defineField({ name: 'childAge', title: "Child's age", type: 'string' }),
+		defineField({ name: 'childAge', title: "Participant's age", type: 'string' }),
 		defineField({ name: 'preferredTime', title: 'Preferred time', type: 'string' }),
 		defineField({ name: 'message', title: 'Message', type: 'text', rows: 4 }),
 		defineField({ name: 'submittedAt', title: 'Submitted at', type: 'datetime' }),

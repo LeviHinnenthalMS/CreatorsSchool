@@ -60,6 +60,7 @@
 		"typegen": "pnpm extract-schema && sanity typegen generate",
 		"seed": "npx tsx --env-file=.env.local scripts/seed.ts",
 		"fix-seo": "npx tsx --env-file=.env.local scripts/fix-seo.ts",
-		"apply-miriam-tone": "npx tsx --env-file=.env.local scripts/apply-miriam-tone.ts"
+		"apply-miriam-tone": "npx tsx --env-file=.env.local scripts/apply-miriam-tone.ts",
+		"apply-miriam-latest-feedback": "npx tsx --env-file=.env.local scripts/apply-miriam-latest-feedback.ts"
 	}
 }

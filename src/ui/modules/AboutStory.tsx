@@ -63,16 +63,8 @@ export default function AboutStory({
 						</div>
 					</div>
 				) : (
-					<div className="relative mx-auto w-full max-w-[440px] lg:mx-0">
-						{/* Back cards (decorative depth) */}
-						<div
-							className="absolute inset-0 -rotate-3 scale-95 rounded-[22px] bg-mute-2/35"
-							aria-hidden
-						/>
-						<div
-							className="absolute inset-0 rotate-[1.5deg] scale-[0.97] rounded-[22px] bg-mute/20"
-							aria-hidden
-						/>
+					<div className="relative mx-auto w-full lg:mx-0">
+					
 
 						{/* Front card */}
 						<div className="relative overflow-hidden rounded-[22px] shadow-lg">

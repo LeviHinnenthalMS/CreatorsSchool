@@ -64,7 +64,7 @@ export default function ContactNotification({ name, contact, message, interest, 
 							<>
 								<Hr style={divider} />
 								<Row>
-									<Text style={label}>Alter des Kindes</Text>
+									<Text style={label}>Alter der teilnehmenden Person</Text>
 									<Text style={value}>{childAge}</Text>
 								</Row>
 							</>

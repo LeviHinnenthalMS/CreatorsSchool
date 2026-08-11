@@ -196,7 +196,7 @@ function FormPanel({
 
 				{ages.length > 0 && (
 					<Select
-						label={clean(labels.age) || 'Alter des Kindes'}
+						label={clean(labels.age) || 'Alter der teilnehmenden Person'}
 						name="age"
 						options={ages}
 						defaultValue={preselectedAge ? stegaClean(preselectedAge.value!) ?? undefined : undefined}
@@ -204,7 +204,7 @@ function FormPanel({
 				)}
 
 				<Field
-					label={clean(labels.name) || 'Ihr Name'}
+					label={clean(labels.name) || 'Dein Name'}
 					name="name"
 					placeholder="Vor- und Nachname"
 					required
@@ -215,20 +215,20 @@ function FormPanel({
 				<Field
 					label={clean(labels.contact) || 'Telefon oder E-Mail'}
 					name="contact"
-					placeholder="So erreichen wir Sie am besten"
+					placeholder="So erreichen wir dich am besten"
 					required
 					requiredHint={clean(labels.requiredHint)}
 					error={fieldErrors.contact}
 				/>
 
 				<Textarea
-					label={clean(labels.message) || 'Ihre Nachricht'}
+					label={clean(labels.message) || 'Deine Nachricht'}
 					name="message"
-					placeholder="Wie können wir Ihnen helfen?"
+					placeholder="Wie können wir dir helfen?"
 				/>
 
 				<p className="text-ink-2 text-[13px] leading-relaxed">
-					{clean(labels.privacy) || 'Informationen zur Verarbeitung Ihrer Angaben finden Sie in unserer'}{' '}
+					{clean(labels.privacy) || 'Informationen zur Verarbeitung deiner Angaben findest du in unserer'}{' '}
 					{privacyUrl ? (
 						<Link href={privacyUrl} className="text-coral underline">
 							{clean(labels.privacyLink) || 'Datenschutzerklärung'}
@@ -282,9 +282,9 @@ function ContactFormInner(props: Props) {
 
 		const errors: Record<string, string> = {}
 		if (!String(fd.get('name') || '').trim())
-			errors.name = 'Bitte geben Sie Ihren Namen ein.'
+			errors.name = 'Bitte gib deinen Namen ein.'
 		if (!String(fd.get('contact') || '').trim())
-			errors.contact = 'Bitte geben Sie Ihre Telefonnummer oder E-Mail-Adresse ein.'
+			errors.contact = 'Bitte gib deine Telefonnummer oder E-Mail-Adresse ein.'
 		if (Object.keys(errors).length) {
 			setFieldErrors(errors)
 			return
