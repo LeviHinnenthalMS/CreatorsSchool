@@ -54,10 +54,17 @@ export async function fetchSanityLive<T = any>(
 	args: Parameters<typeof sanityFetch>[0],
 ) {
 	const preview = dev || (await draftMode()).isEnabled
+	if (preview) {
+		return fetchSanity<T>({
+			query: args.query,
+			params: args.params,
+			next: { revalidate: 0 },
+		})
+	}
 
 	const { data } = await sanityFetch({
 		...args,
-		perspective: preview ? 'drafts' : 'published',
+		perspective: 'published',
 	})
 
 	return data as T

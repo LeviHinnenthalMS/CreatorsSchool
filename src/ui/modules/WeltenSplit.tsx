@@ -67,7 +67,7 @@ export default function WeltenSplit(props: Props) {
 								{c.eyebrow && (
 									<span
 										className={cn(
-											'inline-flex items-center gap-2.5 self-start text-[12.5px] font-semibold tracking-[0.08em] uppercase',
+											'inline-flex items-center gap-2.5 self-start text-[12.5px] font-semibold uppercase',
 											dark ? 'text-blush' : 'text-coral-deep',
 										)}
 									>

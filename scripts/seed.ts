@@ -18,19 +18,38 @@ const k = () => `k${++_k}`
 
 function rt(text: string) {
 	const parts = text.split(/(\*[^*]+\*)/)
-	return [{
-		_type: 'block', _key: k(), style: 'normal', markDefs: [],
-		children: parts.filter(Boolean).map(p =>
-			p[0] === '*' && p.at(-1) === '*'
-				? { _type: 'span', _key: k(), text: p.slice(1, -1), marks: ['accent'] }
-				: { _type: 'span', _key: k(), text: p, marks: [] },
-		),
-	}]
+	return [
+		{
+			_type: 'block',
+			_key: k(),
+			style: 'normal',
+			markDefs: [],
+			children: parts
+				.filter(Boolean)
+				.map((p) =>
+					p[0] === '*' && p.at(-1) === '*'
+						? {
+								_type: 'span',
+								_key: k(),
+								text: p.slice(1, -1),
+								marks: ['accent'],
+							}
+						: { _type: 'span', _key: k(), text: p, marks: [] },
+				),
+		},
+	]
 }
 
 function bl(text: string) {
-	return [{ _type: 'block', _key: k(), style: 'normal', markDefs: [],
-		children: [{ _type: 'span', _key: k(), text, marks: [] }] }]
+	return [
+		{
+			_type: 'block',
+			_key: k(),
+			style: 'normal',
+			markDefs: [],
+			children: [{ _type: 'span', _key: k(), text, marks: [] }],
+		},
+	]
 }
 
 function imgRef(assetId: string) {
@@ -38,31 +57,56 @@ function imgRef(assetId: string) {
 }
 
 function linkInt(label: string, ref: string) {
-	return { _type: 'link', label, type: 'internal', internal: { _type: 'reference', _ref: ref } }
+	return {
+		_type: 'link',
+		label,
+		type: 'internal',
+		internal: { _type: 'reference', _ref: ref },
+	}
 }
 
 function linkExt(label: string, url: string) {
 	return { _type: 'link', label, type: 'external', external: url }
 }
 
-function cta(label: string, type: 'int' | 'ext', target: string, variant = 'primary', size = 'medium') {
+function cta(
+	label: string,
+	type: 'int' | 'ext',
+	target: string,
+	variant = 'primary',
+	size = 'medium',
+) {
 	return {
-		_key: k(), _type: 'cta', active: true, variant, size,
+		_key: k(),
+		_type: 'cta',
+		active: true,
+		variant,
+		size,
 		link: type === 'int' ? linkInt(label, target) : linkExt(label, target),
 	}
 }
 
 function navLink(label: string, desc: string, ref: string) {
-	return { _key: k(), _type: 'link.nav', label, description: desc, type: 'internal', internal: { _type: 'reference', _ref: ref } }
+	return {
+		_key: k(),
+		_type: 'link.nav',
+		label,
+		description: desc,
+		type: 'internal',
+		internal: { _type: 'reference', _ref: ref },
+	}
 }
 
 function ctaBand(heading: string, body: string) {
 	return {
-		_key: k(), _type: 'cta-band',
+		_key: k(),
+		_type: 'cta-band',
 		eyebrow: 'Anmeldung',
 		title: rt(heading),
 		text: body,
-		showPhone: true, showWhatsapp: true, showEmail: true,
+		showPhone: true,
+		showWhatsapp: true,
+		showEmail: true,
 		whatsappLabel: 'WhatsApp schreiben',
 		emailLabel: 'E-Mail schreiben',
 		extraCtas: [cta('Kontakt', 'int', P.kontakt, 'secondary')],
@@ -121,20 +165,31 @@ const PERF = 'performance-sept-2026'
 // ── image assets ─────────────────────────────────────────────────────
 
 async function uploadAssets() {
-	const assetsDir = '/tmp/cs-handoff/creators-school/project/creators-school-handoff/reference/assets'
+	const assetsDir =
+		'/tmp/cs-handoff/creators-school/project/creators-school-handoff/reference/assets'
 
 	// Upload logo
 	const logoPath = path.join(assetsDir, 'logo.png')
-	const logoAsset = await client.assets.upload('image', fs.createReadStream(logoPath), {
-		filename: 'logo.png', contentType: 'image/png',
-	})
+	const logoAsset = await client.assets.upload(
+		'image',
+		fs.createReadStream(logoPath),
+		{
+			filename: 'logo.png',
+			contentType: 'image/png',
+		},
+	)
 	console.log('✓ logo uploaded:', logoAsset._id)
 
 	// Upload hero
 	const heroPath = path.join(assetsDir, 'hero-drum.jpg')
-	const heroAsset = await client.assets.upload('image', fs.createReadStream(heroPath), {
-		filename: 'hero-drum.jpg', contentType: 'image/jpeg',
-	})
+	const heroAsset = await client.assets.upload(
+		'image',
+		fs.createReadStream(heroPath),
+		{
+			filename: 'hero-drum.jpg',
+			contentType: 'image/jpeg',
+		},
+	)
 	console.log('✓ hero-drum uploaded:', heroAsset._id)
 
 	// Find placeholder image already in media library, fall back to hero
@@ -142,7 +197,11 @@ async function uploadAssets() {
 		`*[_type == "sanity.imageAsset" && originalFilename match "Musical Early Education*"][0]{ _id }`,
 	)
 	const phId = placeholder?._id ?? heroAsset._id
-	console.log(placeholder ? `✓ placeholder found: ${phId}` : `⚠ placeholder not found, using hero-drum as fallback`)
+	console.log(
+		placeholder
+			? `✓ placeholder found: ${phId}`
+			: `⚠ placeholder not found, using hero-drum as fallback`,
+	)
 
 	return { logoId: logoAsset._id, heroId: heroAsset._id, phId }
 }
@@ -151,11 +210,14 @@ async function uploadAssets() {
 
 function buildSite(logoId: string, phId: string) {
 	return {
-		_id: 'site', _type: 'site',
+		_id: 'site',
+		_type: 'site',
 		title: 'Creators School',
-		tagline: 'Musik- und Tanzschule in Melle. Seit 2002 — von den ersten Klangerlebnissen der Kleinsten bis zur Bühne für jedes Alter.',
+		tagline:
+			'Musik- und Tanzschule in Melle. Seit 2002 — von den ersten Klangerlebnissen der Kleinsten bis zur Bühne für jedes Alter.',
 		logo: {
-			_type: 'logo', name: 'Creators School',
+			_type: 'logo',
+			name: 'Creators School',
 			image: {
 				default: imgRef(logoId),
 				light: imgRef(logoId),
@@ -171,7 +233,9 @@ function buildSite(logoId: string, phId: string) {
 		addressLabel: 'Wittekindsweg 10, 49324 Melle',
 		hours: 'Mo–Fr 09–20 Uhr · Sa 10–14 Uhr · Büro/Telefon Mo–Fr 09–18 Uhr',
 		eventBadge: {
-			active: true, label: '5.–6. Sep', sub: 'Aufführung',
+			active: true,
+			label: '5.–6. Sep',
+			sub: 'Aufführung',
 			link: linkInt('Aufführungen', P.auffuehrungen),
 		},
 		ctas: [cta('Probestunde', 'int', P.kontakt)],
@@ -180,7 +244,9 @@ function buildSite(logoId: string, phId: string) {
 
 function buildPerformance(phId: string) {
 	return {
-		_id: PERF, _type: 'performance', language: 'de',
+		_id: PERF,
+		_type: 'performance',
+		language: 'de',
 		title: 'Aufführungen im Schauspielhaus Melle · September 2026',
 		year: 2026,
 		dates: '5.–6. September 2026',
@@ -189,29 +255,77 @@ function buildPerformance(phId: string) {
 		bigNumber: '5 & 6',
 		monthLabel: 'September 2026',
 		lead: 'Zwei Abende, eine Schule auf der Bühne.',
-		description: 'Unsere Tänzer:innen aller Altersstufen zeigen, was Ausdruck bedeutet. Über 500 Plätze pro Abend. Generalprobe am 4. September für Geladene.',
+		description:
+			'Unsere Tänzer:innen aller Altersstufen zeigen, was Ausdruck bedeutet. Über 500 Plätze pro Abend. Generalprobe am 4. September für Geladene.',
 		featured: true,
 		badgeLabel: '5.–6. Sep',
 		badgeSub: 'Aufführung',
 		image: { ...imgRef(phId), alt: 'Aufführungen Creators School' },
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'auffuehrungen' } },
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'auffuehrungen' },
+		},
 	}
 }
 
 function buildTeachers(phId: string) {
 	const teachers = [
-		{ id: 'teacher-miriam-schulte', name: 'Miriam Schulte', role: 'Gründerin · Pädagogische Leitung · Musicaldarstellerin', order: 1 },
-		{ id: 'teacher-charlotte-berg', name: 'Charlotte Berg', role: 'Ballett · Choreografie', order: 2 },
-		{ id: 'teacher-tobias-linde', name: 'Tobias Linde', role: 'Gitarre · Bass · Schlagzeug', order: 3 },
-		{ id: 'teacher-lena-voss', name: 'Lena Voss', role: 'Eltern-Kind-Kurs · Tänzerische Früherziehung', order: 4 },
-		{ id: 'teacher-marlene-otten', name: 'Marlene Otten', role: 'Modern · Contemporary', order: 5 },
-		{ id: 'teacher-jakob-heinemann', name: 'Jakob Heinemann', role: 'Klavier · Musiktheorie', order: 6 },
-		{ id: 'teacher-anneke-friese', name: 'Anneke Friese', role: 'Violine · Viola', order: 7 },
-		{ id: 'teacher-elisa-hartmann', name: 'Elisa Hartmann', role: 'Stimmbildung · Hochzeitsgesang', order: 8 },
+		{
+			id: 'teacher-miriam-schulte',
+			name: 'Miriam Schulte',
+			role: 'Gründerin · Pädagogische Leitung · Musicaldarstellerin',
+			order: 1,
+		},
+		{
+			id: 'teacher-charlotte-berg',
+			name: 'Charlotte Berg',
+			role: 'Ballett · Choreografie',
+			order: 2,
+		},
+		{
+			id: 'teacher-tobias-linde',
+			name: 'Tobias Linde',
+			role: 'Gitarre · Bass · Schlagzeug',
+			order: 3,
+		},
+		{
+			id: 'teacher-lena-voss',
+			name: 'Lena Voss',
+			role: 'Eltern-Kind-Kurs · Tänzerische Früherziehung',
+			order: 4,
+		},
+		{
+			id: 'teacher-marlene-otten',
+			name: 'Marlene Otten',
+			role: 'Modern · Contemporary',
+			order: 5,
+		},
+		{
+			id: 'teacher-jakob-heinemann',
+			name: 'Jakob Heinemann',
+			role: 'Klavier · Musiktheorie',
+			order: 6,
+		},
+		{
+			id: 'teacher-anneke-friese',
+			name: 'Anneke Friese',
+			role: 'Violine · Viola',
+			order: 7,
+		},
+		{
+			id: 'teacher-elisa-hartmann',
+			name: 'Elisa Hartmann',
+			role: 'Stimmbildung · Hochzeitsgesang',
+			order: 8,
+		},
 	]
-	return teachers.map(t => ({
-		_id: t.id, _type: 'teacher', language: 'de',
-		name: t.name, role: t.role, order: t.order,
+	return teachers.map((t) => ({
+		_id: t.id,
+		_type: 'teacher',
+		language: 'de',
+		name: t.name,
+		role: t.role,
+		order: t.order,
 		photo: { ...imgRef(phId), alt: t.name },
 	}))
 }
@@ -219,19 +333,46 @@ function buildTeachers(phId: string) {
 function buildTestimonials(phId: string) {
 	return [
 		{
-			_id: TS.sandra, _type: 'testimonial', language: 'de', highlight: true,
-			content: bl('Unsere Lena geht jeden Mittwoch strahlend zum Eltern-Kind-Kurs. Miriam holt jedes Kind dort ab, wo es steht — wir sind unendlich dankbar.'),
-			author: { name: 'Sandra Kuhlmann', role: 'Mama von Lena (2) · Eltern-Kind-Kurs', image: imgRef(phId) },
+			_id: TS.sandra,
+			_type: 'testimonial',
+			language: 'de',
+			highlight: true,
+			content: bl(
+				'Unsere Lena geht jeden Mittwoch strahlend zum Eltern-Kind-Kurs. Miriam holt jedes Kind dort ab, wo es steht — wir sind unendlich dankbar.',
+			),
+			author: {
+				name: 'Sandra Kuhlmann',
+				role: 'Mama von Lena (2) · Eltern-Kind-Kurs',
+				image: imgRef(phId),
+			},
 		},
 		{
-			_id: TS.jara, _type: 'testimonial', language: 'de', highlight: false,
-			content: bl('Im Moderndance arbeiten wir auf die Aufführung im September hin. Es fordert, es trägt, und am Ende stehen wir wirklich auf der Bühne.'),
-			author: { name: 'Jara Meyer', role: '16 · Moderndance ab 15 · Melle', image: imgRef(phId) },
+			_id: TS.jara,
+			_type: 'testimonial',
+			language: 'de',
+			highlight: false,
+			content: bl(
+				'Im Moderndance arbeiten wir auf die Aufführung im September hin. Es fordert, es trägt, und am Ende stehen wir wirklich auf der Bühne.',
+			),
+			author: {
+				name: 'Jara Meyer',
+				role: '16 · Moderndance ab 15 · Melle',
+				image: imgRef(phId),
+			},
 		},
 		{
-			_id: TS.anna, _type: 'testimonial', language: 'de', highlight: false,
-			content: bl('Ich hatte 20 Jahre nicht mehr getanzt. Moderndance ab 30 hat mir meinen Ausdruck zurückgegeben — ohne Druck, ohne Schamgefühl.'),
-			author: { name: 'Anna Krüger', role: '38 · Moderndance ab 30 · Melle', image: imgRef(phId) },
+			_id: TS.anna,
+			_type: 'testimonial',
+			language: 'de',
+			highlight: false,
+			content: bl(
+				'Ich hatte 20 Jahre nicht mehr getanzt. Moderndance ab 30 hat mir meinen Ausdruck zurückgegeben — ohne Druck, ohne Schamgefühl.',
+			),
+			author: {
+				name: 'Anna Krüger',
+				role: '38 · Moderndance ab 30 · Melle',
+				image: imgRef(phId),
+			},
 		},
 	]
 }
@@ -240,20 +381,51 @@ function faq(items: [string, string][]) {
 	return items.map(([q, a]) => ({ _key: k(), _type: 'qa', q, a }))
 }
 
+const recurringOfferingTechnicalFaqs: [string, string][] = [
+	[
+		'Wie funktionieren die Probestunden?',
+		'Die ersten zwei Probestunden sind kostenlos, wenn du bzw. dein Kind danach nicht weitermachst. Entscheidest du dich für den weiteren Unterricht, werden beide Probestunden rückwirkend berechnet.',
+	],
+	[
+		'Gibt es feste Vertragslaufzeiten?',
+		'Wir arbeiten mit Halbjahresverträgen, die sich automatisch verlängern und mit sechs Wochen Frist kündbar sind.',
+	],
+	[
+		'Was passiert in den Ferien?',
+		'In den Schulferien Niedersachsens pausiert der Unterricht. Die Beitragspauschale ist auf 38 Unterrichtswochen pro Jahr kalkuliert.',
+	],
+]
+
 function facts(items: [string, string][]) {
 	return items.map(([key, value]) => ({ _key: k(), _type: 'fact', key, value }))
 }
 
 function forWho(items: [string, string][]) {
-	return items.map(([title, text]) => ({ _key: k(), _type: 'audience', title, text }))
+	return items.map(([title, text]) => ({
+		_key: k(),
+		_type: 'audience',
+		title,
+		text,
+	}))
 }
 
 function learnCards(items: [string, string, string][]) {
-	return items.map(([icon, title, text]) => ({ _key: k(), _type: 'learnCard', icon, title, text }))
+	return items.map(([icon, title, text]) => ({
+		_key: k(),
+		_type: 'learnCard',
+		icon,
+		title,
+		text,
+	}))
 }
 
 function detailRows(items: [string, string][]) {
-	return items.map(([key, value]) => ({ _key: k(), _type: 'detailRow', key, value }))
+	return items.map(([key, value]) => ({
+		_key: k(),
+		_type: 'detailRow',
+		key,
+		value,
+	}))
 }
 
 function buildOfferings(phId: string) {
@@ -261,418 +433,1049 @@ function buildOfferings(phId: string) {
 
 	const offerings = [
 		{
-			_id: O.mFrue, _type: 'offering', language: 'de', order: 1,
-			title: 'Musikalische Frühförderung', bereich: 'musik',
+			_id: O.mFrue,
+			_type: 'offering',
+			language: 'de',
+			order: 1,
+			title: 'Musikalische Frühförderung',
+			bereich: 'musik',
 			catalogTag: 'Beliebt · 3–6 Jahre',
 			slug: { _type: 'slug', current: 'musikalische-fruehfoerderung' },
 			eyebrow: 'Bereich Musik · Frühförderung',
-			lede: 'Singen, Tanzen, Hören. Erstes Notenverständnis, Rhythmus und elementares Instrumentenspiel — in liebevoll betreuten Gruppen von bis zu zehn Kindern.',
+			lede: 'Singen, Tanzen, Hören. Erstes Notenverständnis, Rhythmus und elementares Instrumentenspiel — in individuell begleiteten Gruppen mit etwa zehn Kindern.',
 			heroImage: hero,
-			facts: facts([['Alter', '3–6 Jahre'], ['Typ', 'Gruppe · bis zu 10 Kinder'], ['Probestunde', 'kostenlos']]),
+			facts: facts([
+				['Alter', '3–6 Jahre'],
+				['Typ', 'Individuelle Gruppe · etwa 10 Kinder'],
+				['Probestunden', '2 Termine'],
+			]),
 			forWhoTitle: rt('Für Neugier und erste *Töne*.'),
-			forWhoLead: 'Musikalische Frühförderung begleitet Kinder im Vorschulalter auf ihrem ersten musikalischen Weg — spielerisch, liebevoll und mit echter pädagogischer Tiefe.',
+			forWhoLead:
+				'Musikalische Frühförderung begleitet Kinder im Vorschulalter auf ihrem ersten musikalischen Weg — spielerisch, liebevoll und mit echter pädagogischer Tiefe.',
 			forWho: forWho([
-				['Kinder von drei bis sechs Jahren', 'Die Neugier auf Klang, Rhythmus und Bewegung steht im Mittelpunkt — ganz ohne Vorkenntnisse.'],
-				['Eltern, die früh fördern möchten', 'Musik stärkt kognitive Fähigkeiten, Kreativität und soziales Bewusstsein — ideal vor der Einschulung.'],
-				['Kinder mit Freude am Gemeinsamen', 'In der Gruppe lernen Kinder Rücksicht, Zuhören und Zusammenspiel.'],
+				[
+					'Kinder von drei bis sechs Jahren',
+					'Die Neugier auf Klang, Rhythmus und Bewegung steht im Mittelpunkt — ganz ohne Vorkenntnisse.',
+				],
+				[
+					'Eltern, die früh fördern möchten',
+					'Musik stärkt kognitive Fähigkeiten, Kreativität und soziales Bewusstsein — ideal vor der Einschulung.',
+				],
+				[
+					'Kinder mit Freude am Gemeinsamen',
+					'In der Gruppe lernen Kinder Rücksicht, Zuhören und Zusammenspiel.',
+				],
 			]),
 			learnTitle: rt('Von ersten Tönen zur *Musik*.'),
 			learn: learnCards([
-				['music', 'Notenverständnis', 'Erste Buchstaben der Musiksprache — spielerisch erarbeitet mit Symbolen und Bewegung.'],
-				['movement', 'Rhythmus & Körper', 'Klatschen, Stampfen, Tanzen — der Körper wird zum ersten Instrument.'],
-				['sparkle', 'Instrumentenspiel', 'Klangstäbe, Handtrommeln und einfache Melodieinstrumente zum Ausprobieren.'],
+				[
+					'music',
+					'Notenverständnis',
+					'Erste Buchstaben der Musiksprache — spielerisch erarbeitet mit Symbolen und Bewegung.',
+				],
+				[
+					'movement',
+					'Rhythmus & Körper',
+					'Klatschen, Stampfen, Tanzen — der Körper wird zum ersten Instrument.',
+				],
+				[
+					'sparkle',
+					'Instrumentenspiel',
+					'Klangstäbe, Handtrommeln und einfache Melodieinstrumente zum Ausprobieren.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: 'ab', priceCurrency: '€', priceValue: '18', priceUnit: '/ Kind',
-			detailRows: detailRows([['Dauer', '45 Min / Woche'], ['Gruppe', 'Bis zu 10 Kinder'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: 'ab',
+			priceCurrency: '€',
+			priceValue: '18',
+			priceUnit: '/ Kind',
+			detailRows: detailRows([
+				['Dauer', '45 Min / Woche'],
+				['Gruppe', 'Etwa 10 Kinder'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Ab welchem Alter ist Musikalische Frühförderung sinnvoll?', 'Ab drei Jahren können Kinder mitmachen — mit Freude an Musik und Bewegung, ganz ohne Vorkenntnisse.'],
-				['Was passiert im Unterricht?', 'Durch Bewegung, Rhythmus, Stimme, Körper- und Sinneswahrnehmung entdecken die Kinder Musik. Wir verbinden alles zu einem ganzheitlichen Lernerlebnis, das Körper, Geist und Seele gleichermaßen anspricht.'],
-				['Was brauche ich für die erste Stunde?', 'Nichts außer Neugier und bequemer Kleidung. Instrumente stellen wir bereit. Die erste Stunde ist kostenlos und unverbindlich.'],
+				[
+					'Ab welchem Alter ist Musikalische Frühförderung sinnvoll?',
+					'Ab drei Jahren können Kinder mitmachen — mit Freude an Musik und Bewegung, ganz ohne Vorkenntnisse.',
+				],
+				[
+					'Was passiert im Unterricht?',
+					'Durch Bewegung, Rhythmus, Stimme, Körper- und Sinneswahrnehmung entdecken die Kinder Musik. Wir verbinden alles zu einem ganzheitlichen Lernerlebnis, das Körper, Geist und Seele gleichermaßen anspricht.',
+				],
+				[
+					'Was brauche ich für die erste Stunde?',
+					'Nichts außer Neugier und bequemer Kleidung. Instrumente stellen wir bereit.',
+				],
+				...recurringOfferingTechnicalFaqs,
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/musikalische-fruehfoerderung' }, description: 'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in Gruppen von bis zu 10 Kindern.' },
+			metadata: {
+				_type: 'metadata',
+				slug: {
+					_type: 'slug',
+					current: 'angebote/musikalische-fruehfoerderung',
+				},
+				description:
+					'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in individuell begleiteten Gruppen mit etwa 10 Kindern.',
+			},
 		},
 		{
-			_id: O.ekk, _type: 'offering', language: 'de', order: 2,
-			title: 'Eltern-Kind-Kurs', bereich: 'musik',
+			_id: O.ekk,
+			_type: 'offering',
+			language: 'de',
+			order: 2,
+			title: 'Eltern-Kind-Kurs',
+			bereich: 'musik',
 			catalogTag: '1,5–3 Jahre · mit Mama / Papa',
 			slug: { _type: 'slug', current: 'eltern-kind-kurs' },
 			eyebrow: 'Bereich Musik · Eltern-Kind',
 			lede: 'Eltern-Kind-Gruppe mit Liedern, Reimen und Bewegung. Die ersten musikalischen Erlebnisse zu zweit — Bindung und Klang in einem.',
 			heroImage: hero,
-			facts: facts([['Alter', '1,5–3 Jahre'], ['Typ', 'Eltern-Kind-Gruppe'], ['Probestunde', 'kostenlos']]),
+			facts: facts([
+				['Alter', '1,5–3 Jahre'],
+				['Typ', 'Eltern-Kind-Gruppe'],
+				['Probestunden', '2 Termine'],
+			]),
 			forWhoTitle: rt('Für die Allerkleinsten — und ihre *Eltern*.'),
-			forWhoLead: 'Der Eltern-Kind-Kurs ist das erste musikalische Erlebnis — gemeinsam, entspannt und ohne jede Erwartung.',
+			forWhoLead:
+				'Der Eltern-Kind-Kurs ist das erste musikalische Erlebnis — gemeinsam, entspannt und ohne jede Erwartung.',
 			forWho: forWho([
-				['Babys und Kleinkinder ab 1,5 Jahren', 'Zu zweit mit Mama oder Papa — in einer sicheren, warmen Atmosphäre.'],
-				['Eltern, die Zeit für ihr Kind schaffen möchten', 'Ohne Ablenkung — eine halbe Stunde Musik und Verbindung.'],
-				['Neugierige Kleine ohne Vorerfahrung', 'Kein Kind ist zu jung für Klang. Wir beginnen da, wo das Kind steht.'],
+				[
+					'Babys und Kleinkinder ab 1,5 Jahren',
+					'Zu zweit mit Mama oder Papa — in einer sicheren, warmen Atmosphäre.',
+				],
+				[
+					'Eltern, die Zeit für ihr Kind schaffen möchten',
+					'Ohne Ablenkung — 45 Minuten Musik und Verbindung.',
+				],
+				[
+					'Neugierige Kleine ohne Vorerfahrung',
+					'Kein Kind ist zu jung für Klang. Wir beginnen da, wo das Kind steht.',
+				],
 			]),
 			learnTitle: rt('Erste *Klangerlebnisse*.'),
 			learn: learnCards([
-				['heart', 'Bindung durch Musik', 'Lieder, Reime und Bewegung stärken die Eltern-Kind-Bindung auf natürliche Weise.'],
-				['music', 'Erste Instrumente', 'Kleine Rasseln, Klangstäbe und Trommeln für die winzigen Hände.'],
-				['movement', 'Rhythmus & Bewegung', 'Tanzen, Schaukeln, Klatschen — der Körper entdeckt Musik.'],
+				[
+					'heart',
+					'Bindung durch Musik',
+					'Lieder, Reime und Bewegung stärken die Eltern-Kind-Bindung auf natürliche Weise.',
+				],
+				[
+					'music',
+					'Erste Instrumente',
+					'Kleine Rasseln, Klangstäbe und Trommeln für die winzigen Hände.',
+				],
+				[
+					'movement',
+					'Rhythmus & Bewegung',
+					'Tanzen, Schaukeln, Klatschen — der Körper entdeckt Musik.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '14', priceUnit: '/ Familie',
-			detailRows: detailRows([['Dauer', '30 Min / Woche'], ['Gruppe', 'Max. 8 Familien'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '14',
+			priceUnit: '/ Familie',
+			detailRows: detailRows([
+				['Dauer', '45 Min / Woche'],
+				['Gruppe', 'Max. 8 Familien'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Ab welchem Alter kann mein Kind mitmachen?', 'Ab eineinhalb Jahren. Wir haben Kinder bis drei Jahre in der Gruppe.'],
-				['Muss ich Musik können?', 'Nein. Der Kurs richtet sich an Eltern, nicht an Musiker:innen. Alles, was zählt, ist die Freude an gemeinsamer Zeit.'],
-				['Können auch Väter mitmachen?', 'Selbstverständlich. Jedes Elternteil ist herzlich willkommen — Mama, Papa, Oma oder Opa.'],
+				[
+					'Ab welchem Alter kann mein Kind mitmachen?',
+					'Ab eineinhalb Jahren. Wir haben Kinder bis drei Jahre in der Gruppe.',
+				],
+				[
+					'Muss ich Musik können?',
+					'Nein. Der Kurs richtet sich an Eltern, nicht an Musiker:innen. Alles, was zählt, ist die Freude an gemeinsamer Zeit.',
+				],
+				[
+					'Können auch Väter mitmachen?',
+					'Selbstverständlich. Jedes Elternteil ist herzlich willkommen — Mama, Papa, Oma oder Opa.',
+				],
+				...recurringOfferingTechnicalFaqs,
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/eltern-kind-kurs' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/eltern-kind-kurs' },
+			},
 		},
 		{
-			_id: O.tFrue, _type: 'offering', language: 'de', order: 3,
-			title: 'Tänzerische Früherziehung', bereich: 'tanz',
+			_id: O.tFrue,
+			_type: 'offering',
+			language: 'de',
+			order: 3,
+			title: 'Tänzerische Früherziehung',
+			bereich: 'tanz',
 			catalogTag: '3–6 Jahre',
 			slug: { _type: 'slug', current: 'taenzerische-fruehfoerderung' },
 			eyebrow: 'Bereich Tanz · Früherziehung',
 			lede: 'Körper, den Raum und den Rhythmus der Musik. Erste Grundlagen des Balletts verbinden sich mit Geschichten, Fantasie und freier Bewegung und eröffnen einen spielerischen Zugang zur Sprache des Tanzes.',
 			heroImage: hero,
-			facts: facts([['Alter', '3–6 Jahre'], ['Dauer', '45 Min / Woche'], ['Gruppe', 'Bis zu 10 Kinder'], ['Preis', '€16 / Kind']]),
+			facts: facts([
+				['Alter', '3–6 Jahre'],
+				['Dauer', '45 Min / Woche'],
+				['Gruppe', 'Etwa 10 Kinder'],
+				['Preis', '€16 / Kind'],
+			]),
 			forWhoTitle: rt('Für erste Schritte und *große Träume*.'),
-			forWhoLead: 'Tänzerische Früherziehung führt Kinder spielerisch in die Welt des Tanzes ein — ohne Druck, ohne feste Form, mit viel Freude.',
+			forWhoLead:
+				'Tänzerische Früherziehung führt Kinder spielerisch in die Welt des Tanzes ein — ohne Druck, ohne feste Form, mit viel Freude.',
 			forWho: forWho([
-				['Kinder von drei bis sechs Jahren', 'Entdeckungsfreude an Bewegung, Musik und Raum — ohne Technik, nur Spiel.'],
-				['Kinder vor dem Ballett', 'Eine ideale Vorbereitung für den Übergang ins Ballett ab sechs Jahren.'],
-				['Alle mit Freude am Tanzen', 'Keine Vorerfahrung nötig — jedes Kind ist willkommen.'],
+				[
+					'Kinder von drei bis sechs Jahren',
+					'Entdeckungsfreude an Bewegung, Musik und Raum — ohne Technik, nur Spiel.',
+				],
+				[
+					'Kinder vor dem Ballett',
+					'Eine ideale Vorbereitung für den Übergang ins Ballett ab sechs Jahren.',
+				],
+				[
+					'Alle mit Freude am Tanzen',
+					'Keine Vorerfahrung nötig — jedes Kind ist willkommen.',
+				],
 			]),
 			learnTitle: rt('Spielen, bewegen, *ausdrücken*.'),
 			learn: learnCards([
-				['movement', 'Körperbewusstsein', 'Kinder entdecken, was ihr Körper kann — strecken, rollen, springen, wirbeln.'],
-				['music', 'Rhythmusgefühl', 'Musik und Bewegung werden als Einheit erlebt — der erste Schritt zu echter Musikalität.'],
-				['sparkle', 'Ausdruck & Phantasie', 'Improvisation und kleine Geschichten formen das erste kreative Erleben.'],
+				[
+					'movement',
+					'Körperbewusstsein',
+					'Kinder entdecken, was ihr Körper kann — strecken, rollen, springen, wirbeln.',
+				],
+				[
+					'music',
+					'Rhythmusgefühl',
+					'Musik und Bewegung werden als Einheit erlebt — der erste Schritt zu echter Musikalität.',
+				],
+				[
+					'sparkle',
+					'Ausdruck & Phantasie',
+					'Improvisation und kleine Geschichten formen das erste kreative Erleben.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '16', priceUnit: '/ Kind',
-			detailRows: detailRows([['Dauer', '45 Min / Woche'], ['Gruppe', 'Bis zu 10 Kinder'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '16',
+			priceUnit: '/ Kind',
+			detailRows: detailRows([
+				['Dauer', '45 Min / Woche'],
+				['Gruppe', 'Etwa 10 Kinder'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Braucht mein Kind Tanzerfahrung?', 'Nein — tänzerische Früherziehung ist der Einstieg. Vorerfahrung ist weder nötig noch erwartet.'],
-				['Was zieht mein Kind an?', 'Bequeme Kleidung, in der es sich frei bewegen kann. Ballettschläppchen sind empfehlenswert, aber keine Pflicht.'],
-				['Wie geht es nach der Früherziehung weiter?', 'Die meisten Kinder wechseln ab sechs Jahren ins Kinderballett. Wir beraten euch gern.'],
+				[
+					'Braucht mein Kind Tanzerfahrung?',
+					'Nein — tänzerische Früherziehung ist der Einstieg. Vorerfahrung ist weder nötig noch erwartet.',
+				],
+				[
+					'Was zieht mein Kind an?',
+					'Bequeme Kleidung, in der es sich frei bewegen kann. Ballettschläppchen sind empfehlenswert, aber keine Pflicht.',
+				],
+				[
+					'Wie geht es nach der Früherziehung weiter?',
+					'Die meisten Kinder wechseln ab sechs Jahren ins Kinderballett. Wir beraten euch gern.',
+				],
+				...recurringOfferingTechnicalFaqs,
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/taenzerische-fruehfoerderung' } },
+			metadata: {
+				_type: 'metadata',
+				slug: {
+					_type: 'slug',
+					current: 'angebote/taenzerische-fruehfoerderung',
+				},
+			},
 		},
 		{
-			_id: O.ballett, _type: 'offering', language: 'de', order: 4,
-			title: 'Ballett — klassisch', bereich: 'tanz',
+			_id: O.ballett,
+			_type: 'offering',
+			language: 'de',
+			order: 4,
+			title: 'Ballett — klassisch',
+			bereich: 'tanz',
 			catalogTag: 'Ab 6 Jahren · bis ins Erwachsenenalter',
 			slug: { _type: 'slug', current: 'ballett' },
 			eyebrow: 'Bereich Tanz · Klassik',
 			lede: 'Klassische Technik, Haltung und Anmut. Vom Kinderballett bis zur fortgeschrittenen Klasse — in mehreren Stufen und mit regelmäßigen Aufführungen.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 6 Jahren'], ['Dauer', '60 Min / Woche'], ['Stufen', '4 Stufen'], ['Preis', 'ab €22']]),
+			facts: facts([
+				['Alter', 'ab 6 Jahren'],
+				['Dauer', '60 Min / Woche'],
+				['Stufen', '4 Stufen'],
+				['Preis', 'ab €22'],
+			]),
 			forWhoTitle: rt('Für Haltung und *Hingabe*.'),
-			forWhoLead: 'Ballett verbindet Disziplin mit Ausdruck. Wer hier tanzt, baut Technik geduldig auf — und wächst Schritt für Schritt auf die Bühne zu.',
+			forWhoLead:
+				'Ballett verbindet Disziplin mit Ausdruck. Wer hier tanzt, baut Technik geduldig auf — und wächst Schritt für Schritt auf die Bühne zu.',
 			forWho: forWho([
-				['Kinder ab sechs Jahren', 'Mit Freude an Form, Musik und konzentriertem Üben.'],
-				['Tänzer:innen mit Erfahrung', 'Für Tänzerinnen, die ihre Technik vertiefen und sich weiterentwickeln wollen.'],
-				['Alle mit Bühnentraum', 'Aufführungen geben dem gemeinsamen Weg ein Ziel.'],
+				[
+					'Kinder ab sechs Jahren',
+					'Mit Freude an Form, Musik und konzentriertem Üben.',
+				],
+				[
+					'Tänzer:innen mit Erfahrung',
+					'Für Tänzerinnen, die ihre Technik vertiefen und sich weiterentwickeln wollen.',
+				],
+				[
+					'Alle mit Bühnentraum',
+					'Aufführungen geben dem gemeinsamen Weg ein Ziel.',
+				],
 			]),
 			learnTitle: rt('Vom ersten Plié zur *Bühne*.'),
 			learn: learnCards([
-				['sparkle', 'Technik & Haltung', 'Positionen, Barre-Arbeit und gezielte Körperspannung.'],
-				['music', 'Musikalität', 'Bewegung im Einklang mit Musik, Phrasierung und Tempo.'],
-				['stage', 'Bühne', 'Choreografie und Vorbereitung für kommende Aufführungen.'],
+				[
+					'sparkle',
+					'Technik & Haltung',
+					'Positionen, Barre-Arbeit und gezielte Körperspannung.',
+				],
+				[
+					'music',
+					'Musikalität',
+					'Bewegung im Einklang mit Musik, Phrasierung und Tempo.',
+				],
+				[
+					'stage',
+					'Bühne',
+					'Choreografie und Vorbereitung für kommende Aufführungen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: 'ab', priceCurrency: '€', priceValue: '22', priceUnit: '/ Kind',
-			detailRows: detailRows([['Dauer', '60 Min / Woche'], ['Stufen', '4 Stufen'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: 'ab',
+			priceCurrency: '€',
+			priceValue: '22',
+			priceUnit: '/ Kind',
+			detailRows: detailRows([
+				['Dauer', '60 Min / Woche'],
+				['Stufen', '4 Stufen'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Welche Stufe passt zu meinem Kind?', 'Wir ordnen nach Alter und Erfahrung ein. Die kostenlose Probestunde hilft bei der richtigen Einschätzung.'],
-				['Gibt es eine Aufführung?', 'Ja — regelmäßig auf einer echten Bühne, mit Kostümen und Bühnenbild.'],
+				[
+					'Welche Stufe passt zu meinem Kind?',
+					'Wir ordnen nach Alter und Erfahrung ein. Eine Probestunde hilft bei der richtigen Einschätzung.',
+				],
+				[
+					'Gibt es eine Aufführung?',
+					'Ja — regelmäßig auf einer echten Bühne, mit Kostümen und Bühnenbild.',
+				],
+				...recurringOfferingTechnicalFaqs,
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/ballett' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/ballett' },
+			},
 		},
 		{
-			_id: O.jazz, _type: 'offering', language: 'de', order: 5,
-			title: 'Modern-/Contemporary dance', bereich: 'tanz',
+			_id: O.jazz,
+			_type: 'offering',
+			language: 'de',
+			order: 5,
+			title: 'Modern-/Contemporary dance',
+			bereich: 'tanz',
 			catalogTag: 'Ab 8 Jahren · bis ins Erwachsenenalter',
 			slug: { _type: 'slug', current: 'jazz-musicaldance' },
 			eyebrow: 'Bereich Tanz · Modern/Contemporary',
 			lede: 'Modern- und Contemporary dance verbinden Energie, Technik und Bühnenausdruck. Jugendliche und Erwachsene erleben den Tanz auf allen Ebenen.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 8 Jahren'], ['Dauer', '60 Min / Woche'], ['Stufen', '3 Stufen'], ['Preis', '€24 / Person']]),
+			facts: facts([
+				['Alter', 'ab 8 Jahren'],
+				['Dauer', '75 Min / Woche'],
+				['Stufen', '3 Stufen'],
+				['Preis', '€45 / Monat'],
+			]),
 			forWhoTitle: rt('Für die, die *Energie* auf die Bühne bringen wollen.'),
-			forWhoLead: 'Modern-/Contemporary dance verbindet technische Präzision mit Ausdruck — für alle, die Tanz auf unterschiedlichen Ebenen erleben möchten.',
+			forWhoLead:
+				'Modern-/Contemporary dance verbindet technische Präzision mit Ausdruck — für alle, die Tanz auf unterschiedlichen Ebenen erleben möchten.',
 			forWho: forWho([
-				['Jugendliche ab 8 Jahren', 'Mit Freude an Choreografie, Musik und Showcharakter.'],
-				['Teens und Erwachsene', 'Drei Levels — von Einsteiger bis fortgeschritten. Vorerfahrung hilfreich, aber keine Pflicht.'],
-				['Alle mit Bühnendrang', 'Regelmäßige Auftritte und die Vorbereitung auf unsere große Aufführung.'],
+				[
+					'Jugendliche ab 8 Jahren',
+					'Mit Freude an Choreografie, Musik und Showcharakter.',
+				],
+				[
+					'Teens und Erwachsene',
+					'Drei Levels — von Einsteiger bis fortgeschritten. Vorerfahrung hilfreich, aber keine Pflicht.',
+				],
+				[
+					'Alle mit Bühnendrang',
+					'Regelmäßige Auftritte und die Vorbereitung auf unsere große Aufführung.',
+				],
 			]),
 			learnTitle: rt('Technik trifft *Showtime*.'),
 			learn: learnCards([
-				['movement', 'Tanztechnik', 'Drehungen, Sprünge und Isolationen — Tanztechnik bildet die Grundlage für den Tanz.'],
-				['sparkle', 'Ausdruck', 'Bewegungscharakterarbeit zeigt, wie Persönlichkeit und Tanz zusammenwirken.'],
-				['stage', 'Choreographie', 'Choreographien entstehen im Ensemble und werden für die Aufführung vorbereitet.'],
+				[
+					'movement',
+					'Tanztechnik',
+					'Drehungen, Sprünge und Isolationen — Tanztechnik bildet die Grundlage für den Tanz.',
+				],
+				[
+					'sparkle',
+					'Ausdruck',
+					'Bewegungscharakterarbeit zeigt, wie Persönlichkeit und Tanz zusammenwirken.',
+				],
+				[
+					'stage',
+					'Choreographie',
+					'Choreographien entstehen im Ensemble und werden für die Aufführung vorbereitet.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '24', priceUnit: '/ Person',
-			detailRows: detailRows([['Dauer', '60 Min / Woche'], ['Stufen', '3 Stufen'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '45',
+			priceUnit: '/ Monat',
+			detailRows: detailRows([
+				['Dauer', '75 Min / Woche'],
+				['Stufen', '3 Stufen'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Brauche ich Tanzerfahrung?', 'Im Einstiegskurs nicht. Wir starten von Grundpositionen. Für Fortgeschrittene gibt es separate Gruppen.'],
-				['Was ist der Unterschied zu Ballett?', 'Modern- und Contemporary dance sind freier, sie sind auf Ausdruck und Individualität ausgerichtet.'],
-				['Gibt es Auftritte?', 'Ja — bei verschiedenen Gelegenheiten, darunter unsere große Aufführung im Schauspielhaus Melle.'],
+				[
+					'Brauche ich Tanzerfahrung?',
+					'Im Einstiegskurs nicht. Wir starten von Grundpositionen. Für Fortgeschrittene gibt es separate Gruppen.',
+				],
+				[
+					'Was ist der Unterschied zu Ballett?',
+					'Modern- und Contemporary dance sind freier, sie sind auf Ausdruck und Individualität ausgerichtet.',
+				],
+				...recurringOfferingTechnicalFaqs,
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/jazz-musicaldance' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/jazz-musicaldance' },
+			},
 		},
 		{
-			_id: O.hochzeit, _type: 'offering', language: 'de', order: 6,
-			title: 'Hochzeitsgesang', bereich: 'musik',
+			_id: O.hochzeit,
+			_type: 'offering',
+			language: 'de',
+			order: 6,
+			title: 'Hochzeitsgesang',
+			bereich: 'musik',
 			bookingType: 'kontakt',
 			slug: { _type: 'slug', current: 'hochzeitsgesang' },
 			eyebrow: 'Bereich Musik · Gesang',
 			lede: 'Ein Lied für den schönsten Tag. Persönliche Beratung bei der Liedauswahl, gemeinsame Probe und Begleitung — auch außerhalb von Melle.',
 			heroImage: hero,
-			facts: facts([['Format', 'Auf Anfrage'], ['Verfügbarkeit', 'Bundesweit'], ['Begleitung', 'Persönlich'], ['Preis', 'ab €350']]),
+			facts: facts([
+				['Format', 'Auf Anfrage'],
+				['Verfügbarkeit', 'Bundesweit'],
+				['Begleitung', 'Persönlich'],
+				['Preis', 'ab €350'],
+			]),
 			forWhoTitle: rt('Für den *unvergesslichen* Moment.'),
-			forWhoLead: 'Hochzeitsgesang ist kein Kurs — es ist eine persönliche Dienstleistung. Wir begleiten dich von der Liedwahl bis zum Auftritt.',
+			forWhoLead:
+				'Hochzeitsgesang ist kein Kurs — es ist eine persönliche Dienstleistung. Wir begleiten dich von der Liedwahl bis zum Auftritt.',
 			forWho: forWho([
-				['Brautpaare und Familien', 'Die sich einen professionellen Sologesang für ihre Trauung oder Feier wünschen.'],
-				['Freunde und Verwandte', 'Die selbst singen möchten und eine erfahrene Stimmpädagogin als Begleitung suchen.'],
-				['Standesamtliche und kirchliche Trauungen', 'Wir sind flexibel — und reisen auch außerhalb von Melle an.'],
+				[
+					'Brautpaare und Familien',
+					'Die sich einen professionellen Sologesang für ihre Trauung oder Feier wünschen.',
+				],
+				[
+					'Freunde und Verwandte',
+					'Die selbst singen möchten und eine erfahrene Stimmpädagogin als Begleitung suchen.',
+				],
+				[
+					'Standesamtliche und kirchliche Trauungen',
+					'Wir sind flexibel — und reisen auch außerhalb von Melle an.',
+				],
 			]),
 			learnTitle: rt('Unser Angebot für *deinen Tag*.'),
 			learn: learnCards([
-				['heart', 'Liedberatung', 'Gemeinsame Auswahl des passenden Lieds — klassisch, modern oder etwas ganz Persönliches.'],
-				['voice', 'Proben & Vorbereitung', 'Intensive Vorbereitung mit deiner Stimmpädagogin bis zum Tag der Trauung.'],
-				['stage', 'Auftritt', 'Live-Gesang bei deiner Trauung — mit Erfahrung, Profil und echter Bühnenpräsenz.'],
+				[
+					'heart',
+					'Liedberatung',
+					'Gemeinsame Auswahl des passenden Lieds — klassisch, modern oder etwas ganz Persönliches.',
+				],
+				[
+					'voice',
+					'Proben & Vorbereitung',
+					'Intensive Vorbereitung mit deiner Stimmpädagogin bis zum Tag der Trauung.',
+				],
+				[
+					'stage',
+					'Auftritt',
+					'Live-Gesang bei deiner Trauung — mit Erfahrung, Profil und echter Bühnenpräsenz.',
+				],
 			]),
 			detailsTitle: rt('Das Angebot auf einen *Blick*.'),
-			priceLabel: 'ab', priceCurrency: '€', priceValue: '350', priceUnit: '/ Anlass',
-			detailRows: detailRows([['Format', 'Individuell & persönlich'], ['Verfügbarkeit', 'Bundesweit'], ['Erstgespräch', 'Kostenlos & unverbindlich']]),
+			priceLabel: 'ab',
+			priceCurrency: '€',
+			priceValue: '350',
+			priceUnit: '/ Anlass',
+			detailRows: detailRows([
+				['Format', 'Individuell & persönlich'],
+				['Verfügbarkeit', 'Bundesweit'],
+				['Erstgespräch', 'Kostenlos & unverbindlich'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Wie lange im Voraus sollte ich anfragen?', 'Möglichst drei bis sechs Monate vor der Hochzeit. Bei kurzfristigen Anfragen geben wir unser Bestes.'],
-				['Welche Stile sind möglich?', 'Von klassisch-kirchlich bis Pop, Schlager oder etwas ganz Eigenes — wir passen uns deinem Wunsch an.'],
-				['Kommt Elisa Hartmann auch zu uns in die Kirche?', 'Ja. Wir reisen bundesweit an — ob standesamtliche Trauung, kirchliche Feier oder privates Dinner.'],
+				[
+					'Wie lange im Voraus sollte ich anfragen?',
+					'Möglichst drei bis sechs Monate vor der Hochzeit. Bei kurzfristigen Anfragen geben wir unser Bestes.',
+				],
+				[
+					'Welche Stile sind möglich?',
+					'Von klassisch-kirchlich bis Pop, Schlager oder etwas ganz Eigenes — wir passen uns deinem Wunsch an.',
+				],
+				[
+					'Kommt Elisa Hartmann auch zu uns in die Kirche?',
+					'Ja. Wir reisen bundesweit an — ob standesamtliche Trauung, kirchliche Feier oder privates Dinner.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/hochzeitsgesang' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/hochzeitsgesang' },
+			},
 		},
 		{
-			_id: O.instrument, _type: 'offering', language: 'de', order: 7,
-			title: 'Instrumentalunterricht', bereich: 'musik',
+			_id: O.instrument,
+			_type: 'offering',
+			language: 'de',
+			order: 7,
+			title: 'Instrumentalunterricht',
+			bereich: 'musik',
 			slug: { _type: 'slug', current: 'instrumentalunterricht' },
 			eyebrow: 'Bereich Musik · Instrumental',
 			lede: 'Klavier · Gitarre · Schlagzeug · Gesang · Streicher · Blasinstrumente. Einzeln oder zu zweit, 30 oder 45 Minuten. Von Anfang an oder fortgeschritten.',
 			heroImage: hero,
-			facts: facts([['Alter', 'Jedes Alter'], ['Dauer', '30 oder 45 Min'], ['Format', 'Einzel / Duo'], ['Preis', 'ab €28 / 30 Min.']]),
+			facts: facts([
+				['Alter', 'Jedes Alter'],
+				['Dauer', '30 oder 45 Min'],
+				['Format', 'Einzel / Duo'],
+				['Preis', 'ab €28 / 30 Min.'],
+			]),
 			forWhoTitle: rt('Für alle, die ein Instrument *lernen möchten*.'),
-			forWhoLead: 'Instrumentalunterricht bei uns ist persönlich, flexibel und auf jeden Lernstand zugeschnitten — für Kinder, Jugendliche und Erwachsene.',
+			forWhoLead:
+				'Instrumentalunterricht bei uns ist persönlich, flexibel und auf jeden Lernstand zugeschnitten — für Kinder, Jugendliche und Erwachsene.',
 			forWho: forWho([
-				['Kinder ab sechs Jahren', 'Vom ersten Ton zum ersten Lied — aufgebaut auf dem richtigen Fundament.'],
-				['Jugendliche und Erwachsene', 'Neue Starters genauso willkommen wie Fortgeschrittene, die ihre Technik ausbauen wollen.'],
-				['Wiedereinsteiger:innen', 'Es ist nie zu spät, wieder ein Instrument zur Hand zu nehmen — versprochen.'],
+				[
+					'Kinder ab sechs Jahren',
+					'Vom ersten Ton zum ersten Lied — aufgebaut auf dem richtigen Fundament.',
+				],
+				[
+					'Jugendliche und Erwachsene',
+					'Neue Starters genauso willkommen wie Fortgeschrittene, die ihre Technik ausbauen wollen.',
+				],
+				[
+					'Wiedereinsteiger:innen',
+					'Es ist nie zu spät, wieder ein Instrument zur Hand zu nehmen — versprochen.',
+				],
 			]),
 			learnTitle: rt('Mehr als nur *Noten*.'),
 			learn: learnCards([
-				['music', 'Technik & Theorie', 'Spieltechnik, Noten lesen, Harmonielehre — je nach Alter und Ziel.'],
-				['sparkle', 'Repertoire', 'Klassik, Pop, Rock, Jazz — wir spielen, was dir Freude macht.'],
-				['stage', 'Auftritte & Konzerte', 'Wer möchte, spielt bei unseren Konzerten mit — vor Publikum und mit echter Bühnenerfahrung.'],
+				[
+					'music',
+					'Technik & Theorie',
+					'Spieltechnik, Noten lesen, Harmonielehre — je nach Alter und Ziel.',
+				],
+				[
+					'sparkle',
+					'Repertoire',
+					'Klassik, Pop, Rock, Jazz — wir spielen, was dir Freude macht.',
+				],
+				[
+					'stage',
+					'Auftritte & Konzerte',
+					'Wer möchte, spielt bei unseren Konzerten mit — vor Publikum und mit echter Bühnenerfahrung.',
+				],
 			]),
 			detailsTitle: rt('Der Unterricht auf einen *Blick*.'),
-			priceLabel: 'ab', priceCurrency: '€', priceValue: '28', priceUnit: '/ 30 Min.',
-			detailRows: detailRows([['Instrumente', 'Klavier, Gitarre, Schlagzeug, Gesang, Streicher, Bläser'], ['Dauer', '30 oder 45 Minuten'], ['Format', 'Einzelunterricht oder Duo'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: 'ab',
+			priceCurrency: '€',
+			priceValue: '28',
+			priceUnit: '/ 30 Min.',
+			detailRows: detailRows([
+				[
+					'Instrumente',
+					'Klavier, Gitarre, Schlagzeug, Gesang, Streicher, Bläser',
+				],
+				['Dauer', '30 oder 45 Minuten'],
+				['Format', 'Einzelunterricht oder Duo'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Welche Instrumente unterrichtet ihr?', 'Klavier, Gitarre, Schlagzeug, Gesang, Violine, Viola und diverse Blasinstrumente. Frag uns — wir finden eine Lösung.'],
-				['Ab welchem Alter ist Einzelunterricht sinnvoll?', 'Ab etwa sechs Jahren. Für jüngere Kinder empfehlen wir zunächst die musikalische Frühförderung.'],
-				['Kann ich als Erwachsener ein neues Instrument lernen?', 'Absolut. Viele unserer beliebtesten Schüler:innen sind Erwachsene, die als Anfänger starten. Es ist nie zu spät.'],
+				[
+					'Welche Instrumente unterrichtet ihr?',
+					'Klavier, Gitarre, Schlagzeug, Gesang, Violine, Viola und diverse Blasinstrumente. Frag uns — wir finden eine Lösung.',
+				],
+				[
+					'Ab welchem Alter ist Einzelunterricht sinnvoll?',
+					'Ab etwa sechs Jahren. Für jüngere Kinder empfehlen wir zunächst die musikalische Frühförderung.',
+				],
+				[
+					'Kann ich als Erwachsener ein neues Instrument lernen?',
+					'Absolut. Viele unserer beliebtesten Schüler:innen sind Erwachsene, die als Anfänger starten. Es ist nie zu spät.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/instrumentalunterricht' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/instrumentalunterricht' },
+			},
 		},
 		{
-			_id: O.kita, _type: 'offering', language: 'de', order: 8,
-			title: 'Kindergarten-Projekte', bereich: 'musik',
+			_id: O.kita,
+			_type: 'offering',
+			language: 'de',
+			order: 8,
+			title: 'Kindergarten-Projekte',
+			bereich: 'musik',
 			catalogTag: 'Für Kitas · Projektbasis',
 			bookingType: 'kontakt',
 			slug: { _type: 'slug', current: 'kindergarten-projekte' },
 			eyebrow: 'Bereich Musik · Kooperation',
 			lede: 'Musikalische Angebote direkt in deiner Kindertagesstätte. Wir bringen Klang, Bewegung und Lieder ins Haus — wöchentlich oder als Projektwoche.',
 			heroImage: hero,
-			facts: facts([['Format', 'Bei dir vor Ort'], ['Häufigkeit', 'Wöchentlich oder Projekt'], ['Alter', 'Kitakinder'], ['Preis', 'Auf Anfrage']]),
+			facts: facts([
+				['Format', 'Bei dir vor Ort'],
+				['Häufigkeit', 'Wöchentlich oder Projekt'],
+				['Alter', 'Kitakinder'],
+				['Preis', 'Auf Anfrage'],
+			]),
 			forWhoTitle: rt('Für Kitas, die *Musik* erleben möchten.'),
-			forWhoLead: 'Wir kommen zu dir — keine Anreise, kein Aufwand für die Eltern, und die Kinder erleben Musik in ihrer vertrauten Umgebung.',
+			forWhoLead:
+				'Wir kommen zu dir — keine Anreise, kein Aufwand für die Eltern, und die Kinder erleben Musik in ihrer vertrauten Umgebung.',
 			forWho: forWho([
-				['Kindertagesstätten in Melle und Umgebung', 'Wir kooperieren seit 2002 mit Kitas in der Region — zuverlässig und pädagogisch fundiert.'],
-				['Gruppen aller Altersstufen', 'Vom Krippenalter bis zur Vorschule — wir passen das Programm der Gruppe an.'],
-				['Einrichtungen mit Musikwunsch', 'Flexible Modelle — wöchentlich oder als einmalige Projektwoche.'],
+				[
+					'Kindertagesstätten von Minden bis Herford',
+					'Wir kooperieren seit 2002 mit Kitas von Minden bis Herford — zuverlässig und pädagogisch fundiert.',
+				],
+				[
+					'Gruppen aller Altersstufen',
+					'Vom Krippenalter bis zur Vorschule — wir passen das Programm der Gruppe an.',
+				],
+				[
+					'Einrichtungen mit Musikwunsch',
+					'Flexible Modelle — wöchentlich oder als einmalige Projektwoche.',
+				],
 			]),
 			learnTitle: rt('Was wir *mitbringen*.'),
 			learn: learnCards([
-				['music', 'Lieder & Reime', 'Altersgerechtes Liedgut, Reime und Klatschspiele — direkt ins Gruppengeschehen integriert.'],
-				['movement', 'Bewegungsmusik', 'Musik und Bewegung kombiniert — für Körperbewusstsein und Rhythmusgefühl.'],
-				['sparkle', 'Instrumente zum Anfassen', 'Handtrommeln, Klangstäbe und kleine Melodieinstrumente für alle Hände.'],
+				[
+					'music',
+					'Lieder & Reime',
+					'Altersgerechtes Liedgut, Reime und Klatschspiele — direkt ins Gruppengeschehen integriert.',
+				],
+				[
+					'movement',
+					'Bewegungsmusik',
+					'Musik und Bewegung kombiniert — für Körperbewusstsein und Rhythmusgefühl.',
+				],
+				[
+					'sparkle',
+					'Instrumente zum Anfassen',
+					'Handtrommeln, Klangstäbe und kleine Melodieinstrumente für alle Hände.',
+				],
 			]),
 			detailsTitle: rt('Das Angebot auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '', priceValue: 'Auf Anfrage', priceUnit: '',
-			detailRows: detailRows([['Format', 'Wöchentlich oder Projektwoche'], ['Ort', 'Bei dir in der Einrichtung'], ['Region', 'Melle und Umgebung'], ['Erstgespräch', 'Kostenlos & unverbindlich']]),
+			priceLabel: '',
+			priceCurrency: '',
+			priceValue: 'Auf Anfrage',
+			priceUnit: '',
+			detailRows: detailRows([
+				['Format', 'Wöchentlich oder Projektwoche'],
+				['Ort', 'Bei dir in der Einrichtung'],
+				['Region', 'Minden bis Herford'],
+				['Erstgespräch', 'Kostenlos & unverbindlich'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Wie läuft die Zusammenarbeit ab?', 'Wir vereinbaren ein kostenloses Erstgespräch, lernen deine Gruppe kennen — und schneiden dann das Angebot passend zu.'],
-				['Müssen wir Instrumente kaufen?', 'Nein. Wir bringen alles nötige Material mit — von kleinen Instrumenten bis zum Konzept.'],
-				['In welchem Umkreis seid ihr tätig?', 'Primär in Melle und dem Kreis Osnabrück. Bei größeren Projekten sprechen wir gern über weitere Entfernungen.'],
+				[
+					'Wie läuft die Zusammenarbeit ab?',
+					'Wir vereinbaren ein kostenloses Erstgespräch, lernen deine Gruppe kennen — und schneiden dann das Angebot passend zu.',
+				],
+				[
+					'Müssen wir Instrumente kaufen?',
+					'Nein. Wir bringen alles nötige Material mit — von kleinen Instrumenten bis zum Konzept.',
+				],
+				[
+					'In welchem Umkreis seid ihr tätig?',
+					'Von Minden bis Herford. Bei größeren Projekten sprechen wir gern über weitere Entfernungen.',
+				],
+				[
+					'Wie werden Umfang und Kosten vereinbart?',
+					'Im kostenlosen Erstgespräch stimmen wir Format, Termine und Kosten passend zur Einrichtung ab.',
+				],
+				[
+					'Sind nur regelmäßige Termine möglich?',
+					'Nein. Wir kommen wöchentlich oder gestalten eine einzelne Projektwoche — je nachdem, was zu eurer Einrichtung passt.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/kindergarten-projekte' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/kindergarten-projekte' },
+			},
 		},
 		// ── Tanz stage cards (home tanz-grid only, order >= 21) ────────────
 		{
-			_id: O.ballettAb9, _type: 'offering', language: 'de', order: 21,
-			title: 'Ballett ab 9', bereich: 'tanz',
+			_id: O.ballettAb9,
+			_type: 'offering',
+			language: 'de',
+			order: 21,
+			title: 'Ballett ab 9',
+			bereich: 'tanz',
 			slug: { _type: 'slug', current: 'ballett-ab-9' },
 			eyebrow: 'Bereich Tanz · Juniorballett',
 			lede: 'Technik & erste Bühne. Vertiefung der Grundlagen, Spitzenvorbereitung und erste Aufführungserfahrungen im Ensemble.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 9 Jahren'], ['Dauer', '60 Min / Woche'], ['Stufen', '2 Stufen'], ['Preis', 'ab €22']]),
+			facts: facts([
+				['Alter', 'ab 9 Jahren'],
+				['Dauer', '60 Min / Woche'],
+				['Stufen', '2 Stufen'],
+				['Preis', 'ab €22'],
+			]),
 			forWhoTitle: rt('Für Technik und erste *Bühnenerfahrung*.'),
-			forWhoLead: 'Das Juniorballett baut auf den Grundlagen auf — mit mehr Präzision, Ausdruck und echter Aufführungsperspektive.',
+			forWhoLead:
+				'Das Juniorballett baut auf den Grundlagen auf — mit mehr Präzision, Ausdruck und echter Aufführungsperspektive.',
 			forWho: forWho([
-				['Kinder ab neun Jahren mit Grundkenntnissen', 'Der nächste Schritt nach dem Kinderballett — technisch anspruchsvoller, bühnennäher.'],
-				['Tänzer:innen mit Bühnenambitionen', 'Unser Juniorballett bereitet auf gemeinsame Aufführungen vor.'],
+				[
+					'Kinder ab neun Jahren mit Grundkenntnissen',
+					'Der nächste Schritt nach dem Kinderballett — technisch anspruchsvoller, bühnennäher.',
+				],
+				[
+					'Tänzer:innen mit Bühnenambitionen',
+					'Unser Juniorballett bereitet auf gemeinsame Aufführungen vor.',
+				],
 			]),
 			learnTitle: rt('Vom Kinderballett zur *Bühne*.'),
 			learn: learnCards([
-				['sparkle', 'Technikvertiefung', 'Barre-Arbeit, Positionen und gezielte Körperspannung auf höherem Niveau.'],
-				['music', 'Musikalität', 'Bewegung in Einklang mit Phrasierung, Dynamik und Tempo.'],
-				['stage', 'Aufführung', 'Choreografie und Bühnenvorbereitung für kommende Aufführungen.'],
+				[
+					'sparkle',
+					'Technikvertiefung',
+					'Barre-Arbeit, Positionen und gezielte Körperspannung auf höherem Niveau.',
+				],
+				[
+					'music',
+					'Musikalität',
+					'Bewegung in Einklang mit Phrasierung, Dynamik und Tempo.',
+				],
+				[
+					'stage',
+					'Aufführung',
+					'Choreografie und Bühnenvorbereitung für kommende Aufführungen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: 'ab', priceCurrency: '€', priceValue: '22', priceUnit: '/ Kind',
-			detailRows: detailRows([['Dauer', '60 Min / Woche'], ['Stufen', '2 Stufen'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: 'ab',
+			priceCurrency: '€',
+			priceValue: '22',
+			priceUnit: '/ Kind',
+			detailRows: detailRows([
+				['Dauer', '60 Min / Woche'],
+				['Stufen', '2 Stufen'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Wann ist der Wechsel vom Kinderballett sinnvoll?', 'In der Regel ab neun Jahren und nach Einschätzung der Lehrkraft — ein Gespräch klärt den besten Zeitpunkt.'],
-				['Gibt es eine Aufführung?', 'Ja — regelmäßig auf einer echten Bühne, mit Kostümen und Bühnenbild.'],
+				[
+					'Wann ist der Wechsel vom Kinderballett sinnvoll?',
+					'In der Regel ab neun Jahren und nach Einschätzung der Lehrkraft — ein Gespräch klärt den besten Zeitpunkt.',
+				],
+				[
+					'Gibt es eine Aufführung?',
+					'Ja — regelmäßig auf einer echten Bühne, mit Kostümen und Bühnenbild.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/ballett-ab-9' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/ballett-ab-9' },
+			},
 		},
 		{
-			_id: O.mdAb10, _type: 'offering', language: 'de', order: 22,
-			title: 'Moderndance ab 10', bereich: 'tanz',
+			_id: O.mdAb10,
+			_type: 'offering',
+			language: 'de',
+			order: 22,
+			title: 'Moderndance ab 10',
+			bereich: 'tanz',
 			slug: { _type: 'slug', current: 'moderndance-ab-10' },
 			eyebrow: 'Bereich Tanz · Moderndance Einsteiger',
 			lede: 'Energie, Rhythmus & erste Choreografie. Der Einstieg in zeitgenössischen Tanz — spielerisch und mit echter Bühnenperspektive.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 10 Jahren'], ['Dauer', '60 Min / Woche'], ['Niveau', 'Einsteiger'], ['Preis', '€24 / Person']]),
+			facts: facts([
+				['Alter', 'ab 10 Jahren'],
+				['Dauer', '60 Min / Woche'],
+				['Niveau', 'Einsteiger'],
+				['Preis', '€24 / Person'],
+			]),
 			forWhoTitle: rt('Für Energie und *Choreografie*.'),
-			forWhoLead: 'Moderndance ab 10 verbindet erste Technik mit Spaß — für Kinder, die sich bewegen und ausdrücken wollen.',
+			forWhoLead:
+				'Moderndance ab 10 verbindet erste Technik mit Spaß — für Kinder, die sich bewegen und ausdrücken wollen.',
 			forWho: forWho([
-				['Kinder ab zehn Jahren', 'Mit Freude an Bewegung, Musik und modernen Stilen.'],
-				['Einsteiger:innen ohne Vorerfahrung', 'Wir starten von Grundpositionen — kein Vorwissen nötig.'],
+				[
+					'Kinder ab zehn Jahren',
+					'Mit Freude an Bewegung, Musik und modernen Stilen.',
+				],
+				[
+					'Einsteiger:innen ohne Vorerfahrung',
+					'Wir starten von Grundpositionen — kein Vorwissen nötig.',
+				],
 			]),
 			learnTitle: rt('Modern, dynamisch, *ausdrucksstark*.'),
 			learn: learnCards([
-				['movement', 'Jazz-Technik', 'Isolationen, Synkopen und die typische Energie des modernen Tanzes.'],
-				['sparkle', 'Choreografie', 'Erste eigene Bewegungssequenzen und Ensembleerfahrung.'],
-				['stage', 'Bühne', 'Auftritte und Vorbereitung auf große Aufführungen.'],
+				[
+					'movement',
+					'Jazz-Technik',
+					'Isolationen, Synkopen und die typische Energie des modernen Tanzes.',
+				],
+				[
+					'sparkle',
+					'Choreografie',
+					'Erste eigene Bewegungssequenzen und Ensembleerfahrung.',
+				],
+				[
+					'stage',
+					'Bühne',
+					'Auftritte und Vorbereitung auf große Aufführungen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '24', priceUnit: '/ Person',
-			detailRows: detailRows([['Dauer', '60 Min / Woche'], ['Niveau', 'Einsteiger'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '24',
+			priceUnit: '/ Person',
+			detailRows: detailRows([
+				['Dauer', '60 Min / Woche'],
+				['Niveau', 'Einsteiger'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Brauche ich Tanzerfahrung?', 'Nein — wir starten gemeinsam von Grundpositionen. Freude an Bewegung genügt.'],
-				['Gibt es Auftritte?', 'Ja — bei verschiedenen Gelegenheiten, darunter unsere große Aufführung.'],
+				[
+					'Brauche ich Tanzerfahrung?',
+					'Nein — wir starten gemeinsam von Grundpositionen. Freude an Bewegung genügt.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/moderndance-ab-10' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/moderndance-ab-10' },
+			},
 		},
 		{
-			_id: O.mdAb15, _type: 'offering', language: 'de', order: 23,
-			title: 'Moderndance ab 15', bereich: 'tanz',
+			_id: O.mdAb15,
+			_type: 'offering',
+			language: 'de',
+			order: 23,
+			title: 'Moderndance ab 15',
+			bereich: 'tanz',
 			slug: { _type: 'slug', current: 'moderndance-ab-15' },
 			eyebrow: 'Bereich Tanz · Moderndance Jugend',
 			lede: 'Technik & Ausdruck. Für Jugendliche, die ihren Tanz ernstnehmen und auf die Bühne wachsen wollen.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 15 Jahren'], ['Dauer', '75 Min / Woche'], ['Niveau', 'Fortgeschritten'], ['Preis', '€24 / Person']]),
+			facts: facts([
+				['Alter', 'ab 15 Jahren'],
+				['Dauer', '75 Min / Woche'],
+				['Niveau', 'Fortgeschritten'],
+				['Preis', '€24 / Person'],
+			]),
 			forWhoTitle: rt('Für Jugendliche mit *Bühnendrang*.'),
-			forWhoLead: 'Moderndance ab 15 richtet sich an Jugendliche, die technisch und künstlerisch wachsen wollen.',
+			forWhoLead:
+				'Moderndance ab 15 richtet sich an Jugendliche, die technisch und künstlerisch wachsen wollen.',
 			forWho: forWho([
-				['Jugendliche ab 15 Jahren', 'Mit Vorerfahrung oder Talent — und dem Willen, ernsthaft zu tanzen.'],
-				['Alle mit Bühnenambitionen', 'Regelmäßige Auftritte und die Vorbereitung auf große Aufführungen.'],
+				[
+					'Jugendliche ab 15 Jahren',
+					'Mit Vorerfahrung oder Talent — und dem Willen, ernsthaft zu tanzen.',
+				],
+				[
+					'Alle mit Bühnenambitionen',
+					'Regelmäßige Auftritte und die Vorbereitung auf große Aufführungen.',
+				],
 			]),
 			learnTitle: rt('Technik trifft *Ausdrucksstärke*.'),
 			learn: learnCards([
-				['movement', 'Fortgeschrittene Technik', 'Komplexere Sequenzen, Improvisationsarbeit und Raumgestaltung.'],
-				['sparkle', 'Choreografie', 'Professionell einstudierte Nummern mit echter Bühnenästhetik.'],
-				['stage', 'Performance', 'Auftritte und Bühnenreife für große Aufführungen.'],
+				[
+					'movement',
+					'Fortgeschrittene Technik',
+					'Komplexere Sequenzen, Improvisationsarbeit und Raumgestaltung.',
+				],
+				[
+					'sparkle',
+					'Choreografie',
+					'Professionell einstudierte Nummern mit echter Bühnenästhetik.',
+				],
+				[
+					'stage',
+					'Performance',
+					'Auftritte und Bühnenreife für große Aufführungen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '24', priceUnit: '/ Person',
-			detailRows: detailRows([['Dauer', '75 Min / Woche'], ['Niveau', 'Fortgeschritten'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '24',
+			priceUnit: '/ Person',
+			detailRows: detailRows([
+				['Dauer', '75 Min / Woche'],
+				['Niveau', 'Fortgeschritten'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Wie viel Erfahrung brauche ich?', 'Grundkenntnisse im Tanz sind hilfreich — aber kein Muss. Die Probestunde hilft uns bei der Einschätzung.'],
-				['Gibt es Auftritte?', 'Ja — bei verschiedenen Gelegenheiten, darunter unsere große Aufführung.'],
+				[
+					'Wie viel Erfahrung brauche ich?',
+					'Grundkenntnisse im Tanz sind hilfreich — aber kein Muss. Die Probestunde hilft uns bei der Einschätzung.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/moderndance-ab-15' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/moderndance-ab-15' },
+			},
 		},
 		{
-			_id: O.mdAb18, _type: 'offering', language: 'de', order: 24,
-			title: 'Moderndance ab 18', bereich: 'tanz',
+			_id: O.mdAb18,
+			_type: 'offering',
+			language: 'de',
+			order: 24,
+			title: 'Moderndance ab 18',
+			bereich: 'tanz',
 			slug: { _type: 'slug', current: 'moderndance-ab-18' },
 			eyebrow: 'Bereich Tanz · Moderndance Erwachsene',
 			lede: 'Freier Ausdruck & Improvisation. Zeitgenössischer Tanz für junge Erwachsene — anspruchsvoll, kreativ, bühnennah.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 18 Jahren'], ['Dauer', '75 Min / Woche'], ['Format', 'Erwachsenengruppe'], ['Preis', '€24 / Person']]),
+			facts: facts([
+				['Alter', 'ab 18 Jahren'],
+				['Dauer', '75 Min / Woche'],
+				['Format', 'Erwachsenengruppe'],
+				['Preis', '€24 / Person'],
+			]),
 			forWhoTitle: rt('Für junge Erwachsene mit *Ausdruckswillen*.'),
-			forWhoLead: 'Moderndance ab 18 verbindet professionelle Technik mit freier künstlerischer Arbeit.',
+			forWhoLead:
+				'Moderndance ab 18 verbindet professionelle Technik mit freier künstlerischer Arbeit.',
 			forWho: forWho([
-				['Junge Erwachsene ab 18 Jahren', 'Mit oder ohne Vorerfahrung — wir passen das Angebot an.'],
-				['Kreative mit Bühnendrang', 'Regelmäßige Auftritte, Improvisation und Ensemblearbeit.'],
+				[
+					'Junge Erwachsene ab 18 Jahren',
+					'Mit oder ohne Vorerfahrung — wir passen das Angebot an.',
+				],
+				[
+					'Kreative mit Bühnendrang',
+					'Regelmäßige Auftritte, Improvisation und Ensemblearbeit.',
+				],
 			]),
 			learnTitle: rt('Kunst trifft *Körperbewusstsein*.'),
 			learn: learnCards([
-				['movement', 'Zeitgenössische Technik', 'Moderne Stile, Improvisation und Körperwahrnehmung.'],
-				['sparkle', 'Freie Choreografie', 'Eigene Bewegungsideen entwickeln und im Ensemble umsetzen.'],
-				['stage', 'Performance', 'Auftritte und Bühnenpräsenz für große Aufführungen.'],
+				[
+					'movement',
+					'Zeitgenössische Technik',
+					'Moderne Stile, Improvisation und Körperwahrnehmung.',
+				],
+				[
+					'sparkle',
+					'Freie Choreografie',
+					'Eigene Bewegungsideen entwickeln und im Ensemble umsetzen.',
+				],
+				[
+					'stage',
+					'Performance',
+					'Auftritte und Bühnenpräsenz für große Aufführungen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '24', priceUnit: '/ Person',
-			detailRows: detailRows([['Dauer', '75 Min / Woche'], ['Format', 'Erwachsenengruppe'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '24',
+			priceUnit: '/ Person',
+			detailRows: detailRows([
+				['Dauer', '75 Min / Woche'],
+				['Format', 'Erwachsenengruppe'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Brauche ich Vorerfahrung?', 'Nein — wir arbeiten auf jedem Niveau. Die Probestunde klärt alles.'],
-				['Gibt es Auftritte?', 'Ja — für alle, die möchten. Kein Zwang, aber viel Freude.'],
+				[
+					'Brauche ich Vorerfahrung?',
+					'Nein — wir arbeiten auf jedem Niveau. Die Probestunde klärt alles.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/moderndance-ab-18' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/moderndance-ab-18' },
+			},
 		},
 		{
-			_id: O.mdAb30, _type: 'offering', language: 'de', order: 25,
-			title: 'Moderndance ab 30', bereich: 'tanz',
+			_id: O.mdAb30,
+			_type: 'offering',
+			language: 'de',
+			order: 25,
+			title: 'Moderndance ab 30',
+			bereich: 'tanz',
 			slug: { _type: 'slug', current: 'moderndance-ab-30' },
 			eyebrow: 'Bereich Tanz · Erwachsenentanz',
 			lede: 'Tanzen ohne Leistungsdruck. Ausdruck, Freude und Gemeinschaft — für alle, die Tanz als Ausdrucksform (wieder)entdecken wollen.',
 			heroImage: hero,
-			facts: facts([['Alter', 'ab 30 Jahren'], ['Dauer', '75 Min / Woche'], ['Format', 'Erwachsenengruppe'], ['Preis', '€24 / Person']]),
+			facts: facts([
+				['Alter', 'ab 30 Jahren'],
+				['Dauer', '75 Min / Woche'],
+				['Format', 'Erwachsenengruppe'],
+				['Preis', '€24 / Person'],
+			]),
 			forWhoTitle: rt('Für Erwachsene, die *tanzen wollen*.'),
-			forWhoLead: 'Keine Konditionsanforderungen, kein Vergleich — Tanzen als Ausdrucksform für Erwachsene, die etwas für sich tun möchten.',
+			forWhoLead:
+				'Keine Konditionsanforderungen, kein Vergleich — Tanzen als Ausdrucksform für Erwachsene, die etwas für sich tun möchten.',
 			forWho: forWho([
-				['Erwachsene ab 30 Jahren', 'Egal ob Wiedereinsteiger:in oder absolute:r Anfänger:in — alle willkommen.'],
-				['Menschen, die Gemeinschaft suchen', 'Tanz verbindet — in einem warmen, nicht-wettbewerbsorientierten Umfeld.'],
+				[
+					'Erwachsene ab 30 Jahren',
+					'Egal ob Wiedereinsteiger:in oder absolute:r Anfänger:in — alle willkommen.',
+				],
+				[
+					'Menschen, die Gemeinschaft suchen',
+					'Tanz verbindet — in einem warmen, nicht-wettbewerbsorientierten Umfeld.',
+				],
 			]),
 			learnTitle: rt('Bewegung, Freude, *Gemeinschaft*.'),
 			learn: learnCards([
-				['heart', 'Wohlbefinden', 'Tanz als körperliche und geistige Auszeit vom Alltag.'],
-				['movement', 'Rhythmus & Koordination', 'Einfach zugängliche Schritte, die Spaß machen und fordern.'],
-				['sparkle', 'Ausdruck', 'Kleine Choreografien, die sich gut anfühlen — und gut aussehen.'],
+				[
+					'heart',
+					'Wohlbefinden',
+					'Tanz als körperliche und geistige Auszeit vom Alltag.',
+				],
+				[
+					'movement',
+					'Rhythmus & Koordination',
+					'Einfach zugängliche Schritte, die Spaß machen und fordern.',
+				],
+				[
+					'sparkle',
+					'Ausdruck',
+					'Kleine Choreografien, die sich gut anfühlen — und gut aussehen.',
+				],
 			]),
 			detailsTitle: rt('Der Kurs auf einen *Blick*.'),
-			priceLabel: '', priceCurrency: '€', priceValue: '24', priceUnit: '/ Person',
-			detailRows: detailRows([['Dauer', '75 Min / Woche'], ['Format', 'Erwachsenengruppe'], ['Unterricht', 'Wöchentlich'], ['Probestunde', 'Kostenlos']]),
+			priceLabel: '',
+			priceCurrency: '€',
+			priceValue: '24',
+			priceUnit: '/ Person',
+			detailRows: detailRows([
+				['Dauer', '75 Min / Woche'],
+				['Format', 'Erwachsenengruppe'],
+				['Unterricht', 'Wöchentlich'],
+				['Probestunden', '2 Termine'],
+			]),
 			faqTitle: rt('Gut zu *wissen*.'),
 			faq: faq([
-				['Muss ich fit sein?', 'Nein. Wir passen Tempo und Schwierigkeit immer an die Gruppe an. Schonender Umgang miteinander ist uns wichtig.'],
-				['Gibt es Auftritte?', 'Nur für die, die wollen. Wir laden zu Aufführungen ein — als Zuschauer:in oder auf der Bühne.'],
+				[
+					'Muss ich fit sein?',
+					'Nein. Wir passen Tempo und Schwierigkeit immer an die Gruppe an. Schonender Umgang miteinander ist uns wichtig.',
+				],
 			]),
-			metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote/moderndance-ab-30' } },
+			metadata: {
+				_type: 'metadata',
+				slug: { _type: 'slug', current: 'angebote/moderndance-ab-30' },
+			},
 		},
 	]
 
@@ -697,64 +1500,134 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Home ──────────────────────────────────────────────────────────
 	const home: Record<string, unknown> = {
-		_id: P.home, _type: 'page', language: 'de',
+		_id: P.home,
+		_type: 'page',
+		language: 'de',
 		title: 'Home',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'index' }, title: 'Creators School — Musik & Tanz in Melle', description: 'Pädagogische Frühförderung für die Kleinsten. Künstlerische Tanzausbildung für alle, die ihren Ausdruck auf die Bühne bringen wollen.' },
-		stage: [{
-			_key: k(), _type: 'hero.creators',
-			eyebrow: 'Musik & Tanz · Melle, seit 2002',
-			title: rt('Wo Musik & Tanz zu *Ausdruck* werden.'),
-			sub: 'Pädagogische Frühförderung für die Kleinsten. Künstlerische Tanzausbildung für alle, die ihren Ausdruck auf die Bühne bringen wollen.',
-			image: { ...imgRef(heroId), alt: 'Schlagzeug-Unterricht bei der Creators School Melle' },
-			tags: [
-				{ _key: k(), label: 'Angebote', value: '08', position: 'top-left' },
-				{ _key: k(), label: 'In Melle seit', value: '2002', position: 'top-right' },
-				{ _key: k(), label: 'Auf der Bühne', value: '5.–6. Sep', position: 'bottom-right' },
-			],
-			reviewTitle: 'Aktive Schüler:innen jeden Alters',
-			reviewSubtitle: 'In 8 Angeboten · Musik & Tanz aus Melle & Umgebung',
-			ctas: [
-				cta('Probestunde buchen', 'int', P.kontakt),
-				cta('Unsere Angebote ansehen', 'int', P.angebote, 'secondary'),
-			],
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'index' },
+			title: 'Creators School — Musik & Tanz in Melle',
+			description:
+				'Pädagogische Frühförderung für die Kleinsten. Künstlerische Tanzausbildung für alle, die ihren Ausdruck auf die Bühne bringen wollen.',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'hero.creators',
+				eyebrow: 'Musik & Tanz · Melle, seit 2002',
+				title: rt('Wo Musik & Tanz zu *Ausdruck* werden.'),
+				sub: 'Pädagogische Frühförderung für die Kleinsten. Künstlerische Tanzausbildung für alle, die ihren Ausdruck auf die Bühne bringen wollen.',
+				image: {
+					...imgRef(heroId),
+					alt: 'Schlagzeug-Unterricht bei der Creators School Melle',
+				},
+				tags: [
+					{ _key: k(), label: 'Angebote', value: '6', position: 'top-left' },
+					{
+						_key: k(),
+						label: 'In Melle seit',
+						value: '2002',
+						position: 'top-right',
+					},
+					{
+						_key: k(),
+						label: 'Auf der Bühne',
+						value: '5.–6. Sep',
+						position: 'bottom-right',
+					},
+				],
+				reviewTitle: 'Aktive Schüler:innen jeden Alters',
+				reviewSubtitle: 'In 6 Angeboten · Musik & Tanz aus Melle & Umgebung',
+				ctas: [
+					cta('Probestunde buchen', 'int', P.kontakt),
+					cta('Unsere Angebote ansehen', 'int', P.angebote, 'secondary'),
+				],
+			},
+		],
 		modules: [
 			{
-				_key: k(), _type: 'marquee',
-				items: ['Eltern-Kind-Kurs', 'Frühförderung', 'Ballett', 'Moderndance', 'Ausdruck', 'Bühne', 'Musik', 'Tanz']
-					.map(text => ({ _key: k(), _type: 'object', text })),
+				_key: k(),
+				_type: 'marquee',
+				items: [
+					'Eltern-Kind-Kurs',
+					'Frühförderung',
+					'Ballett',
+					'Moderndance',
+					'Ausdruck',
+					'Bühne',
+					'Musik',
+					'Tanz',
+				].map((text) => ({ _key: k(), _type: 'object', text })),
 				durationSeconds: 30,
 			},
 			{
-				_key: k(), _type: 'performance-banner',
+				_key: k(),
+				_type: 'performance-banner',
 				performance: { _type: 'reference', _ref: PERF },
 				eyebrow: 'Bühne frei',
-				title: rt('5. und 6. September · *Aufführungen* im Schauspielhaus Melle.'),
+				title: rt(
+					'5. und 6. September · *Aufführungen* im Schauspielhaus Melle.',
+				),
 				ctas: [
 					cta('Karten anfragen', 'int', P.auffuehrungen),
-					cta('Mehr über die Aufführungen', 'int', P.auffuehrungen, 'secondary'),
+					cta(
+						'Mehr über die Aufführungen',
+						'int',
+						P.auffuehrungen,
+						'secondary',
+					),
 				],
 			},
 			{
-				_key: k(), _type: 'feature-grid',
+				_key: k(),
+				_type: 'feature-grid',
 				eyebrow: 'Was uns besonders macht',
 				title: rt('Eine Schule, kein *Massenbetrieb*.'),
-				tagline: 'Vom ersten Klangerlebnis mit 1,5 Jahren bis zur Bühne mit 30+. Wir arbeiten in individuell begleiteten Gruppen, mit Tiefe und echter Beziehung.',
+				tagline:
+					'Vom ersten Klangerlebnis mit 1,5 Jahren bis zur Bühne mit 30+. Wir arbeiten in individuell begleiteten Gruppen, mit Tiefe und echter Beziehung.',
 				features: [
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: 'Persönlich unterrichtet', text: 'Miriam und ihre Lehrkräfte kennen jeden Schüler beim Namen. Keine Massenschule, sondern echte Beziehung.' },
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: 'Probestunde kostenlos', text: 'Unverbindlich kennenlernen. Eine erste Stunde ohne Anmeldung, ohne Verpflichtung. Bevor du dich entscheidest.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: 'Individuelle Gruppen', text: 'Unsere Gruppen werden passend zum jeweiligen Angebot gestaltet. So bleibt Raum für persönliche Entwicklung.' },
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: 'Mit Tiefe und Bühne', text: 'Wir arbeiten über den ganzen Körper, alle Sinne. Konzerte, Aufführungen, echte Bühnenerfahrung.' },
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: 'Persönlich unterrichtet',
+						text: 'Miriam und ihre Lehrkräfte kennen jeden Schüler beim Namen. Keine Massenschule, sondern echte Beziehung.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: 'Zwei Probestunden',
+						text: 'In Ruhe kennenlernen. Erst wenn du dich für den weiteren Unterricht entscheidest, werden die Probestunden rückwirkend berechnet.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: 'Individuelle Gruppen',
+						text: 'Unsere Gruppen werden passend zum jeweiligen Angebot gestaltet. So bleibt Raum für persönliche Entwicklung.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: 'Mit Tiefe und Bühne',
+						text: 'Wir arbeiten über den ganzen Körper, alle Sinne. Konzerte, Aufführungen, echte Bühnenerfahrung.',
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'welten-split',
+				_key: k(),
+				_type: 'welten-split',
 				eyebrow: 'Zwei Bereiche, eine Idee',
 				title: rt('Such dir deinen *Weg*.'),
-				tagline: 'Musik und Tanz unter einem Dach — beide mit demselben Ziel: dir helfen, deinen Ausdruck zu finden und zu entwickeln.',
+				tagline:
+					'Musik und Tanz unter einem Dach — beide mit demselben Ziel: dir helfen, deinen Ausdruck zu finden und zu entwickeln.',
 				cards: [
 					{
-						_key: k(), _type: 'object',
+						_key: k(),
+						_type: 'object',
 						eyebrow: 'Bereich Musik',
 						title: 'Musik erleben.',
 						subtitle: 'Pädagogische Förderung für die Kleinsten.',
@@ -763,7 +1636,8 @@ function buildPages(heroId: string, phId: string) {
 						linkLabel: 'Zum Musik-Bereich',
 					},
 					{
-						_key: k(), _type: 'object',
+						_key: k(),
+						_type: 'object',
 						eyebrow: 'Bereich Tanz',
 						title: 'Tanz auf die Bühne.',
 						subtitle: 'Künstlerische Ausbildung für jedes Alter.',
@@ -774,32 +1648,38 @@ function buildPages(heroId: string, phId: string) {
 				],
 			},
 			{
-				_key: k(), _type: 'offering-list',
+				_key: k(),
+				_type: 'offering-list',
 				eyebrow: 'Bereich Musik',
 				title: rt('Musik · Zwei Wege, anzu*fangen*.'),
-				tagline: 'Singen, Tanzen, Hören. Die ersten Klangerlebnisse prägen ein Leben lang — liebevoll begleitet, in individuellen Gruppen.',
+				tagline:
+					'Singen, Tanzen, Hören. Die ersten Klangerlebnisse prägen ein Leben lang — liebevoll begleitet, in individuellen Gruppen.',
 				bereich: 'musik',
 				layout: 'musik-pair',
 			},
 			{
-				_key: k(), _type: 'offering-list',
+				_key: k(),
+				_type: 'offering-list',
 				eyebrow: 'Bereich Tanz',
 				title: rt('Tanz · Von den ersten Schritten bis zur *Bühne*.'),
-				tagline: 'Sieben Stufen, ein Weg. Vom spielerischen Anfang mit drei Jahren bis zum künstlerischen Erwachsenentanz — alle mit echter Aufführungsperspektive.',
+				tagline:
+					'Sieben Stufen, ein Weg. Vom spielerischen Anfang mit drei Jahren bis zum künstlerischen Erwachsenentanz — alle mit echter Aufführungsperspektive.',
 				bereich: 'tanz',
 				layout: 'tanz-grid',
 				tinted: true,
 				cardCtaLabel: 'Probestunde anfragen',
 				ctaTileTitle: 'Noch unsicher, was passt?',
-				ctaTileText: 'Komm in eine kostenlose Probestunde und finde es heraus.',
+				ctaTileText: 'Komm zu einer Probestunde und finde es heraus.',
 				ctaTileLink: linkInt('Termin finden', P.kontakt),
 				ctaTileLinkLabel: 'Termin finden',
 			},
 			{
-				_key: k(), _type: 'testimonial-cards',
+				_key: k(),
+				_type: 'testimonial-cards',
 				eyebrow: 'Stimmen aus der Schule',
 				title: rt('Was unsere Familien *erleben*.'),
-				tagline: 'Eltern der Kleinsten in der Musik. Jugendliche, die auf die Bühne wachsen. Erwachsene, die ihren Ausdruck wiederfinden.',
+				tagline:
+					'Eltern der Kleinsten in der Musik. Jugendliche, die auf die Bühne wachsen. Erwachsene, die ihren Ausdruck wiederfinden.',
 				testimonials: [
 					{ _key: k(), _type: 'reference', _ref: TS.sandra },
 					{ _key: k(), _type: 'reference', _ref: TS.jara },
@@ -808,14 +1688,20 @@ function buildPages(heroId: string, phId: string) {
 			},
 			// schedule-preview hidden for now; add back when Stundenplan goes live
 			{
-				_key: k(), _type: 'about-strip',
+				_key: k(),
+				_type: 'about-strip',
 				eyebrow: 'Über uns',
 				title: rt('Eine Schule, in der Musik & Tanz *erlebbar* werden.'),
 				body: 'Seit 2002 fördern wir Musik und Tanz in all ihren Formen. Dabei liegt uns besonders die musikalische und tänzerische Frühförderung am Herzen, denn Musik fördert Kreativität, kognitive Fähigkeiten und Bewusstsein. Es ist nie zu spät, sich mit Musik und Tanz zu umgeben.',
 				stats: [
 					{ _key: k(), _type: 'stat', value: 'Seit 2002', label: 'In Melle' },
-					{ _key: k(), _type: 'stat', value: '08', label: 'Angebote' },
-					{ _key: k(), _type: 'stat', value: 'Individuell', label: 'begleitete Gruppen' },
+					{ _key: k(), _type: 'stat', value: '6', label: 'Angebote' },
+					{
+						_key: k(),
+						_type: 'stat',
+						value: 'Individuell',
+						label: 'begleitete Gruppen',
+					},
 				],
 				ctas: [cta('Unsere Geschichte', 'int', P.ueberUns, 'secondary')],
 				profile: {
@@ -823,7 +1709,8 @@ function buildPages(heroId: string, phId: string) {
 					firstName: 'Miriam',
 					lastName: 'Schulte',
 					role: 'Gründerin · Pädagogische Leitung · Musicaldarstellerin',
-					quote: 'Musik macht uns zu aktiven, kommunikativen und fröhlichen Menschen, und weckt in uns die verschiedensten Begabungen.',
+					quote:
+						'Musik macht uns zu aktiven, kommunikativen und fröhlichen Menschen, und weckt in uns die verschiedensten Begabungen.',
 				},
 			},
 			defaultCtaBand,
@@ -832,42 +1719,101 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Angebote overview ─────────────────────────────────────────────
 	const angebote: Record<string, unknown> = {
-		_id: P.angebote, _type: 'page', language: 'de',
+		_id: P.angebote,
+		_type: 'page',
+		language: 'de',
 		title: 'Angebote',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'angebote' }, title: 'Unsere Angebote — Creators School', description: 'Von der musikalischen Frühförderung mit eineinhalb Jahren bis zum Instrumentalunterricht für Erwachsene — acht Disziplinen.' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Unsere Angebote · 08 Disziplinen',
-			title: rt('Musik, Tanz & Bühne *für alle*.'),
-			lede: 'Von der musikalischen Frühförderung mit eineinhalb Jahren bis zum Instrumentalunterricht für Erwachsene — acht Disziplinen, individuell auf Alter und Erfahrungsstand zugeschnitten.',
-			ctas: [cta('Probestunde buchen', 'int', P.kontakt), cta('Stundenplan ansehen', 'int', P.stundenplan, 'secondary')],
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'angebote' },
+			title: 'Unsere Angebote — Creators School',
+			description:
+				'Vom Eltern-Kind-Kurs bis zum Tanz für Erwachsene — sechs Disziplinen.',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Unsere Angebote · 6 Disziplinen',
+				title: rt('Musik, Tanz & Bühne *für alle*.'),
+				lede: 'Vom Eltern-Kind-Kurs bis zum Tanz für Erwachsene — sechs Disziplinen, individuell auf Alter und Erfahrungsstand zugeschnitten.',
+				ctas: [
+					cta('Probestunde buchen', 'int', P.kontakt),
+					cta('Stundenplan ansehen', 'int', P.stundenplan, 'secondary'),
+				],
+			},
+		],
 		modules: [
 			{ _key: k(), _type: 'offering-list', bereich: null, layout: 'prog' },
 			{
-				_key: k(), _type: 'feature-grid',
-				eyebrow: 'So funktioniert\'s',
+				_key: k(),
+				_type: 'feature-grid',
+				eyebrow: "So funktioniert's",
 				title: rt('In vier Schritten zur ersten *Stunde*.'),
-				tagline: 'Vom ersten Anruf bis zum festen Termin im Stundenplan — wir machen es dir so einfach wie möglich.',
+				tagline:
+					'Vom ersten Anruf bis zum festen Termin im Stundenplan — wir machen es dir so einfach wie möglich.',
 				features: [
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: '01 · Kontakt', text: 'Per Telefon, E-Mail oder Kontaktformular. Wir melden uns innerhalb von 24 Stunden zurück.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: '02 · Beratung', text: 'Wir besprechen Alter, Interessen und Vorerfahrung — und schlagen das passende Programm vor.' },
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: '03 · Probestunde', text: 'Eine kostenlose Probestunde, bevor du dich entscheidest. Ohne Vertrag, ohne Verpflichtung.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: '04 · Loslegen', text: 'Wenn es passt, sichern wir deinem Kind einen festen wöchentlichen Termin im Stundenplan.' },
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: '01 · Kontakt',
+						text: 'Per Telefon, E-Mail oder Kontaktformular. Wir melden uns innerhalb von 24 Stunden zurück.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: '02 · Beratung',
+						text: 'Wir besprechen Alter, Interessen und Vorerfahrung — und schlagen das passende Programm vor.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: '03 · Probestunden',
+						text: 'Zwei Termine geben Zeit zum Kennenlernen. Wenn du dich für den weiteren Unterricht entscheidest, werden sie rückwirkend berechnet.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: '04 · Loslegen',
+						text: 'Wenn es passt, sichern wir deinem Kind einen festen wöchentlichen Termin im Stundenplan.',
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'svc-faq',
+				_key: k(),
+				_type: 'svc-faq',
 				eyebrow: 'Häufige Fragen',
 				title: rt('Antworten auf die häufigsten *Fragen*.'),
 				ctas: [cta('Kontakt aufnehmen', 'int', P.kontakt, 'secondary')],
 				items: faq([
-					['Wie alt müssen Kinder für die Frühförderung sein?', 'Unser Eltern-Kind-Kurs ist für Kinder von 1,5 bis 3 Jahren. Die Musikalische Frühförderung und die Tänzerische Früherziehung richten sich an Kinder von 3 bis 6 Jahren.'],
-					['Was kostet der Unterricht?', 'Die Monatsbeiträge für unsere Gruppenangebote liegen je nach Kurs und Unterrichtsdauer zwischen 43 € und 64 €. Preise für individuelle Projekte teilen wir auf Anfrage mit. Für Geschwister gibt es Rabatte.'],
-					['Wie funktioniert die Probestunde?', 'Ruf uns an oder schreib uns eine E-Mail. Wir vereinbaren einen unverbindlichen Termin — du zahlst nichts und gehst keine Verpflichtung ein.'],
-					['Gibt es feste Vertragslaufzeiten?', 'Wir arbeiten mit Halbjahresverträgen, die sich automatisch verlängern und mit sechs Wochen Frist kündbar sind.'],
-					['Was passiert in den Ferien?', 'In den Schulferien Niedersachsens pausiert der Unterricht. Die Beitragspauschale ist auf 38 Unterrichtswochen pro Jahr kalkuliert.'],
-					['Können auch Erwachsene Unterricht nehmen?', 'Absolut. Modern-/Contemporary dance und weitere Tanzangebote richten sich auch an Erwachsene. Es ist nie zu spät.'],
+					[
+						'Wie alt müssen Kinder für die Frühförderung sein?',
+						'Unser Eltern-Kind-Kurs ist für Kinder von 1,5 bis 3 Jahren. Die Musikalische Frühförderung und die Tänzerische Früherziehung richten sich an Kinder von 3 bis 6 Jahren.',
+					],
+					[
+						'Was kostet der Unterricht?',
+						'Die Monatsbeiträge für unsere Gruppenangebote liegen je nach Kurs und Unterrichtsdauer zwischen 43 € und 45 €. Preise für individuelle Projekte teilen wir auf Anfrage mit. Für Geschwister gibt es Rabatte.',
+					],
+					[
+						'Wie funktionieren die Probestunden?',
+						'Die ersten zwei Probestunden sind kostenlos, wenn du bzw. dein Kind danach nicht weitermachst. Entscheidest du dich für den weiteren Unterricht, werden beide Probestunden rückwirkend berechnet.',
+					],
+					[
+						'Gibt es feste Vertragslaufzeiten?',
+						'Wir arbeiten mit Halbjahresverträgen, die sich automatisch verlängern und mit sechs Wochen Frist kündbar sind.',
+					],
+					[
+						'Was passiert in den Ferien?',
+						'In den Schulferien Niedersachsens pausiert der Unterricht. Die Beitragspauschale ist auf 38 Unterrichtswochen pro Jahr kalkuliert.',
+					],
+					[
+						'Können auch Erwachsene Unterricht nehmen?',
+						'Absolut. Modern-/Contemporary dance und weitere Tanzangebote richten sich auch an Erwachsene. Es ist nie zu spät.',
+					],
 				]),
 			},
 			defaultCtaBand,
@@ -876,55 +1822,118 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Offering detail pages ─────────────────────────────────────────
 	const offeringPages = [
-		{ id: P.aMFrue, ref: O.mFrue, slug: 'angebote/musikalische-fruehfoerderung', title: 'Musikalische Frühförderung' },
-		{ id: P.aEKK, ref: O.ekk, slug: 'angebote/eltern-kind-kurs', title: 'Eltern-Kind-Kurs' },
-		{ id: P.aTFrue, ref: O.tFrue, slug: 'angebote/taenzerische-fruehfoerderung', title: 'Tänzerische Früherziehung' },
-		{ id: P.aBallett, ref: O.ballett, slug: 'angebote/ballett', title: 'Ballett — klassisch' },
-		{ id: P.aJazz, ref: O.jazz, slug: 'angebote/jazz-musicaldance', title: 'Modern-/Contemporary dance' },
-		{ id: P.aKita, ref: O.kita, slug: 'angebote/kindergarten-projekte', title: 'Kindergarten-Projekte' },
+		{
+			id: P.aMFrue,
+			ref: O.mFrue,
+			slug: 'angebote/musikalische-fruehfoerderung',
+			title: 'Musikalische Frühförderung',
+		},
+		{
+			id: P.aEKK,
+			ref: O.ekk,
+			slug: 'angebote/eltern-kind-kurs',
+			title: 'Eltern-Kind-Kurs',
+		},
+		{
+			id: P.aTFrue,
+			ref: O.tFrue,
+			slug: 'angebote/taenzerische-fruehfoerderung',
+			title: 'Tänzerische Früherziehung',
+		},
+		{
+			id: P.aBallett,
+			ref: O.ballett,
+			slug: 'angebote/ballett',
+			title: 'Ballett — klassisch',
+		},
+		{
+			id: P.aJazz,
+			ref: O.jazz,
+			slug: 'angebote/jazz-musicaldance',
+			title: 'Modern-/Contemporary dance',
+		},
+		{
+			id: P.aKita,
+			ref: O.kita,
+			slug: 'angebote/kindergarten-projekte',
+			title: 'Kindergarten-Projekte',
+		},
 	].map(({ id, ref, slug, title }) => ({
-		_id: id, _type: 'page', language: 'de', title,
+		_id: id,
+		_type: 'page',
+		language: 'de',
+		title,
 		metadata: { _type: 'metadata', slug: { _type: 'slug', current: slug } },
 		stage: [],
-		modules: [{
-			_key: k(), _type: 'offering-detail',
-			offering: { _type: 'reference', _ref: ref },
-			breadcrumbHomeLabel: 'Home',
-			breadcrumbParentLabel: 'Angebote',
-			breadcrumbParentHref: '/angebote',
-			backLinkLabel: '← Alle Angebote',
-			backLinkHref: '/angebote',
-			ctas: [cta('Probestunde buchen', 'int', P.kontakt), cta('Alle Angebote ansehen', 'int', P.angebote, 'secondary')],
-			panelCtas: [cta('Probestunde buchen', 'int', P.kontakt)],
-		}],
+		modules: [
+			{
+				_key: k(),
+				_type: 'offering-detail',
+				offering: { _type: 'reference', _ref: ref },
+				breadcrumbHomeLabel: 'Home',
+				breadcrumbParentLabel: 'Angebote',
+				breadcrumbParentHref: '/angebote',
+				backLinkLabel: '← Alle Angebote',
+				backLinkHref: '/angebote',
+				ctas: [
+					cta('Probestunde buchen', 'int', P.kontakt),
+					cta('Alle Angebote ansehen', 'int', P.angebote, 'secondary'),
+				],
+				panelCtas: [cta('Probestunde buchen', 'int', P.kontakt)],
+			},
+		],
 	}))
 
 	// ── Stundenplan ───────────────────────────────────────────────────
 	const stundenplan: Record<string, unknown> = {
-		_id: P.stundenplan, _type: 'page', language: 'de',
+		_id: P.stundenplan,
+		_type: 'page',
+		language: 'de',
 		title: 'Stundenplan',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'stundenplan' }, title: 'Stundenplan — Creators School Melle' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Schuljahr 2025 / 26 · Halbjahr 2',
-			title: rt('Diese *Woche* in der *Schule*.'),
-			lede: 'Alle wöchentlichen Gruppentermine auf einen Blick. Instrumentalunterricht und Hochzeitsgesang werden individuell vereinbart und sind hier nicht aufgeführt.',
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'stundenplan' },
+			title: 'Stundenplan — Creators School Melle',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Schuljahr 2025 / 26 · Halbjahr 2',
+				title: rt('Diese *Woche* in der *Schule*.'),
+				lede: 'Alle wöchentlichen Gruppentermine auf einen Blick. Instrumentalunterricht und Hochzeitsgesang werden individuell vereinbart und sind hier nicht aufgeführt.',
+			},
+		],
 		modules: [
 			{
-				_key: k(), _type: 'schedule-full',
-				filterLabels: { all: 'Alle', musik: 'Musik', tanz: 'Tanz', frueh: 'Frühförderung', erwachsene: 'Erwachsene' },
-				statusLabels: { open: 'Plätze frei', few: 'Wenige Plätze', full: 'Warteliste' },
+				_key: k(),
+				_type: 'schedule-full',
+				filterLabels: {
+					all: 'Alle',
+					musik: 'Musik',
+					tanz: 'Tanz',
+					frueh: 'Frühförderung',
+					erwachsene: 'Erwachsene',
+				},
+				statusLabels: {
+					open: 'Plätze frei',
+					few: 'Wenige Plätze',
+					full: 'Warteliste',
+				},
 				noteTitle: 'Instrumentalunterricht nach Vereinbarung',
-				noteText: 'Klavier, Gitarre, Schlagzeug, Streicher und Gesang werden als 30- oder 45-minütiger Einzelunterricht angeboten — Termine vereinbaren wir individuell. Ruf uns einfach an.',
+				noteText:
+					'Klavier, Gitarre, Schlagzeug, Streicher und Gesang werden als 30- oder 45-minütiger Einzelunterricht angeboten — Termine vereinbaren wir individuell. Ruf uns einfach an.',
 				emptyText: 'Keine Termine für diesen Filter gefunden.',
 			},
 			{
-				_key: k(), _type: 'cta-band',
+				_key: k(),
+				_type: 'cta-band',
 				eyebrow: 'Platz nicht dabei?',
 				title: rt('Wir richten *neue Gruppen* ein.'),
 				text: 'Wenn dein Wunschtermin nicht passt oder deine Altersgruppe fehlt, melde dich. Bei genügend Anfragen eröffnen wir neue Klassen.',
-				showPhone: true, showWhatsapp: true, showEmail: true,
+				showPhone: true,
+				showWhatsapp: true,
+				showEmail: true,
 				whatsappLabel: 'WhatsApp schreiben',
 				emailLabel: 'E-Mail schreiben',
 			},
@@ -933,69 +1942,218 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Galerie ───────────────────────────────────────────────────────
 	const galerie: Record<string, unknown> = {
-		_id: P.galerie, _type: 'page', language: 'de',
+		_id: P.galerie,
+		_type: 'page',
+		language: 'de',
 		title: 'Galerie',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'galerie' }, title: 'Galerie — Creators School Melle' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Galerie · Impressionen',
-			title: rt('Momente aus Musik *&* Tanz.'),
-			lede: 'Aufführungen, Proben und der Alltag in unseren Sälen.',
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'galerie' },
+			title: 'Galerie — Creators School Melle',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Galerie · Impressionen',
+				title: rt('Momente aus Musik *&* Tanz.'),
+				lede: 'Aufführungen, Proben und der Alltag in unseren Sälen.',
+			},
+		],
 		modules: [
 			{ _key: k(), _type: 'gallery-masonry' },
-			ctaBand('Bereit für eine *Probestunde*?', 'Schau dir an, was in unserer Schule passiert — und komm dann einfach vorbei.'),
+			ctaBand(
+				'Bereit für eine *Probestunde*?',
+				'Schau dir an, was in unserer Schule passiert — und komm dann einfach vorbei.',
+			),
 		],
 	}
 
 	// ── Über uns ─────────────────────────────────────────────────────
 	const ueberUns: Record<string, unknown> = {
-		_id: P.ueberUns, _type: 'page', language: 'de',
+		_id: P.ueberUns,
+		_type: 'page',
+		language: 'de',
 		title: 'Über uns',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'ueber-uns' }, title: 'Über uns — Creators School Melle', description: 'Seit 2002 fördern wir Musik und Tanz in Melle. Eine inhabergeführte Schule, in der jede:r beim Namen genannt wird.' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Seit 2002 in Melle',
-			title: rt('Eine Schule mit *großem Herz*.'),
-			lede: 'Die Creators School ist eine inhabergeführte Musik- und Tanzschule. Wir kennen unsere Schüler:innen beim Namen und möchten einen Ort schaffen, an dem Kunst nicht nur gelernt, sondern erlebt und als eigener Ausdruck entdeckt wird.',
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'ueber-uns' },
+			title: 'Über uns — Creators School Melle',
+			description:
+				'Seit 2002 fördern wir Musik und Tanz in Melle. Eine inhabergeführte Schule, in der jede:r beim Namen genannt wird.',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Seit 2002 in Melle',
+				title: rt('Eine Schule mit *großem Herz*.'),
+				lede: 'Die Creators School ist eine inhabergeführte Musik- und Tanzschule. Wir kennen unsere Schüler:innen beim Namen und möchten einen Ort schaffen, an dem Kunst nicht nur gelernt, sondern erlebt und als eigener Ausdruck entdeckt wird.',
+			},
+		],
 		modules: [
 			{
-				_key: k(), _type: 'about-story',
+				_key: k(),
+				_type: 'about-story',
 				eyebrow: 'UNSERE GESCHICHTE',
-				title: rt('Wo Musik und Tanz mehr werden als Unterricht — sie werden *Heimat.*'),
+				title: rt(
+					'Wo Musik und Tanz mehr werden als Unterricht — sie werden *Heimat.*',
+				),
 				body: [
-					{ _type: 'block', _key: k(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: k(), text: '2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.', marks: [] }] },
-					{ _type: 'block', _key: k(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: k(), text: 'Geblieben ist die Überzeugung, dass Kunst mehr ist als Technik oder Talent. Sie kann Menschen verbinden, ihnen Halt geben und sichtbar machen, was bereits in ihnen steckt.', marks: [] }] },
+					{
+						_type: 'block',
+						_key: k(),
+						style: 'normal',
+						markDefs: [],
+						children: [
+							{
+								_type: 'span',
+								_key: k(),
+								text: '2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.',
+								marks: [],
+							},
+						],
+					},
+					{
+						_type: 'block',
+						_key: k(),
+						style: 'normal',
+						markDefs: [],
+						children: [
+							{
+								_type: 'span',
+								_key: k(),
+								text: 'Geblieben ist die Überzeugung, dass Kunst mehr ist als Technik oder Talent. Sie kann Menschen verbinden, ihnen Halt geben und sichtbar machen, was bereits in ihnen steckt.',
+								marks: [],
+							},
+						],
+					},
 				],
 				content: [
-					{ _type: 'block', _key: k(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: k(), text: 'Vor mehr als zwanzig Jahren gründete Miriam Schulte die Creators School in Melle, aus dem Forum Musaik Melle, das 2024 umbenannt wurde. Was als kleine Frühförderungsgruppe begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.', marks: [] }] },
-					{ _type: 'block', _key: k(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: k(), text: 'Geblieben ist die Idee: Jedes Kind soll die Erfahrung machen, dass Musik mehr ist als Technik. Sie ist Ausdruck, Gemeinschaft, Bewegung — und manchmal einfach Glück.', marks: [] }] },
+					{
+						_type: 'block',
+						_key: k(),
+						style: 'normal',
+						markDefs: [],
+						children: [
+							{
+								_type: 'span',
+								_key: k(),
+								text: 'Vor mehr als zwanzig Jahren gründete Miriam Schulte die Creators School in Melle, aus dem Forum Musaik Melle, das 2024 umbenannt wurde. Was als kleine Frühförderungsgruppe begann, ist heute eine Schule mit sechs Disziplinen, in der Musik und Tanz zusammengehören.',
+								marks: [],
+							},
+						],
+					},
+					{
+						_type: 'block',
+						_key: k(),
+						style: 'normal',
+						markDefs: [],
+						children: [
+							{
+								_type: 'span',
+								_key: k(),
+								text: 'Geblieben ist die Idee: Jedes Kind soll die Erfahrung machen, dass Musik mehr ist als Technik. Sie ist Ausdruck, Gemeinschaft, Bewegung — und manchmal einfach Glück.',
+								marks: [],
+							},
+						],
+					},
 				],
 				timeline: [
-					{ _key: k(), _type: 'milestone', year: '2002', image: { ...ph, alt: 'Gründung 2002' } },
-					{ _key: k(), _type: 'milestone', year: '2011', image: { ...ph, alt: 'Erstes Schulhaus 2011' } },
-					{ _key: k(), _type: 'milestone', year: '2015', image: { ...ph, alt: 'Team 2015' } },
-					{ _key: k(), _type: 'milestone', year: '2019', image: { ...ph, alt: 'Kita-Kooperationen 2019' } },
-					{ _key: k(), _type: 'milestone', year: '2024', image: { ...ph, alt: 'Creators School 2024' } },
-					{ _key: k(), _type: 'milestone', year: '2026', image: { ...ph, alt: 'Heute 2026' } },
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2002',
+						image: { ...ph, alt: 'Gründung 2002' },
+					},
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2011',
+						image: { ...ph, alt: 'Erstes Schulhaus 2011' },
+					},
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2015',
+						image: { ...ph, alt: 'Team 2015' },
+					},
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2019',
+						image: { ...ph, alt: 'Kita-Kooperationen 2019' },
+					},
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2024',
+						image: { ...ph, alt: 'Creators School 2024' },
+					},
+					{
+						_key: k(),
+						_type: 'milestone',
+						year: '2026',
+						image: { ...ph, alt: 'Heute 2026' },
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'feature-grid',
+				_key: k(),
+				_type: 'feature-grid',
 				eyebrow: 'Unsere Werte',
 				title: rt('Vier Überzeugungen, die uns *leiten*.'),
 				tagline: 'Was uns von Anfang an wichtig war …',
 				features: [
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: '01 · Jedes Kind zählt', text: 'Individuell begleitete Gruppen, persönliche Förderung. Wir kennen jedes Kind, jedes Talent, jede Hürde — und nehmen uns Zeit.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: '02 · Freude vor Leistung', text: 'Technik ist wichtig. Aber wer keine Freude an Musik hat, hört irgendwann auf. Wir setzen die richtigen Prioritäten.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: '03 · Geduld und Zeit', text: 'Lernen braucht Wiederholung, Rückschritte, Pausen. Wir geben unseren Schüler:innen den Raum, den sie brauchen.' },
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: '04 · Bühne als Ziel', text: 'Regelmäßige Aufführungen, Konzerte und Wettbewerbe. Musik wird erst lebendig, wenn sie geteilt wird — wir machen Mut.' },
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: '01 · Jedes Kind zählt',
+						text: 'Individuell begleitete Gruppen, persönliche Förderung. Wir kennen jedes Kind, jedes Talent, jede Hürde — und nehmen uns Zeit.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: '02 · Freude vor Leistung',
+						text: 'Technik ist wichtig. Aber wer keine Freude an Musik hat, hört irgendwann auf. Wir setzen die richtigen Prioritäten.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: '03 · Geduld und Zeit',
+						text: 'Lernen braucht Wiederholung, Rückschritte, Pausen. Wir geben unseren Schüler:innen den Raum, den sie brauchen.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: '04 · Bühne als Ziel',
+						text: 'Regelmäßige Aufführungen, Konzerte und Wettbewerbe. Musik wird erst lebendig, wenn sie geteilt wird — wir machen Mut.',
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'person-list',
-				intro: [{ _type: 'block', _key: k(), style: 'normal', markDefs: [], children: [{ _type: 'span', _key: k(), text: 'Zwölf Lehrkräfte, drei Säle, eine pädagogische Linie — und immer noch eine Schule, in der man sich beim Namen kennt.', marks: [] }] }],
+				_key: k(),
+				_type: 'person-list',
+				intro: [
+					{
+						_type: 'block',
+						_key: k(),
+						style: 'normal',
+						markDefs: [],
+						children: [
+							{
+								_type: 'span',
+								_key: k(),
+								text: 'Zwölf Lehrkräfte, drei Säle, eine pädagogische Linie — und immer noch eine Schule, in der man sich beim Namen kennt.',
+								marks: [],
+							},
+						],
+					},
+				],
 				layout: 'grid',
 				people: [
 					{ _key: k(), _type: 'reference', _ref: 'person-miriam-schulte' },
@@ -1009,51 +2167,116 @@ function buildPages(heroId: string, phId: string) {
 				],
 			},
 			{
-				_key: k(), _type: 'location-card',
+				_key: k(),
+				_type: 'location-card',
 				title: rt('Am *Wittekindsweg* in Melle.'),
 				text: 'Drei Säle, ein gemütlicher Wartebereich, Parkplätze direkt vor der Tür. Zentral gelegen, gut erreichbar mit Bus und Bahn — und mitten in der Natur.',
 				directions: [
-					{ _key: k(), _type: 'direction', icon: 'map-pin', title: 'Adresse', text: 'Wittekindsweg 10, 49324 Melle' },
-					{ _key: k(), _type: 'direction', icon: 'clock', title: 'Öffnungszeiten', text: 'Mo–Fr 09–20 Uhr · Sa 10–14 Uhr' },
-					{ _key: k(), _type: 'direction', icon: 'phone', title: 'Erreichbarkeit', text: 'Telefonisch Mo–Fr 09–18 Uhr' },
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'map-pin',
+						title: 'Adresse',
+						text: 'Wittekindsweg 10, 49324 Melle',
+					},
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'clock',
+						title: 'Öffnungszeiten',
+						text: 'Mo–Fr 09–20 Uhr · Sa 10–14 Uhr',
+					},
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'phone',
+						title: 'Erreichbarkeit',
+						text: 'Telefonisch Mo–Fr 09–18 Uhr',
+					},
 				],
-				mapLink: linkExt('In Google Maps öffnen', 'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle'),
+				mapLink: linkExt(
+					'In Google Maps öffnen',
+					'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle',
+				),
 				mapLinkLabel: 'In Google Maps öffnen',
 			},
-			ctaBand('Komm *vorbei*.', 'Wir freuen uns auf dich — egal ob du anrufst, eine E-Mail schickst oder einfach vorbeikommst.'),
+			ctaBand(
+				'Komm *vorbei*.',
+				'Wir freuen uns auf dich — egal ob du anrufst, eine E-Mail schickst oder einfach vorbeikommst.',
+			),
 		],
 	}
 
 	// ── Jobs ─────────────────────────────────────────────────────────
 	const jobs: Record<string, unknown> = {
-		_id: P.jobs, _type: 'page', language: 'de',
+		_id: P.jobs,
+		_type: 'page',
+		language: 'de',
 		title: 'Jobs',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'jobs' }, title: 'Jobs — Werde Teil des Teams der Creators School' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Jobs · Team Creators School',
-			title: rt('Werde Teil unseres *Teams*.'),
-			lede: 'Wir suchen Menschen, die Musik und Tanz lieben und weitergeben möchten — mit Herz, in individuell begleiteten Gruppen und mit echtem Gestaltungsspielraum. Auch Initiativbewerbungen sind jederzeit willkommen.',
-			ctas: [
-				cta('Jetzt bewerben', 'ext', 'mailto:info@creators-school.de'),
-				cta('Kurz per WhatsApp fragen', 'ext', 'https://wa.me/4915208993894', 'secondary'),
-			],
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'jobs' },
+			title: 'Jobs — Werde Teil des Teams der Creators School',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Jobs · Team Creators School',
+				title: rt('Werde Teil unseres *Teams*.'),
+				lede: 'Wir suchen Menschen, die Musik und Tanz lieben und weitergeben möchten — mit Herz, in individuell begleiteten Gruppen und mit echtem Gestaltungsspielraum. Auch Initiativbewerbungen sind jederzeit willkommen.',
+				ctas: [
+					cta('Jetzt bewerben', 'ext', 'mailto:info@creators-school.de'),
+					cta(
+						'Kurz per WhatsApp fragen',
+						'ext',
+						'https://wa.me/4915208993894',
+						'secondary',
+					),
+				],
+			},
+		],
 		modules: [
 			{
-				_key: k(), _type: 'jobs-list',
+				_key: k(),
+				_type: 'jobs-list',
 				eyebrow: 'Offene Stellen',
 				title: rt('Aktuell *gesucht*.'),
 				applyLabel: 'Bewerben',
-				emptyText: 'Aktuell keine offenen Stellen — aber Initiativbewerbungen sind immer willkommen!',
+				emptyText:
+					'Aktuell keine offenen Stellen — aber Initiativbewerbungen sind immer willkommen!',
 				tinted: true,
 			},
 			{
-				_key: k(), _type: 'info-cards',
+				_key: k(),
+				_type: 'info-cards',
 				cards: [
-					{ _key: k(), _type: 'infoCard', variant: 'coral', icon: 'mail', label: 'E-Mail', value: 'info@creators-school.de', link: linkExt('E-Mail schreiben', 'mailto:info@creators-school.de') },
-					{ _key: k(), _type: 'infoCard', variant: 'neutral', icon: 'phone', label: 'Telefon', value: '01520 / 89 93 894', link: linkExt('Anrufen', 'tel:+4915208993894') },
-					{ _key: k(), _type: 'infoCard', variant: 'neutral', icon: 'map-pin', label: 'Ort', value: 'Melle, Niedersachsen' },
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'coral',
+						icon: 'mail',
+						label: 'E-Mail',
+						value: 'info@creators-school.de',
+						link: linkExt('E-Mail schreiben', 'mailto:info@creators-school.de'),
+					},
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'neutral',
+						icon: 'phone',
+						label: 'Telefon',
+						value: '01520 / 89 93 894',
+						link: linkExt('Anrufen', 'tel:+4915208993894'),
+					},
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'neutral',
+						icon: 'map-pin',
+						label: 'Ort',
+						value: 'Melle, Niedersachsen',
+					},
 				],
 			},
 			defaultCtaBand,
@@ -1062,35 +2285,93 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Kontakt ───────────────────────────────────────────────────────
 	const kontakt: Record<string, unknown> = {
-		_id: P.kontakt, _type: 'page', language: 'de',
+		_id: P.kontakt,
+		_type: 'page',
+		language: 'de',
 		title: 'Kontakt',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'kontakt' }, title: 'Kontakt — Creators School Melle', description: 'Wir melden uns innerhalb von 24 Stunden zurück.' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Wir freuen uns auf dich',
-			title: rt('Schreib uns, ruf uns an, komm *vorbei*.'),
-			lede: 'Wir melden uns innerhalb von 24 Stunden zurück — meistens schneller. Du erreichst uns telefonisch zu den Bürozeiten oder jederzeit per E-Mail.',
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'kontakt' },
+			title: 'Kontakt — Creators School Melle',
+			description: 'Wir melden uns innerhalb von 24 Stunden zurück.',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Wir freuen uns auf dich',
+				title: rt('Schreib uns, ruf uns an, komm *vorbei*.'),
+				lede: 'Wir melden uns innerhalb von 24 Stunden zurück — meistens schneller. Du erreichst uns telefonisch zu den Bürozeiten oder jederzeit per E-Mail.',
+			},
+		],
 		modules: [
 			{ _key: k(), _type: 'contact-form' },
 			{
-				_key: k(), _type: 'location-card',
+				_key: k(),
+				_type: 'location-card',
 				title: rt('Mitten in *Melle* — gut erreichbar.'),
 				text: 'Direkt am Wittekindsweg, fünf Minuten vom Bahnhof, mit eigenen Parkplätzen vor der Tür. Wir freuen uns auf deinen Besuch.',
 				directions: [
-					{ _key: k(), _type: 'direction', icon: 'map-pin', title: 'Adresse', text: 'Wittekindsweg 10, 49324 Melle' },
-					{ _key: k(), _type: 'direction', icon: 'clock', title: 'Bürozeiten', text: 'Mo–Fr 09–18 Uhr (telefonisch)' },
-					{ _key: k(), _type: 'direction', icon: 'clock', title: 'Unterricht', text: 'Mo–Fr bis 20 Uhr · Sa 10–14 Uhr' },
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'map-pin',
+						title: 'Adresse',
+						text: 'Wittekindsweg 10, 49324 Melle',
+					},
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'clock',
+						title: 'Bürozeiten',
+						text: 'Mo–Fr 09–18 Uhr (telefonisch)',
+					},
+					{
+						_key: k(),
+						_type: 'direction',
+						icon: 'clock',
+						title: 'Unterricht',
+						text: 'Mo–Fr bis 20 Uhr · Sa 10–14 Uhr',
+					},
 				],
-				mapLink: linkExt('In Google Maps öffnen', 'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle'),
+				mapLink: linkExt(
+					'In Google Maps öffnen',
+					'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle',
+				),
 				mapLinkLabel: 'Route planen',
 			},
 			{
-				_key: k(), _type: 'info-cards',
+				_key: k(),
+				_type: 'info-cards',
 				cards: [
-					{ _key: k(), _type: 'infoCard', variant: 'coral', icon: 'phone', label: 'Telefon', value: '01520 / 89 93 894', small: 'Mo–Fr 09–18 Uhr', link: linkExt('Jetzt anrufen', 'tel:+4915208993894') },
-					{ _key: k(), _type: 'infoCard', variant: 'neutral', icon: 'message', label: 'WhatsApp', value: 'Jetzt schreiben', link: linkExt('WhatsApp', 'https://wa.me/4915208993894') },
-					{ _key: k(), _type: 'infoCard', variant: 'neutral', icon: 'mail', label: 'E-Mail', value: 'info@creators-school.de', link: linkExt('E-Mail schreiben', 'mailto:info@creators-school.de') },
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'coral',
+						icon: 'phone',
+						label: 'Telefon',
+						value: '01520 / 89 93 894',
+						small: 'Mo–Fr 09–18 Uhr',
+						link: linkExt('Jetzt anrufen', 'tel:+4915208993894'),
+					},
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'neutral',
+						icon: 'message',
+						label: 'WhatsApp',
+						value: 'Jetzt schreiben',
+						link: linkExt('WhatsApp', 'https://wa.me/4915208993894'),
+					},
+					{
+						_key: k(),
+						_type: 'infoCard',
+						variant: 'neutral',
+						icon: 'mail',
+						label: 'E-Mail',
+						value: 'info@creators-school.de',
+						link: linkExt('E-Mail schreiben', 'mailto:info@creators-school.de'),
+					},
 				],
 			},
 		],
@@ -1098,107 +2379,273 @@ function buildPages(heroId: string, phId: string) {
 
 	// ── Aufführungen ──────────────────────────────────────────────────
 	const auffuehrungen: Record<string, unknown> = {
-		_id: P.auffuehrungen, _type: 'page', language: 'de',
+		_id: P.auffuehrungen,
+		_type: 'page',
+		language: 'de',
 		title: 'Aufführungen 2026',
-		metadata: { _type: 'metadata', slug: { _type: 'slug', current: 'auffuehrungen' }, title: 'Aufführungen September 2026 — Creators School im Schauspielhaus Melle' },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow: 'Bühne frei · September 2026',
-			title: rt('Zwei Abende, eine ganze Schule auf der *Bühne*.'),
-			lede: 'Schauspielhaus Melle · 5. & 6. September 2026 · Beginn jeweils am Abend.',
-			ctas: [
-				cta('WhatsApp schreiben', 'ext', 'https://wa.me/4915208993894'),
-				cta('Karten per E-Mail', 'ext', 'mailto:info@creators-school.de?subject=Karten Aufführung 2026', 'secondary'),
-			],
-		}],
+		metadata: {
+			_type: 'metadata',
+			slug: { _type: 'slug', current: 'auffuehrungen' },
+			title:
+				'Aufführungen September 2026 — Creators School im Schauspielhaus Melle',
+		},
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow: 'Bühne frei · September 2026',
+				title: rt('Zwei Abende, eine ganze Schule auf der *Bühne*.'),
+				lede: 'Schauspielhaus Melle · 5. & 6. September 2026 · Beginn jeweils am Abend.',
+				ctas: [
+					cta('WhatsApp schreiben', 'ext', 'https://wa.me/4915208993894'),
+					cta(
+						'Karten per E-Mail',
+						'ext',
+						'mailto:info@creators-school.de?subject=Karten Aufführung 2026',
+						'secondary',
+					),
+				],
+			},
+		],
 		modules: [
 			{
-				_key: k(), _type: 'performance-banner',
+				_key: k(),
+				_type: 'performance-banner',
 				performance: { _type: 'reference', _ref: PERF },
 			},
 			{
-				_key: k(), _type: 'feature-grid',
+				_key: k(),
+				_type: 'feature-grid',
 				eyebrow: 'Das erwartet euch',
 				title: rt('Ein Abend voller *Ausdruck*.'),
 				features: [
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: 'Alle Gruppen auf einer Bühne', text: 'Von der Tänzerischen Früherziehung bis zu den Erwachsenengruppen — die ganze Schule in einer Show.' },
-					{ _key: k(), _type: 'featureCard', tint: 'coral', title: 'Echtes Bühnenbild', text: 'Kostüme, Licht, Bühnenbild — wie eine echte Theaterproduktion, mit allem, was dazugehört.' },
-					{ _key: k(), _type: 'featureCard', tint: 'soft', title: 'Über 500 Plätze pro Abend', text: 'Das Schauspielhaus Melle bietet ausreichend Platz für Familien, Freunde und alle Fans.' },
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: 'Alle Gruppen auf einer Bühne',
+						text: 'Von der Tänzerischen Früherziehung bis zu den Erwachsenengruppen — die ganze Schule in einer Show.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'coral',
+						title: 'Echtes Bühnenbild',
+						text: 'Kostüme, Licht, Bühnenbild — wie eine echte Theaterproduktion, mit allem, was dazugehört.',
+					},
+					{
+						_key: k(),
+						_type: 'featureCard',
+						tint: 'soft',
+						title: 'Über 500 Plätze pro Abend',
+						text: 'Das Schauspielhaus Melle bietet ausreichend Platz für Familien, Freunde und alle Fans.',
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'accordion-list',
-				intro: bl('Fr · 4. Sep — Generalprobe · Sa · 5. Sep — Premierenabend · So · 6. Sep — Zweiter Abend'),
+				_key: k(),
+				_type: 'accordion-list',
+				intro: bl(
+					'Fr · 4. Sep — Generalprobe · Sa · 5. Sep — Premierenabend · So · 6. Sep — Zweiter Abend',
+				),
 				items: [
-					{ _key: k(), _type: 'object', summary: 'Fr · 4. Sep — Generalprobe', content: 'Letzter Feinschliff auf der Bühne — für geladene Gäste und Familien.', open: true },
-					{ _key: k(), _type: 'object', summary: 'Sa · 5. Sep — Premierenabend', content: 'Der große Auftakt. Alle Gruppen zeigen ihre Choreografien vor vollem Haus.' },
-					{ _key: k(), _type: 'object', summary: 'So · 6. Sep — Zweiter Abend', content: 'Noch einmal die volle Bühne — für alle, die am Samstag keinen Platz mehr bekommen haben.' },
+					{
+						_key: k(),
+						_type: 'object',
+						summary: 'Fr · 4. Sep — Generalprobe',
+						content:
+							'Letzter Feinschliff auf der Bühne — für geladene Gäste und Familien.',
+						open: true,
+					},
+					{
+						_key: k(),
+						_type: 'object',
+						summary: 'Sa · 5. Sep — Premierenabend',
+						content:
+							'Der große Auftakt. Alle Gruppen zeigen ihre Choreografien vor vollem Haus.',
+					},
+					{
+						_key: k(),
+						_type: 'object',
+						summary: 'So · 6. Sep — Zweiter Abend',
+						content:
+							'Noch einmal die volle Bühne — für alle, die am Samstag keinen Platz mehr bekommen haben.',
+					},
 				],
 			},
 			{
-				_key: k(), _type: 'svc-faq',
+				_key: k(),
+				_type: 'svc-faq',
 				eyebrow: 'Häufige Fragen',
 				title: rt('Gut zu *wissen*.'),
 				lead: 'Fragen zu Karten oder Ablauf? Schreib uns am schnellsten per WhatsApp.',
-				ctas: [cta('Per WhatsApp fragen', 'ext', 'https://wa.me/4915208993894', 'secondary')],
+				ctas: [
+					cta(
+						'Per WhatsApp fragen',
+						'ext',
+						'https://wa.me/4915208993894',
+						'secondary',
+					),
+				],
 				items: faq([
-					['Wie bekomme ich Karten?', 'Karten gibt es auf Anfrage — per WhatsApp, E-Mail oder telefonisch. Wir melden uns mit allen Details zu Platz und Preis.'],
-					['Wo finden die Aufführungen statt?', 'Im Schauspielhaus Melle. Die genaue Anfahrt und Einlasszeit teilen wir mit der Kartenbestätigung mit.'],
-					['Können beide Abende besucht werden?', 'Ja. Der 5. und 6. September zeigen dasselbe Programm — wählt einfach den Abend, der besser passt.'],
+					[
+						'Wie bekomme ich Karten?',
+						'Karten gibt es auf Anfrage — per WhatsApp, E-Mail oder telefonisch. Wir melden uns mit allen Details zu Platz und Preis.',
+					],
+					[
+						'Wo finden die Aufführungen statt?',
+						'Im Schauspielhaus Melle. Die genaue Anfahrt und Einlasszeit teilen wir mit der Kartenbestätigung mit.',
+					],
+					[
+						'Können beide Abende besucht werden?',
+						'Ja. Der 5. und 6. September zeigen dasselbe Programm — wählt einfach den Abend, der besser passt.',
+					],
 				]),
 			},
-			ctaBand('Karten für die *Aufführungen* sichern.', 'Schreib uns — wir antworten schnell und reservieren deinen Platz persönlich.'),
+			ctaBand(
+				'Karten für die *Aufführungen* sichern.',
+				'Schreib uns — wir antworten schnell und reservieren deinen Platz persönlich.',
+			),
 		],
 	}
 
 	// ── Legal ─────────────────────────────────────────────────────────
 	const legalPages = [
-		{ id: P.impressum, slug: 'impressum', title: 'Impressum', eyebrow: 'Rechtliches', heading: '*Impressum*' },
-		{ id: P.datenschutz, slug: 'datenschutz', title: 'Datenschutz', eyebrow: 'Rechtliches', heading: '*Datenschutzerklärung*' },
-		{ id: P.barrierefreiheit, slug: 'barrierefreiheit', title: 'Barrierefreiheit', eyebrow: 'Rechtliches', heading: 'Erklärung zur *Barrierefreiheit*' },
+		{
+			id: P.impressum,
+			slug: 'impressum',
+			title: 'Impressum',
+			eyebrow: 'Rechtliches',
+			heading: '*Impressum*',
+		},
+		{
+			id: P.datenschutz,
+			slug: 'datenschutz',
+			title: 'Datenschutz',
+			eyebrow: 'Rechtliches',
+			heading: '*Datenschutzerklärung*',
+		},
+		{
+			id: P.barrierefreiheit,
+			slug: 'barrierefreiheit',
+			title: 'Barrierefreiheit',
+			eyebrow: 'Rechtliches',
+			heading: 'Erklärung zur *Barrierefreiheit*',
+		},
 	].map(({ id, slug, title, eyebrow, heading }) => ({
-		_id: id, _type: 'page', language: 'de', title,
+		_id: id,
+		_type: 'page',
+		language: 'de',
+		title,
 		metadata: { _type: 'metadata', slug: { _type: 'slug', current: slug } },
-		stage: [{
-			_key: k(), _type: 'page-header',
-			eyebrow,
-			title: rt(heading),
-			lede: 'Bitte füge hier den rechtlichen Inhalt ein.',
-		}],
+		stage: [
+			{
+				_key: k(),
+				_type: 'page-header',
+				eyebrow,
+				title: rt(heading),
+				lede: 'Bitte füge hier den rechtlichen Inhalt ein.',
+			},
+		],
 		modules: [],
 	}))
 
 	// Order matters: create leaf pages (no outbound refs) before pages that reference them
-	return [kontakt, auffuehrungen, stundenplan, ...legalPages, galerie, ueberUns, jobs, angebote, ...offeringPages, home]
+	return [
+		kontakt,
+		auffuehrungen,
+		stundenplan,
+		...legalPages,
+		galerie,
+		ueberUns,
+		jobs,
+		angebote,
+		...offeringPages,
+		home,
+	]
 }
 
 // ── navigation ────────────────────────────────────────────────────────
 
 function buildNavigation() {
 	return {
-		_id: 'navigation-de', _type: 'navigation', language: 'de',
+		_id: 'navigation-de',
+		_type: 'navigation',
+		language: 'de',
 		title: 'Header Navigation (de)',
 		type: 'header',
 		items: [
-			{ _key: k(), _type: 'link', label: 'Home', type: 'internal', internal: { _type: 'reference', _ref: P.home } },
 			{
-				_key: k(), _type: 'link.list',
-				link: { _type: 'link', label: 'Angebote', type: 'internal', internal: { _type: 'reference', _ref: P.angebote } },
+				_key: k(),
+				_type: 'link',
+				label: 'Home',
+				type: 'internal',
+				internal: { _type: 'reference', _ref: P.home },
+			},
+			{
+				_key: k(),
+				_type: 'link.list',
+				link: {
+					_type: 'link',
+					label: 'Angebote',
+					type: 'internal',
+					internal: { _type: 'reference', _ref: P.angebote },
+				},
 				links: [
-					navLink('Alle ansehen', 'Übersicht aller acht Angebote', P.angebote),
-					navLink('Musikalische Frühförderung', '3–6 Jahre · bis zu 10 Kinder', P.aMFrue),
+					navLink('Alle ansehen', 'Übersicht aller sechs Angebote', P.angebote),
+					navLink(
+						'Musikalische Frühförderung',
+						'3–6 Jahre · etwa 10 Kinder',
+						P.aMFrue,
+					),
 					navLink('Eltern-Kind-Kurs', '1,5–3 Jahre · mit Mama/Papa', P.aEKK),
-					navLink('Tänzerische Früherziehung', '3–6 Jahre · Bewegung & Tanz', P.aTFrue),
+					navLink(
+						'Tänzerische Früherziehung',
+						'3–6 Jahre · Bewegung & Tanz',
+						P.aTFrue,
+					),
 					navLink('Ballett', 'ab 6 Jahren · klassische Technik', P.aBallett),
-					navLink('Modern-/Contemporary dance', 'ab 8 Jahren · Bühne & Ausdruck', P.aJazz),
-					navLink('Kindergarten-Projekte', 'Kita-Kooperation · bei dir vor Ort', P.aKita),
+					navLink(
+						'Modern-/Contemporary dance',
+						'ab 8 Jahren · Bühne & Ausdruck',
+						P.aJazz,
+					),
+					navLink(
+						'Kindergarten-Projekte',
+						'Kita-Kooperation · bei dir vor Ort',
+						P.aKita,
+					),
 				],
 			},
-			{ _key: k(), _type: 'link', label: 'Galerie', type: 'internal', internal: { _type: 'reference', _ref: P.galerie } },
-			{ _key: k(), _type: 'link', label: 'Über uns', type: 'internal', internal: { _type: 'reference', _ref: P.ueberUns } },
+			{
+				_key: k(),
+				_type: 'link',
+				label: 'Galerie',
+				type: 'internal',
+				internal: { _type: 'reference', _ref: P.galerie },
+			},
+			{
+				_key: k(),
+				_type: 'link',
+				label: 'Über uns',
+				type: 'internal',
+				internal: { _type: 'reference', _ref: P.ueberUns },
+			},
 			// Stundenplan nav link hidden for now
-			{ _key: k(), _type: 'link', label: 'Jobs', type: 'internal', internal: { _type: 'reference', _ref: P.jobs } },
-			{ _key: k(), _type: 'link', label: 'Kontakt', type: 'internal', internal: { _type: 'reference', _ref: P.kontakt } },
+			{
+				_key: k(),
+				_type: 'link',
+				label: 'Jobs',
+				type: 'internal',
+				internal: { _type: 'reference', _ref: P.jobs },
+			},
+			{
+				_key: k(),
+				_type: 'link',
+				label: 'Kontakt',
+				type: 'internal',
+				internal: { _type: 'reference', _ref: P.kontakt },
+			},
 			cta('Probestunde', 'int', P.kontakt),
 		],
 	}
@@ -1208,18 +2655,29 @@ function buildNavigation() {
 
 function buildFooter() {
 	function footerLink(label: string, ref: string) {
-		return { _key: k(), _type: 'link', label, type: 'internal', internal: { _type: 'reference', _ref: ref } }
+		return {
+			_key: k(),
+			_type: 'link',
+			label,
+			type: 'internal',
+			internal: { _type: 'reference', _ref: ref },
+		}
 	}
 	function footerLinkExt(label: string, url: string) {
 		return { _key: k(), _type: 'link', label, type: 'external', external: url }
 	}
 
 	return {
-		_id: 'footer-de', _type: 'footer', language: 'de',
-		tagline: 'Musik- und Tanzschule in Melle. Seit 2002 — von den ersten Klangerlebnissen der Kleinsten bis zur Bühne für jedes Alter.',
+		_id: 'footer-de',
+		_type: 'footer',
+		language: 'de',
+		tagline:
+			'Musik- und Tanzschule in Melle. Seit 2002 — von den ersten Klangerlebnissen der Kleinsten bis zur Bühne für jedes Alter.',
 		columns: [
 			{
-				_key: k(), _type: 'link.group', title: 'Angebote',
+				_key: k(),
+				_type: 'link.group',
+				title: 'Angebote',
 				links: [
 					footerLink('Eltern-Kind-Kurs', P.aEKK),
 					footerLink('Musikalische Frühförderung', P.aMFrue),
@@ -1230,7 +2688,9 @@ function buildFooter() {
 				],
 			},
 			{
-				_key: k(), _type: 'link.group', title: 'Schule',
+				_key: k(),
+				_type: 'link.group',
+				title: 'Schule',
 				links: [
 					footerLink('Über uns', P.ueberUns),
 					footerLink('Stundenplan', P.stundenplan),
@@ -1239,25 +2699,40 @@ function buildFooter() {
 				],
 			},
 			{
-				_key: k(), _type: 'link.group', title: 'Kontakt',
+				_key: k(),
+				_type: 'link.group',
+				title: 'Kontakt',
 				links: [
 					footerLinkExt('01520 / 89 93 894', 'tel:+4915208993894'),
-					footerLinkExt('info@creators-school.de', 'mailto:info@creators-school.de'),
-					footerLinkExt('Wittekindsweg 10, 49324 Melle', 'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle'),
+					footerLinkExt(
+						'info@creators-school.de',
+						'mailto:info@creators-school.de',
+					),
+					footerLinkExt(
+						'Wittekindsweg 10, 49324 Melle',
+						'https://maps.google.com/?q=Wittekindsweg+10,+49324+Melle',
+					),
 				],
 			},
 		],
 		socials: [
-			footerLinkExt('Instagram', 'https://www.instagram.com/creators.school.melle'),
+			footerLinkExt(
+				'Instagram',
+				'https://www.instagram.com/creators.school.melle',
+			),
 			footerLinkExt('Facebook', 'https://www.facebook.com/creatorssschool'),
-			footerLinkExt('YouTube', 'https://www.youtube.com/@creators-school-melle'),
+			footerLinkExt(
+				'YouTube',
+				'https://www.youtube.com/@creators-school-melle',
+			),
 		],
 		bottomLinks: [
 			footerLink('Datenschutz', P.datenschutz),
 			footerLink('Impressum', P.impressum),
 			footerLink('Erklärung zur Barrierefreiheit', P.barrierefreiheit),
 		],
-		copyright: '© {year} Creators School · Inh. Miriam Schulte · Alle Rechte vorbehalten',
+		copyright:
+			'© {year} Creators School · Inh. Miriam Schulte · Alle Rechte vorbehalten',
 	}
 }
 
@@ -1266,21 +2741,30 @@ function buildFooter() {
 function buildJobs() {
 	return [
 		{
-			_id: 'job-tanzlehrerin', _type: 'job', language: 'de',
+			_id: 'job-tanzlehrerin',
+			_type: 'job',
+			language: 'de',
 			title: 'Tanzlehrer:in',
-			description: 'Ballett oder Moderndance, für Kinder, Jugendliche oder Erwachsene. Auf Honorarbasis, Tag flexibel.',
+			description:
+				'Ballett oder Moderndance, für Kinder, Jugendliche oder Erwachsene. Auf Honorarbasis, Tag flexibel.',
 			active: true,
 		},
 		{
-			_id: 'job-musikpaedagogin', _type: 'job', language: 'de',
+			_id: 'job-musikpaedagogin',
+			_type: 'job',
+			language: 'de',
 			title: 'Musikpädagog:in',
-			description: 'Für Frühförderung, Eltern-Kind-Kurs oder Instrumentalunterricht. Teilzeit oder Honorarbasis.',
+			description:
+				'Für Frühförderung, Eltern-Kind-Kurs oder Instrumentalunterricht. Teilzeit oder Honorarbasis.',
 			active: true,
 		},
 		{
-			_id: 'job-initiativbewerbung', _type: 'job', language: 'de',
+			_id: 'job-initiativbewerbung',
+			_type: 'job',
+			language: 'de',
 			title: 'Initiativbewerbung',
-			description: 'Du brennst für Musik oder Tanz, findest aber keine passende Stelle? Schreib uns trotzdem — wir freuen uns.',
+			description:
+				'Du brennst für Musik oder Tanz, findest aber keine passende Stelle? Schreib uns trotzdem — wir freuen uns.',
 			active: true,
 		},
 	]
@@ -1296,52 +2780,330 @@ function buildScheduleSlots() {
 		'Marlene Ott': 'teacher-marlene-otten',
 	}
 	const dayMap: Record<string, { key: string; order: number }> = {
-		Montag:    { key: 'mo', order: 0 },
-		Dienstag:  { key: 'di', order: 1 },
-		Mittwoch:  { key: 'mi', order: 2 },
-		Donnerstag:{ key: 'do', order: 3 },
-		Freitag:   { key: 'fr', order: 4 },
-		Samstag:   { key: 'sa', order: 5 },
+		Montag: { key: 'mo', order: 0 },
+		Dienstag: { key: 'di', order: 1 },
+		Mittwoch: { key: 'mi', order: 2 },
+		Donnerstag: { key: 'do', order: 3 },
+		Freitag: { key: 'fr', order: 4 },
+		Samstag: { key: 'sa', order: 5 },
 	}
 	const TAGE = [
-		{ name: 'Montag', termine: [
-			{ z:'09:30', d:'30 min', n:'Mini-Musaik · Krabbelgruppe', a:'1,5–3 J.', raum:'Saal B', lk:'Lena Voss', s:'few',  b:'musik', cats:['frueh'] },
-			{ z:'15:30', d:'45 min', n:'Musikalische Frühförderung', a:'3–6 J.',  raum:'Saal A',  lk:'Miriam Schulte', s:'open', b:'musik', cats:['frueh'] },
-			{ z:'16:45', d:'60 min', n:'Ballett ab 6', a:'ab 6 J.',               raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz',  cats:[] },
-			{ z:'18:00', d:'75 min', n:'Moderndance ab 15', a:'ab 15 J.',         raum:'Tanzsaal', lk:'Marlene Ott',    s:'few',  b:'tanz',  cats:[] },
-			{ z:'19:30', d:'75 min', n:'Moderndance ab 30', a:'ab 30 J.',         raum:'Tanzsaal', lk:'Miriam Schulte', s:'open', b:'tanz',  cats:['erwachsene'] },
-		]},
-		{ name: 'Dienstag', termine: [
-			{ z:'09:30', d:'30 min', n:'Mini-Musaik · Krabbelgruppe', a:'1,5–3 J.', raum:'Saal B', lk:'Lena Voss',     s:'open', b:'musik', cats:['frueh'] },
-			{ z:'15:00', d:'45 min', n:'Tänzerische Frühförderung', a:'3–6 J.',    raum:'Tanzsaal', lk:'Charlotte Renk', s:'few', b:'tanz', cats:['frueh'] },
-			{ z:'16:15', d:'60 min', n:'Ballett ab 9', a:'ab 9 J.',                 raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz', cats:[] },
-			{ z:'17:30', d:'60 min', n:'Moderndance ab 10', a:'ab 10 J.',           raum:'Tanzsaal', lk:'Marlene Ott',    s:'full', b:'tanz', cats:[] },
-			{ z:'19:00', d:'75 min', n:'Moderndance ab 18', a:'ab 18 J.',           raum:'Tanzsaal', lk:'Marlene Ott',    s:'open', b:'tanz', cats:['erwachsene'] },
-		]},
-		{ name: 'Mittwoch', termine: [
-			{ z:'10:00', d:'30 min', n:'Mini-Musaik · Krabbelgruppe', a:'1,5–3 J.', raum:'Saal B', lk:'Lena Voss',     s:'few',  b:'musik', cats:['frueh'] },
-			{ z:'15:30', d:'45 min', n:'Musikalische Frühförderung', a:'3–6 J.',    raum:'Saal A',  lk:'Miriam Schulte', s:'open', b:'musik', cats:['frueh'] },
-			{ z:'16:45', d:'45 min', n:'Tänzerische Frühförderung', a:'3–6 J.',    raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz', cats:['frueh'] },
-			{ z:'18:00', d:'60 min', n:'Ballett ab 9', a:'ab 9 J.',                 raum:'Tanzsaal', lk:'Charlotte Renk', s:'few',  b:'tanz', cats:[] },
-			{ z:'19:30', d:'75 min', n:'Moderndance ab 18', a:'ab 18 J.',           raum:'Tanzsaal', lk:'Marlene Ott',    s:'open', b:'tanz', cats:['erwachsene'] },
-		]},
-		{ name: 'Donnerstag', termine: [
-			{ z:'15:00', d:'60 min', n:'Ballett ab 6', a:'ab 6 J.',        raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz', cats:[] },
-			{ z:'16:15', d:'60 min', n:'Moderndance ab 10', a:'ab 10 J.', raum:'Tanzsaal', lk:'Marlene Ott',    s:'few',  b:'tanz', cats:[] },
-			{ z:'17:30', d:'75 min', n:'Moderndance ab 15', a:'ab 15 J.', raum:'Tanzsaal', lk:'Marlene Ott',    s:'open', b:'tanz', cats:[] },
-			{ z:'19:00', d:'75 min', n:'Moderndance ab 30', a:'ab 30 J.', raum:'Tanzsaal', lk:'Miriam Schulte', s:'full', b:'tanz', cats:['erwachsene'] },
-		]},
-		{ name: 'Freitag', termine: [
-			{ z:'09:30', d:'30 min', n:'Mini-Musaik · Krabbelgruppe', a:'1,5–3 J.', raum:'Saal B', lk:'Lena Voss',     s:'open', b:'musik', cats:['frueh'] },
-			{ z:'15:30', d:'45 min', n:'Musikalische Frühförderung', a:'3–6 J.',    raum:'Saal A',  lk:'Miriam Schulte', s:'few',  b:'musik', cats:['frueh'] },
-			{ z:'16:45', d:'45 min', n:'Tänzerische Frühförderung', a:'3–6 J.',    raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz', cats:['frueh'] },
-			{ z:'18:00', d:'75 min', n:'Moderndance ab 18', a:'ab 18 J.',           raum:'Tanzsaal', lk:'Marlene Ott',    s:'open', b:'tanz', cats:['erwachsene'] },
-		]},
-		{ name: 'Samstag', termine: [
-			{ z:'10:00', d:'60 min', n:'Ballett ab 6', a:'ab 6 J.',        raum:'Tanzsaal', lk:'Charlotte Renk', s:'open', b:'tanz', cats:[] },
-			{ z:'11:15', d:'60 min', n:'Ballett ab 9', a:'ab 9 J.',        raum:'Tanzsaal', lk:'Charlotte Renk', s:'few',  b:'tanz', cats:[] },
-			{ z:'12:30', d:'75 min', n:'Moderndance ab 15', a:'ab 15 J.', raum:'Tanzsaal', lk:'Marlene Ott',    s:'open', b:'tanz', cats:[] },
-		]},
+		{
+			name: 'Montag',
+			termine: [
+				{
+					z: '09:30',
+					d: '30 min',
+					n: 'Mini-Musaik · Krabbelgruppe',
+					a: '1,5–3 J.',
+					raum: 'Saal B',
+					lk: 'Lena Voss',
+					s: 'few',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '15:30',
+					d: '45 min',
+					n: 'Musikalische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Saal A',
+					lk: 'Miriam Schulte',
+					s: 'open',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '16:45',
+					d: '60 min',
+					n: 'Ballett ab 6',
+					a: 'ab 6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '18:00',
+					d: '75 min',
+					n: 'Moderndance ab 15',
+					a: 'ab 15 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'few',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '19:30',
+					d: '75 min',
+					n: 'Moderndance ab 30',
+					a: 'ab 30 J.',
+					raum: 'Tanzsaal',
+					lk: 'Miriam Schulte',
+					s: 'open',
+					b: 'tanz',
+					cats: ['erwachsene'],
+				},
+			],
+		},
+		{
+			name: 'Dienstag',
+			termine: [
+				{
+					z: '09:30',
+					d: '30 min',
+					n: 'Mini-Musaik · Krabbelgruppe',
+					a: '1,5–3 J.',
+					raum: 'Saal B',
+					lk: 'Lena Voss',
+					s: 'open',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '15:00',
+					d: '45 min',
+					n: 'Tänzerische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'few',
+					b: 'tanz',
+					cats: ['frueh'],
+				},
+				{
+					z: '16:15',
+					d: '60 min',
+					n: 'Ballett ab 9',
+					a: 'ab 9 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '17:30',
+					d: '60 min',
+					n: 'Moderndance ab 10',
+					a: 'ab 10 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'full',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '19:00',
+					d: '75 min',
+					n: 'Moderndance ab 18',
+					a: 'ab 18 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'open',
+					b: 'tanz',
+					cats: ['erwachsene'],
+				},
+			],
+		},
+		{
+			name: 'Mittwoch',
+			termine: [
+				{
+					z: '10:00',
+					d: '30 min',
+					n: 'Mini-Musaik · Krabbelgruppe',
+					a: '1,5–3 J.',
+					raum: 'Saal B',
+					lk: 'Lena Voss',
+					s: 'few',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '15:30',
+					d: '45 min',
+					n: 'Musikalische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Saal A',
+					lk: 'Miriam Schulte',
+					s: 'open',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '16:45',
+					d: '45 min',
+					n: 'Tänzerische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: ['frueh'],
+				},
+				{
+					z: '18:00',
+					d: '60 min',
+					n: 'Ballett ab 9',
+					a: 'ab 9 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'few',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '19:30',
+					d: '75 min',
+					n: 'Moderndance ab 18',
+					a: 'ab 18 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'open',
+					b: 'tanz',
+					cats: ['erwachsene'],
+				},
+			],
+		},
+		{
+			name: 'Donnerstag',
+			termine: [
+				{
+					z: '15:00',
+					d: '60 min',
+					n: 'Ballett ab 6',
+					a: 'ab 6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '16:15',
+					d: '60 min',
+					n: 'Moderndance ab 10',
+					a: 'ab 10 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'few',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '17:30',
+					d: '75 min',
+					n: 'Moderndance ab 15',
+					a: 'ab 15 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '19:00',
+					d: '75 min',
+					n: 'Moderndance ab 30',
+					a: 'ab 30 J.',
+					raum: 'Tanzsaal',
+					lk: 'Miriam Schulte',
+					s: 'full',
+					b: 'tanz',
+					cats: ['erwachsene'],
+				},
+			],
+		},
+		{
+			name: 'Freitag',
+			termine: [
+				{
+					z: '09:30',
+					d: '30 min',
+					n: 'Mini-Musaik · Krabbelgruppe',
+					a: '1,5–3 J.',
+					raum: 'Saal B',
+					lk: 'Lena Voss',
+					s: 'open',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '15:30',
+					d: '45 min',
+					n: 'Musikalische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Saal A',
+					lk: 'Miriam Schulte',
+					s: 'few',
+					b: 'musik',
+					cats: ['frueh'],
+				},
+				{
+					z: '16:45',
+					d: '45 min',
+					n: 'Tänzerische Frühförderung',
+					a: '3–6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: ['frueh'],
+				},
+				{
+					z: '18:00',
+					d: '75 min',
+					n: 'Moderndance ab 18',
+					a: 'ab 18 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'open',
+					b: 'tanz',
+					cats: ['erwachsene'],
+				},
+			],
+		},
+		{
+			name: 'Samstag',
+			termine: [
+				{
+					z: '10:00',
+					d: '60 min',
+					n: 'Ballett ab 6',
+					a: 'ab 6 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '11:15',
+					d: '60 min',
+					n: 'Ballett ab 9',
+					a: 'ab 9 J.',
+					raum: 'Tanzsaal',
+					lk: 'Charlotte Renk',
+					s: 'few',
+					b: 'tanz',
+					cats: [],
+				},
+				{
+					z: '12:30',
+					d: '75 min',
+					n: 'Moderndance ab 15',
+					a: 'ab 15 J.',
+					raum: 'Tanzsaal',
+					lk: 'Marlene Ott',
+					s: 'open',
+					b: 'tanz',
+					cats: [],
+				},
+			],
+		},
 	]
 
 	const slots: unknown[] = []
@@ -1362,7 +3124,9 @@ function buildScheduleSlots() {
 				name: t.n,
 				ageRange: t.a,
 				room: t.raum,
-				...(teacherId ? { teacher: { _type: 'reference', _ref: teacherId } } : {}),
+				...(teacherId
+					? { teacher: { _type: 'reference', _ref: teacherId } }
+					: {}),
 				status: t.s,
 				bereich: t.b,
 				categories: t.cats,
@@ -1376,18 +3140,62 @@ function buildScheduleSlots() {
 
 function buildPersons(phId: string) {
 	const team = [
-		{ id: 'person-miriam-schulte',   name: 'Miriam Schulte',   role: 'Gründerin · Pädagogische Leitung · Musicaldarstellerin', bio: 'Frühförderung, Klavier, Gesang' },
-		{ id: 'person-charlotte-berg',   name: 'Charlotte Berg',    role: 'Ballett · Choreografie', bio: 'Klassisches Ballett, Choreografie' },
-		{ id: 'person-tobias-linde',     name: 'Tobias Linde',      role: 'Gitarre · Bass · Schlagzeug', bio: 'Gitarre, E-Bass, Drums' },
-		{ id: 'person-lena-voss',        name: 'Lena Voss',         role: 'Mini-Musaik · Tänzerische Früherziehung', bio: 'Eltern-Kind, Bewegung' },
-		{ id: 'person-marlene-otten',    name: 'Marlene Otten',     role: 'Modern · Contemporary', bio: 'Modern-/Contemporary dance' },
-		{ id: 'person-jakob-heinemann',  name: 'Jakob Heinemann',   role: 'Klavier · Musiktheorie', bio: 'Klavier, Klassik & Pop' },
-		{ id: 'person-anneke-friese',    name: 'Anneke Friese',     role: 'Violine · Viola', bio: 'Violine, Kammermusik' },
-		{ id: 'person-elisa-hartmann',   name: 'Elisa Hartmann',    role: 'Stimmbildung · Gesang', bio: 'Gesang, Bühne' },
+		{
+			id: 'person-miriam-schulte',
+			name: 'Miriam Schulte',
+			role: 'Gründerin · Pädagogische Leitung · Musicaldarstellerin',
+			bio: 'Frühförderung, Klavier, Gesang',
+		},
+		{
+			id: 'person-charlotte-berg',
+			name: 'Charlotte Berg',
+			role: 'Ballett · Choreografie',
+			bio: 'Klassisches Ballett, Choreografie',
+		},
+		{
+			id: 'person-tobias-linde',
+			name: 'Tobias Linde',
+			role: 'Gitarre · Bass · Schlagzeug',
+			bio: 'Gitarre, E-Bass, Drums',
+		},
+		{
+			id: 'person-lena-voss',
+			name: 'Lena Voss',
+			role: 'Mini-Musaik · Tänzerische Früherziehung',
+			bio: 'Eltern-Kind, Bewegung',
+		},
+		{
+			id: 'person-marlene-otten',
+			name: 'Marlene Otten',
+			role: 'Modern · Contemporary',
+			bio: 'Modern-/Contemporary dance',
+		},
+		{
+			id: 'person-jakob-heinemann',
+			name: 'Jakob Heinemann',
+			role: 'Klavier · Musiktheorie',
+			bio: 'Klavier, Klassik & Pop',
+		},
+		{
+			id: 'person-anneke-friese',
+			name: 'Anneke Friese',
+			role: 'Violine · Viola',
+			bio: 'Violine, Kammermusik',
+		},
+		{
+			id: 'person-elisa-hartmann',
+			name: 'Elisa Hartmann',
+			role: 'Stimmbildung · Gesang',
+			bio: 'Gesang, Bühne',
+		},
 	]
-	return team.map(t => ({
-		_id: t.id, _type: 'person', language: 'de',
-		name: t.name, role: t.role, bio: t.bio,
+	return team.map((t) => ({
+		_id: t.id,
+		_type: 'person',
+		language: 'de',
+		name: t.name,
+		role: t.role,
+		bio: t.bio,
 		image: { ...imgRef(phId), alt: t.name },
 	}))
 }
@@ -1404,19 +3212,20 @@ async function main() {
 	const docs = [
 		buildPerformance(phId),
 		...buildTeachers(phId),
-		...buildPersons(phId),     // person docs for person-list on Über uns
+		...buildPersons(phId), // person docs for person-list on Über uns
 		...buildTestimonials(phId),
 		...buildOfferings(phId),
-		...buildScheduleSlots(),   // 26 schedule slot docs for Stundenplan
+		...buildScheduleSlots(), // 26 schedule slot docs for Stundenplan
 		...buildPages(heroId, phId),
-		buildSite(logoId, phId),   // after page-auffuehrungen
+		buildSite(logoId, phId), // after page-auffuehrungen
 		...buildJobs(),
-		buildNavigation(),         // after all offering pages
-		buildFooter(),             // after all offering pages
+		buildNavigation(), // after all offering pages
+		buildFooter(), // after all offering pages
 	]
 
 	// 3. Write
-	let ok = 0, fail = 0
+	let ok = 0,
+		fail = 0
 	for (const doc of docs) {
 		try {
 			await client.createOrReplace(doc as never)
@@ -1432,4 +3241,7 @@ async function main() {
 	console.log(`\n✅ Done — ${ok} created/updated, ${fail} failed.`)
 }
 
-main().catch(err => { console.error(err); process.exit(1) })
+main().catch((err) => {
+	console.error(err)
+	process.exit(1)
+})

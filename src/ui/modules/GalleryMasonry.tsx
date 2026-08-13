@@ -44,6 +44,10 @@ export default async function GalleryMasonry(props: Props) {
 					>
 						{items.map((g) => {
 							const span = stegaClean(g.span || 'normal')
+							const spansTwoColumns = span === 'wide' || span === 'big'
+							const imageSizes = spansTwoColumns
+								? '(min-width: 1024px) 50vw, (min-width: 640px) 100vw, 100vw'
+								: '(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw'
 							return (
 								<figure
 									key={g._id}
@@ -62,7 +66,7 @@ export default async function GalleryMasonry(props: Props) {
 													image={g.poster}
 													decorative
 													className="size-full object-cover"
-													sizes="(min-width: 1024px) 25vw, 50vw"
+													sizes={imageSizes}
 												/>
 											)}
 											<GalleryVideo
@@ -77,10 +81,9 @@ export default async function GalleryMasonry(props: Props) {
 											image={g.image}
 											alt={g.caption || undefined}
 											className="size-full object-cover"
-											sizes="(min-width: 1024px) 25vw, 50vw"
+											sizes={imageSizes}
 										/>
 									) : null}
-								
 								</figure>
 							)
 						})}

@@ -31,7 +31,7 @@ export default function PageHeader(props: Props) {
 			/>
 			<div className="wrap">
 				{eyebrow && (
-					<span className="bg-paper-2 border-line text-ink-2 mb-7 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold tracking-[0.04em]">
+					<span className="bg-paper-2 border-line text-ink-2 mb-7 inline-flex items-center gap-2.5 rounded-full border px-4.5 py-2 text-[13px] font-semibold">
 						<span
 							aria-hidden
 							className="bg-coral inline-block size-2 rounded-full"

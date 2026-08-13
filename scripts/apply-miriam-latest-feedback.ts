@@ -66,11 +66,11 @@ async function main() {
 	transaction.patch('offering-musikalische-fruehfoerderung', (patch) =>
 		patch.set({
 			'facts[_key=="k7"].value': '3–6 Jahre',
-			'facts[_key=="k8"].value': 'Gruppe · bis zu 10 Kinder',
-			'detailRows[_key=="k29"].value': 'Bis zu 10 Kinder',
+			'facts[_key=="k8"].value': 'Individuelle Gruppe · etwa 10 Kinder',
+			'detailRows[_key=="k29"].value': 'Etwa 10 Kinder',
 			'metadata.description':
-				'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in Gruppen von bis zu 10 Kindern.',
-			lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In Gruppen von bis zu zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
+				'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in individuell begleiteten Gruppen mit etwa 10 Kindern.',
+			lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In individuell begleiteten Gruppen mit etwa zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
 			'forWho[_key=="k14"].title': 'Kinder von drei bis sechs Jahren',
 			faq: musicFaq,
 		}),
@@ -79,8 +79,8 @@ async function main() {
 		patch.set({
 			lede: 'Körper, den Raum und den Rhythmus der Musik. Erste Grundlagen des Balletts verbinden sich mit Geschichten, Fantasie und freier Bewegung und eröffnen einen spielerischen Zugang zur Sprache des Tanzes.',
 			'facts[_key=="k71"].value': '3–6 Jahre',
-			'facts[_key=="k73"].value': 'Bis zu 10 Kinder',
-			'detailRows[_key=="k94"].value': 'Bis zu 10 Kinder',
+			'facts[_key=="k73"].value': 'Etwa 10 Kinder',
+			'detailRows[_key=="k94"].value': 'Etwa 10 Kinder',
 			'forWho[_key=="k79"].title': 'Kinder von drei bis sechs Jahren',
 		}),
 	)
@@ -121,7 +121,7 @@ async function main() {
 		patch
 			.set({
 				'items[_key=="k714"].links[_key=="k716"].description':
-					'3–6 Jahre · bis zu 10 Kinder',
+					'3–6 Jahre · etwa 10 Kinder',
 				'items[_key=="k714"].links[_key=="k717"].description':
 					'1,5–3 Jahre · mit Mama/Papa',
 				'items[_key=="k714"].links[_key=="k718"].description':
@@ -169,9 +169,11 @@ async function main() {
 			'modules[_key=="k512"].items[_key=="k518"].a':
 				'Unser Eltern-Kind-Kurs ist für Kinder von 1,5 bis 3 Jahren. Die Musikalische Frühförderung und die Tänzerische Früherziehung richten sich an Kinder von 3 bis 6 Jahren.',
 			'modules[_key=="k512"].items[_key=="k519"].a':
-				'Die Monatsbeiträge für unsere Gruppenangebote liegen aktuell – je nach Kurs und Unterrichtsdauer – zwischen 43 € und 64 €. Preise für individuelle Projekte teilen wir auf Anfrage mit. Für Geschwister gibt es Rabatte.',
+				'Die Monatsbeiträge für unsere Gruppenangebote liegen aktuell – je nach Kurs und Unterrichtsdauer – zwischen 43 € und 45 €. Preise für individuelle Projekte teilen wir auf Anfrage mit. Für Geschwister gibt es Rabatte.',
 			'modules[_key=="k512"].items[_key=="k520"].a':
-				'Ruf uns an oder schreib uns eine E-Mail. Wir vereinbaren einen unverbindlichen Termin — du zahlst nichts und gehst keine Verpflichtung ein.',
+				'Die ersten zwei Probestunden sind kostenlos, wenn du bzw. dein Kind danach nicht weitermachst. Entscheidest du dich für den weiteren Unterricht, werden beide Probestunden rückwirkend berechnet.',
+			'modules[_key=="k512"].items[_key=="k520"].q':
+				'Wie funktionieren die Probestunden?',
 			'modules[_key=="k512"].items[_key=="k523"].a':
 				'Absolut. Modern-/Contemporary dance und weitere Tanzangebote richten sich auch an Erwachsene. Es ist nie zu spät.',
 		}),

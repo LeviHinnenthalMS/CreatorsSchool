@@ -26,7 +26,9 @@ const documents: Record<string, Changes> = {
 		'modules[_key=="k452"].features[_key=="k457"].text':
 			'In individuell begleiteten Gruppen entsteht echte Beziehung. Miriam und ihr Team kennen die Schüler:innen, nehmen ihre Entwicklung wahr und begleiten sie persönlich.',
 		'modules[_key=="k452"].features[_key=="k458"].text':
-			'Eine Probestunde gibt Zeit zum Ankommen und Kennenlernen — ohne Anmeldung und ohne Verpflichtung.',
+			'In Ruhe kennenlernen. Erst wenn du dich für den weiteren Unterricht entscheidest, werden die Probestunden rückwirkend berechnet.',
+		'modules[_key=="k452"].features[_key=="k458"].title':
+			'Zwei Probestunden',
 		'modules[_key=="k452"].features[_key=="k459"].text':
 			'Unsere Gruppen werden passend zum jeweiligen Angebot gestaltet. So bleibt Raum für das eigene Tempo und die persönliche Entwicklung.',
 		'modules[_key=="k452"].features[_key=="k459"].title':
@@ -46,7 +48,7 @@ const documents: Record<string, Changes> = {
 		'modules[_key=="k473"].tagline':
 			'Vom spielerischen Anfang mit drei Jahren bis zum künstlerischen Tanz im Erwachsenenalter. Jede Stufe stärkt Technik, Ausdruck und den Mut zur Bühne.',
 		'modules[_key=="609302752e69"].body[_key=="7b9b023175fa"].children[_key=="b1eba56434a5"].text':
-			'2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit acht Disziplinen, einem festen Team und über 500 aktiven Schüler:innen.',
+			'2018 übernahm Miriam Schulte die Musikschule Forum Musaik. Aus ihr wurde 2024 die Creators School. Was einmal mit musikalischer Frühförderung begann, ist heute eine Schule mit sechs Disziplinen, einem festen Team und über 500 aktiven Schüler:innen.',
 		'modules[_key=="609302752e69"].body[_key=="5a078e6f097e"].children[_key=="db6d1fe59ef7"].text':
 			'Geblieben ist die Überzeugung, dass Kunst mehr ist als Technik oder Talent. Sie kann Menschen verbinden, ihnen Halt geben und sichtbar machen, was bereits in ihnen steckt.',
 		'modules[_key=="k486"].body':
@@ -62,7 +64,9 @@ const documents: Record<string, Changes> = {
 		'modules[_key=="k503"].features[_key=="k509"].text':
 			'Wir sprechen über Alter, Interessen und Vorerfahrung. So entsteht eine Empfehlung, die zum Menschen passt — nicht nur zum Stundenplan.',
 		'modules[_key=="k503"].features[_key=="k510"].text':
-			'In einer kostenlosen Probestunde darf in Ruhe erlebt werden, ob Unterricht, Gruppe und Atmosphäre stimmig sind.',
+			'Zwei Termine geben Zeit zum Kennenlernen. Wenn du dich für den weiteren Unterricht entscheidest, werden sie rückwirkend berechnet.',
+		'modules[_key=="k503"].features[_key=="k510"].title':
+			'03 · Probestunden',
 		'modules[_key=="k420"].text':
 			'Wir beraten dich persönlich und schauen gemeinsam, welches Angebot wirklich zu dir oder deinem Kind passt. Eine unverbindliche Probestunde gibt Zeit, die Schule, die Gruppe und das eigene Gefühl kennenzulernen.',
 	},
@@ -104,7 +108,7 @@ const documents: Record<string, Changes> = {
 		'stage[_key=="k631"].lede':
 			'Wir suchen Menschen, die Musik oder Tanz nicht nur beherrschen, sondern mit Überzeugung weitergeben möchten. Menschen, die aufmerksam begleiten, eigene Ideen einbringen und Entwicklung wichtiger finden als Perfektion.',
 		'modules[_key=="warum-wir"].lead':
-			'Bei uns unterrichtest du in individuell begleiteten Gruppen und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
+			'Bei uns unterrichtest du in individuell begleiteten Gruppen mit etwa zehn Kindern und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
 		'modules[_key=="warum-wir"].items[_key=="wi1"].title':
 			'Individuelle Gruppen',
 		'modules[_key=="warum-wir"].items[_key=="wi1"].text':
@@ -162,11 +166,11 @@ const documents: Record<string, Changes> = {
 const offerings: Record<string, Changes> = {
 	'offering-musikalische-fruehfoerderung': {
 		'facts[_key=="k7"].value': '3–6 Jahre',
-		'facts[_key=="k8"].value': 'Gruppe · bis zu 10 Kinder',
-		'detailRows[_key=="k29"].value': 'Bis zu 10 Kinder',
+		'facts[_key=="k8"].value': 'Individuelle Gruppe · etwa 10 Kinder',
+		'detailRows[_key=="k29"].value': 'Etwa 10 Kinder',
 		'metadata.description':
-			'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in Gruppen von bis zu 10 Kindern.',
-		lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In Gruppen von bis zu zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
+			'Musikalische Frühförderung für Kinder von 3 bis 6 Jahren: Musik, Rhythmus und Bewegung in individuell begleiteten Gruppen mit etwa 10 Kindern.',
+		lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In individuell begleiteten Gruppen mit etwa zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
 		forWhoLead:
 			'Kinder bringen Neugier auf Klang und Bewegung bereits mit. In der musikalischen Frühförderung darf daraus spielerisch ein erstes Verständnis für Musik entstehen.',
 		'forWho[_key=="k14"].text':
@@ -193,7 +197,7 @@ const offerings: Record<string, Changes> = {
 		'forWho[_key=="k46"].text':
 			'Gemeinsam mit Mama, Papa oder einer anderen Bezugsperson entsteht ein geschützter Raum für erste musikalische Erfahrungen.',
 		'forWho[_key=="k47"].text':
-			'Eine halbe Stunde, in der gemeinsames Singen, Bewegen und Wahrnehmen im Mittelpunkt steht.',
+			'45 Minuten, in denen gemeinsames Singen, Bewegen und Wahrnehmen im Mittelpunkt stehen.',
 		'forWho[_key=="k48"].text':
 			'Jedes Kind darf in seinem Tempo hören, beobachten, mitmachen und die eigene Neugier zeigen.',
 		'learn[_key=="k53"].text':
@@ -206,8 +210,8 @@ const offerings: Record<string, Changes> = {
 	'offering-taenzerische-fruehfoerderung': {
 		lede: 'Körper, den Raum und den Rhythmus der Musik. Erste Grundlagen des Balletts verbinden sich mit Geschichten, Fantasie und freier Bewegung und eröffnen einen spielerischen Zugang zur Sprache des Tanzes.',
 		'facts[_key=="k71"].value': '3–6 Jahre',
-		'facts[_key=="k73"].value': 'Bis zu 10 Kinder',
-		'detailRows[_key=="k94"].value': 'Bis zu 10 Kinder',
+		'facts[_key=="k73"].value': 'Etwa 10 Kinder',
+		'detailRows[_key=="k94"].value': 'Etwa 10 Kinder',
 		forWhoLead:
 			'Kinder bringen Freude an Bewegung und eine ganz eigene Ausdruckskraft mit. Die tänzerische Früherziehung bewahrt diese Lebendigkeit und gibt ihr Raum.',
 		'forWho[_key=="k79"].text':
@@ -306,8 +310,10 @@ const offerings: Record<string, Changes> = {
 		lede: 'Wir bringen Lieder, Rhythmus, Bewegung und erste Instrumente direkt in die Kindertagesstätte — regelmäßig oder als Projektwoche.',
 		forWhoLead:
 			'Kinder können Musik besonders frei erleben, wenn sie in ihrer vertrauten Umgebung bleiben. Deshalb kommen wir in die Einrichtung und entwickeln ein Angebot, das zur Gruppe passt.',
+		'forWho[_key=="k244"].title':
+			'Kindertagesstätten von Minden bis Herford',
 		'forWho[_key=="k244"].text':
-			'Seit 2002 arbeiten wir mit Kindertagesstätten in Melle und Umgebung verlässlich und pädagogisch fundiert zusammen.',
+			'Seit 2002 arbeiten wir mit Kindertagesstätten von Minden bis Herford verlässlich und pädagogisch fundiert zusammen.',
 		'forWho[_key=="k245"].text':
 			'Vom Krippenalter bis zur Vorschule werden Inhalte, Tempo und Materialien aufmerksam auf die Gruppe abgestimmt.',
 		'forWho[_key=="k246"].text':
@@ -318,6 +324,9 @@ const offerings: Record<string, Changes> = {
 			'Musik und Bewegung werden gemeinsam erlebt und stärken Körperwahrnehmung und Rhythmusgefühl.',
 		'learn[_key=="k253"].text':
 			'Handtrommeln, Klangstäbe und kleine Melodieinstrumente laden alle Kinder zum eigenen Ausprobieren ein.',
+		'detailRows[_key=="k260"].value': 'Minden bis Herford',
+		'faq[_key=="k268"].a':
+			'Von Minden bis Herford. Bei größeren Projekten sprechen wir gern über weitere Entfernungen.',
 	},
 	'offering-ballett-ab-9': {
 		lede: 'Im Juniorballett werden Grundlagen vertieft und Bewegungen präziser. Technik, Musikalität und Ausdruck wachsen gemeinsam auf die ersten Ensemble-Erfahrungen auf der Bühne hin.',

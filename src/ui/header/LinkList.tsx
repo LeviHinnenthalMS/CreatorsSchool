@@ -39,16 +39,17 @@ export default function LinkList({
 					className={cn(
 						'size-4 shrink-0 transition-transform duration-200',
 						'lg:group-hover:-rotate-180',
-						mobileOpen && 'max-lg:-rotate-180',
+						mobileOpen && '-rotate-180',
 					)}
 					aria-hidden
 				/>
 			</button>
 
 			<div
+				style={mobileOpen ? { display: 'block' } : undefined}
 				className={cn(
 					'lg:absolute lg:top-full lg:left-0 lg:hidden lg:pt-3',
-					'lg:group-hover:block lg:group-focus-within:block lg:group-hover:anim-fade-to-b motion-reduce:lg:group-hover:animate-none',
+					'lg:group-hover:anim-fade-to-b lg:group-focus-within:block lg:group-hover:block motion-reduce:lg:group-hover:animate-none',
 					mobileOpen ? 'max-lg:block' : 'max-lg:hidden',
 				)}
 			>
@@ -57,9 +58,9 @@ export default function LinkList({
 					className={cn(
 						'bg-paper flex flex-col',
 						// desktop: floating card
-						'lg:rounded-2xl lg:border lg:border-line lg:p-3 lg:shadow-xl lg:min-w-80 lg:gap-1',
+						'lg:border-line lg:min-w-80 lg:gap-1 lg:rounded-2xl lg:border lg:p-3 lg:shadow-xl',
 						// mobile: flat inline list, indented with left accent
-						'max-lg:pl-4 max-lg:border-coral/25 max-lg:ml-1 max-lg:mb-2 max-lg:gap-0',
+						'max-lg:border-coral/25 max-lg:mb-2 max-lg:ml-1 max-lg:gap-0 max-lg:pl-4',
 					)}
 				>
 					{links?.map((sublink, key) => (

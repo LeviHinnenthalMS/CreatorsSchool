@@ -61,7 +61,7 @@ export default async function LocationCard(props: Props) {
 			<div className="bg-paper-2 border-line rounded-band overflow-hidden border md:grid md:grid-cols-[1fr_1.2fr]">
 				<div className="flex flex-col justify-center p-[clamp(40px,5vw,70px)]">
 					{props.eyebrow && (
-						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold tracking-[0.08em] uppercase">
+						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold uppercase">
 							<span
 								aria-hidden
 								className="bg-coral inline-block size-2 rounded-full"

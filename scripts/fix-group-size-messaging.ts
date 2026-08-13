@@ -14,21 +14,22 @@ async function main() {
 
 	transaction.patch('offering-musikalische-fruehfoerderung', (patch) =>
 		patch.set({
-			lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In Gruppen von bis zu zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
-			'facts[_key=="k8"].value': 'Gruppe · bis zu 10 Kinder',
-			'detailRows[_key=="k29"].value': 'Bis zu 10 Kinder',
+			lede: 'Kinder entdecken Musik mit Stimme, Bewegung und ersten Instrumenten. In individuell begleiteten Gruppen mit etwa zehn Kindern bekommen Neugier, Rhythmusgefühl und eigener Ausdruck Raum.',
+			'facts[_key=="k8"].value': 'Individuelle Gruppe · etwa 10 Kinder',
+			'detailRows[_key=="k29"].value': 'Etwa 10 Kinder',
 		}),
 	)
 
 	transaction.patch('offering-taenzerische-fruehfoerderung', (patch) =>
 		patch.set({
-			'facts[_key=="k73"].value': 'Bis zu 10 Kinder',
-			'detailRows[_key=="k94"].value': 'Bis zu 10 Kinder',
+			'facts[_key=="k73"].value': 'Etwa 10 Kinder',
+			'detailRows[_key=="k94"].value': 'Etwa 10 Kinder',
 		}),
 	)
 
 	transaction.patch('page-home', (patch) =>
 		patch.set({
+			'modules[_key=="k486"].stats[_key=="k492"].value': '6',
 			'modules[_key=="k452"].tagline':
 				'Vom ersten Klangerlebnis mit 1,5 Jahren bis zur Bühne im Erwachsenenalter: In individuell begleiteten Gruppen geben wir Menschen Raum für ihren eigenen Ausdruck.',
 			'modules[_key=="k452"].features[_key=="k457"].text':
@@ -54,18 +55,20 @@ async function main() {
 	transaction.patch('page-jobs', (patch) =>
 		patch.set({
 			'modules[_key=="warum-wir"].lead':
-				'Bei uns unterrichtest du in individuell begleiteten Gruppen und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
+				'Bei uns unterrichtest du in individuell begleiteten Gruppen mit etwa zehn Kindern und kennst deine Schüler:innen persönlich. Du bringst deine künstlerische Erfahrung ein und gestaltest Unterricht in einem Team, das miteinander denkt und füreinander da ist.',
 			'modules[_key=="warum-wir"].items[_key=="wi1"].title':
 				'Individuelle Gruppen',
 			'modules[_key=="warum-wir"].items[_key=="wi1"].text':
-				'Du kennst deine Schüler:innen persönlich und kannst ihre Entwicklung aufmerksam begleiten.',
+				'Etwa zehn Kinder pro Gruppe lassen Raum, die Schüler:innen persönlich zu kennen und ihre Entwicklung aufmerksam zu begleiten.',
 		}),
 	)
 
 	transaction.patch('navigation-de', (patch) =>
 		patch.set({
+			'items[_key=="k714"].links[_key=="k715"].description':
+				'Übersicht aller sechs Angebote',
 			'items[_key=="k714"].links[_key=="k716"].description':
-				'3–6 Jahre · bis zu 10 Kinder',
+				'3–6 Jahre · etwa 10 Kinder',
 		}),
 	)
 

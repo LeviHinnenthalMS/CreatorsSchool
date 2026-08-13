@@ -244,7 +244,7 @@ function FormPanel({
 					disabled={pending}
 					className="bg-coral text-paper hover:bg-coral-deep mt-1 w-full rounded-full py-4 text-[15.5px] font-semibold shadow-[0_10px_28px_-10px_color-mix(in_srgb,var(--color-coral)_42%,transparent)] transition-colors disabled:opacity-70"
 				>
-					{pending ? '…' : clean(labels.submit) || 'Kostenlose Probestunde anfragen'}
+					{pending ? '…' : clean(labels.submit) || 'Probestunde anfragen'}
 				</button>
 
 				{error && (

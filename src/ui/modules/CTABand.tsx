@@ -55,7 +55,7 @@ export default async function CTABand(props: Props) {
 
 				<div className="relative z-10">
 					{eyebrow && (
-						<span className="text-paper mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold tracking-[0.06em] uppercase">
+						<span className="text-paper mb-4 inline-flex items-center gap-2.5 text-[13px] font-semibold uppercase">
 							<span
 								aria-hidden
 								className="bg-coral-soft inline-block size-2 rounded-full shadow-[0_0_0_4px_rgba(232,71,74,0.30)]"
