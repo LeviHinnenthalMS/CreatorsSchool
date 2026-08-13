@@ -56,9 +56,9 @@ export default async function LocationCard(props: Props) {
 	return (
 		<section
 			{...moduleProps(props)}
-			className="px-[clamp(8px,1.5vw,24px)] pb-[clamp(60px,7vw,100px)]"
+			className="px-[clamp(20px,3.5vw,48px)] pb-[clamp(60px,7vw,100px)]"
 		>
-			<div className="bg-paper-2 border-line rounded-band overflow-hidden border md:grid md:grid-cols-[1fr_1.2fr]">
+			<div className="bg-paper-2 border-line rounded-band mx-auto max-w-[1440px] overflow-hidden border md:grid md:grid-cols-[1fr_1.2fr]">
 				<div className="flex flex-col justify-center p-[clamp(40px,5vw,70px)]">
 					{props.eyebrow && (
 						<span className="text-coral mb-4 inline-flex items-center gap-2 text-[12.5px] font-bold uppercase">

@@ -17,7 +17,236 @@ type DetailRow = {
 	value: string
 }
 
+type TimelineItem = {
+	_key: string
+	_type: 'timelineItem'
+	year: string
+	title: Array<{
+		_key: string
+		_type: 'block'
+		style: 'normal'
+		markDefs: []
+		children: Array<{
+			_key: string
+			_type: 'span'
+			marks: []
+			text: string
+		}>
+	}>
+	text: string
+}
+
+const timelineItems: TimelineItem[] = [
+	{
+		_key: 'tl-2002',
+		_type: 'timelineItem',
+		year: '2002',
+		title: [
+			{
+				_key: 'tl-2002-title',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-2002-title-span',
+						_type: 'span',
+						marks: [],
+						text: 'Die Schule entsteht',
+					},
+				],
+			},
+		],
+		text: 'Das Forum Musaik wird gegründet und schafft einen Ort, an dem Kinder und Familien Musik, Kreativität und gemeinsames Erleben entdecken können.',
+	},
+	{
+		_key: 'tl-2005',
+		_type: 'timelineItem',
+		year: '2005',
+		title: [
+			{
+				_key: 'tl-2005-title',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-2005-title-span',
+						_type: 'span',
+						marks: [],
+						text: 'Ein fester Ort für musikalische Bildung',
+					},
+				],
+			},
+		],
+		text: 'Über die ersten Jahre wächst die Schule und entwickelt sich zu einem festen Bestandteil der lokalen Bildungs- und Kulturlandschaft.',
+	},
+	{
+		_key: 'tl-2011',
+		_type: 'timelineItem',
+		year: '2011',
+		title: [
+			{
+				_key: 'tl-2011-title',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-2011-title-span',
+						_type: 'span',
+						marks: [],
+						text: 'Wachstum und Weiterentwicklung',
+					},
+				],
+			},
+		],
+		text: 'Die Schule wächst und zu dieser Zeit hat Miriam als Lehrkraft schon zeitweise in der Schule gearbeitet.',
+	},
+	{
+		_key: 'tl-i1',
+		_type: 'timelineItem',
+		year: '2018',
+		title: [
+			{
+				_key: 'tl-i1t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i1ta',
+						_type: 'span',
+						marks: [],
+						text: 'Der Anfang – Übernahme des Forum Musaik',
+					},
+				],
+			},
+		],
+		text: 'Das Forum Musaik beginnt mit musikalischer Frühförderung in Kindergärten und eigenen Räumen.',
+	},
+	{
+		_key: 'tl-i2',
+		_type: 'timelineItem',
+		year: '2019',
+		title: [
+			{
+				_key: 'tl-i2t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i2ta',
+						_type: 'span',
+						marks: [],
+						text: 'Tanz wird integriert',
+					},
+				],
+			},
+		],
+		text: 'Der Tanz bekommt seinen eigenen Raum. Erste Tanzkurse entstehen und erweitern die Schule um eine neue Form des Ausdrucks',
+	},
+	{
+		_key: 'tl-i3',
+		_type: 'timelineItem',
+		year: '2020',
+		title: [
+			{
+				_key: 'tl-i3t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i3ta',
+						_type: 'span',
+						marks: [],
+						text: 'Alles steht still.',
+					},
+				],
+			},
+		],
+		text: 'Von einem Moment auf den anderen darf sich nichts mehr bewegen. Doch wir sind geblieben, haben durchgehalten und immer wieder neue Wege gesucht.',
+	},
+	{
+		_key: 'tl-i4',
+		_type: 'timelineItem',
+		year: '2022',
+		title: [
+			{
+				_key: 'tl-i4t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i4ta',
+						_type: 'span',
+						marks: [],
+						text: 'Neuaufbau',
+					},
+				],
+			},
+		],
+		text: 'Nach zwei Jahren Ausnahmezustand beginnt der Wiederaufbau. Nicht alles wie vorher, aber alles wächst in eine neue Richtung.',
+	},
+	{
+		_key: 'tl-i5',
+		_type: 'timelineItem',
+		year: '2024',
+		title: [
+			{
+				_key: 'tl-i5t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i5ta',
+						_type: 'span',
+						marks: [],
+						text: 'Ein Jahr des Wachstums',
+					},
+				],
+			},
+		],
+		text: 'Etwas Normalität, etwas mehr Rhythmus, gleichzeitig entsteht im Hintergrund etwas Neues. Ideen entstehen, Erfahrungen und Erlebtes verbinden sich, langsam wird sichtbar, wohin sich die Schule entwickeln möchte.',
+	},
+	{
+		_key: 'tl-i6',
+		_type: 'timelineItem',
+		year: '2025',
+		title: [
+			{
+				_key: 'tl-i6t',
+				_type: 'block',
+				style: 'normal',
+				markDefs: [],
+				children: [
+					{
+						_key: 'tl-i6ta',
+						_type: 'span',
+						marks: [],
+						text: 'Creators School',
+					},
+				],
+			},
+		],
+		text: 'Ein neuer Boden, eine neue Vision – von hieraus wird weiter gebaut.',
+	},
+]
+
 async function main() {
+	if (process.argv.includes('--timeline-only')) {
+		const result = await client
+			.patch('page-ueber-uns')
+			.set({ 'modules[_key=="tl001"].items': timelineItems })
+			.commit()
+		console.log(`Updated the timeline in ${result._id}.`)
+		return
+	}
+
 	const current = await client.fetch<{
 		musicFaq: Qa[]
 		balletFaq: Qa[]
@@ -177,6 +406,9 @@ async function main() {
 			'modules[_key=="k512"].items[_key=="k523"].a':
 				'Absolut. Modern-/Contemporary dance und weitere Tanzangebote richten sich auch an Erwachsene. Es ist nie zu spät.',
 		}),
+	)
+	transaction.patch('page-ueber-uns', (patch) =>
+		patch.set({ 'modules[_key=="tl001"].items': timelineItems }),
 	)
 	transaction.patch('schedule-slot-001', (patch) =>
 		patch.set({ ageRange: '3–6 Jahre' }),
