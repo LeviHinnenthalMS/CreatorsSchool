@@ -86,14 +86,14 @@ export default async function Footer() {
 				<hr className="border-canvas/15 mt-12 md:mt-16" />
 
 				<div className="mt-6 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-4">
-					<div className="text-canvas/70 text-small flex flex-wrap items-start justify-center gap-x-3 gap-y-1 leading-5 md:items-center">
+					<div className="text-canvas/70 text-small flex flex-wrap items-start justify-start gap-x-3 gap-y-1 leading-5 md:items-center">
 						<span>{copyrightText}</span>
 						{(!!bottomLinks.length || cookieSettingsEnabled) && (
 							<>
 								<span aria-hidden className="max-md:hidden">
 									-
 								</span>
-								<ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+								<ul className="flex flex-wrap items-center justify-start gap-x-3 gap-y-1">
 									{bottomLinks.map((link, i, arr) => (
 										<li key={i} className="flex items-center gap-3">
 											<CTA
@@ -138,6 +138,24 @@ export default async function Footer() {
 						</ul>
 					)}
 				</div>
+
+				<p className="text-canvas/50 text-small mt-8 flex items-center justify-start gap-2 leading-5 md:justify-center">
+					<span>Designed & entwickelt von</span>
+					<a
+						href="https://www.mustard-seed.de"
+						target="_blank"
+						rel="noopener"
+						aria-label="MustardSeed"
+						className="opacity-70 transition-opacity hover:opacity-100"
+					>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src="/mustardseed.svg"
+							alt="MustardSeed"
+							className="h-6 w-auto"
+						/>
+					</a>
+				</p>
 			</div>
 		</Wrapper>
 	)

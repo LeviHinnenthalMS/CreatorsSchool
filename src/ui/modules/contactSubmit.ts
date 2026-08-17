@@ -10,7 +10,10 @@ const writeToken =
 	process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
-const NOTIFY_TO = process.env.CONTACT_NOTIFY_EMAIL   // e.g. miriam@creators-school.de
+const NOTIFY_TO = (process.env.CONTACT_NOTIFY_EMAIL ?? '')
+	.split(',')
+	.map((s) => s.trim())
+	.filter(Boolean) // comma-separated list, e.g. "miriam@…,levi@…"
 const NOTIFY_FROM = process.env.CONTACT_FROM_EMAIL   // e.g. anfragen@creators-school.de
 
 const writeClient = writeToken
@@ -68,7 +71,7 @@ export async function submitContact(payload: ContactPayload) {
 			submittedAt: new Date().toISOString(),
 			sourcePath: sanitize(payload.sourcePath, 200),
 		})
-		if (resend && NOTIFY_TO && NOTIFY_FROM) {
+		if (resend && NOTIFY_TO.length && NOTIFY_FROM) {
 			try {
 				const { error } = await resend.emails.send({
 					from: NOTIFY_FROM,

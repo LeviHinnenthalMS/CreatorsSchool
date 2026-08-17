@@ -247,11 +247,11 @@ function buildPerformance(phId: string) {
 		_id: PERF,
 		_type: 'performance',
 		language: 'de',
-		title: 'Aufführungen im Schauspielhaus Melle · September 2026',
+		title: 'Aufführungen im Theater Melle · September 2026',
 		year: 2026,
 		dates: '5.–6. September 2026',
 		startDate: '2026-09-05',
-		venue: 'Schauspielhaus Melle',
+		venue: 'Theater Melle',
 		bigNumber: '5 & 6',
 		monthLabel: 'September 2026',
 		lead: 'Zwei Abende, eine Schule auf der Bühne.',
@@ -1567,7 +1567,7 @@ function buildPages(heroId: string, phId: string) {
 				performance: { _type: 'reference', _ref: PERF },
 				eyebrow: 'Bühne frei',
 				title: rt(
-					'5. und 6. September · *Aufführungen* im Schauspielhaus Melle.',
+					'5. und 6. September · *Aufführungen* im Theater Melle.',
 				),
 				ctas: [
 					cta('Karten anfragen', 'int', P.auffuehrungen),
@@ -2387,7 +2387,7 @@ function buildPages(heroId: string, phId: string) {
 			_type: 'metadata',
 			slug: { _type: 'slug', current: 'auffuehrungen' },
 			title:
-				'Aufführungen September 2026 — Creators School im Schauspielhaus Melle',
+				'Aufführungen September 2026 — Creators School im Theater Melle',
 		},
 		stage: [
 			{
@@ -2395,7 +2395,7 @@ function buildPages(heroId: string, phId: string) {
 				_type: 'page-header',
 				eyebrow: 'Bühne frei · September 2026',
 				title: rt('Zwei Abende, eine ganze Schule auf der *Bühne*.'),
-				lede: 'Schauspielhaus Melle · 5. & 6. September 2026 · Beginn jeweils am Abend.',
+				lede: 'Theater Melle · 5. & 6. September 2026 · Beginn jeweils am Abend.',
 				ctas: [
 					cta('WhatsApp schreiben', 'ext', 'https://wa.me/4915208993894'),
 					cta(
@@ -2438,7 +2438,7 @@ function buildPages(heroId: string, phId: string) {
 						_type: 'featureCard',
 						tint: 'soft',
 						title: 'Über 500 Plätze pro Abend',
-						text: 'Das Schauspielhaus Melle bietet ausreichend Platz für Familien, Freunde und alle Fans.',
+						text: 'Das Theater Melle bietet ausreichend Platz für Familien, Freunde und alle Fans.',
 					},
 				],
 			},
@@ -2494,7 +2494,7 @@ function buildPages(heroId: string, phId: string) {
 					],
 					[
 						'Wo finden die Aufführungen statt?',
-						'Im Schauspielhaus Melle. Die genaue Anfahrt und Einlasszeit teilen wir mit der Kartenbestätigung mit.',
+						'Im Theater Melle. Die genaue Anfahrt und Einlasszeit teilen wir mit der Kartenbestätigung mit.',
 					],
 					[
 						'Können beide Abende besucht werden?',

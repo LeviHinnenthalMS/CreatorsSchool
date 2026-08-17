@@ -33,7 +33,7 @@ const pageSeo: Record<
 	auffuehrungen: {
 		title: 'Aufführungen 2026 | Creators School Melle',
 		description:
-			'Tanz- und Musikaufführungen der Creators School im Schauspielhaus Melle: Termine, Programm und Informationen zu Tickets.',
+			'Tanz- und Musikaufführungen der Creators School im Theater Melle: Termine, Programm und Informationen zu Tickets.',
 	},
 	barrierefreiheit: {
 		title: 'Barrierefreiheit | Creators School Melle',
