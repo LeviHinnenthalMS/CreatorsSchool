@@ -5,6 +5,7 @@ import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import { Resend } from 'resend'
 import { createElement } from 'react'
 import ContactNotification from '@/emails/ContactNotification'
+import ContactConfirmation from '@/emails/ContactConfirmation'
 
 const writeToken =
 	process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN
@@ -89,6 +90,21 @@ export async function submitContact(payload: ContactPayload) {
 				if (error) console.error('[contactSubmit] Resend error', error)
 			} catch (emailError) {
 				console.error('[contactSubmit] Resend request failed', emailError)
+			}
+
+			if (isEmail) {
+				try {
+					const { error } = await resend.emails.send({
+						from: NOTIFY_FROM,
+						to: contact,
+						replyTo: NOTIFY_TO,
+						subject: 'Wir haben deine Anfrage erhalten',
+						react: createElement(ContactConfirmation, { name }),
+					})
+					if (error) console.error('[contactSubmit] Confirmation email error', error)
+				} catch (emailError) {
+					console.error('[contactSubmit] Confirmation email failed', emailError)
+				}
 			}
 		} else {
 			console.warn('[contactSubmit] Email configuration incomplete — notification skipped.')
