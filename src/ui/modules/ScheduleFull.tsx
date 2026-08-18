@@ -3,7 +3,10 @@ import getServerLang from '@/lib/getServerLang'
 import { getSchedule } from '@/sanity/lib/creators'
 import ScheduleFilter from './ScheduleFilter.client'
 import { Icon } from '@/ui/creators/Icon'
-import type { SanityModule } from '@/sanity/typeHelpers'
+import Button from '@/ui/Button'
+import resolveUrl from '@/lib/resolveUrl'
+import { stegaClean } from 'next-sanity'
+import type { SanityLink, SanityModule } from '@/sanity/typeHelpers'
 
 type Props = SanityModule & {
 	filterLabels?: {
@@ -20,7 +23,19 @@ type Props = SanityModule & {
 	} | null
 	noteTitle?: string | null
 	noteText?: string | null
+	noteLink?: SanityLink | null
+	noteLinkLabel?: string | null
 	emptyText?: string | null
+}
+
+function hrefFor(link?: SanityLink | null) {
+	if (!link) return undefined
+	if (link.type === 'internal') {
+		if (link.internal)
+			return resolveUrl(link.internal, { params: link.params ?? undefined })
+		if (link.params) return stegaClean(link.params)
+	}
+	return link.external ?? undefined
 }
 
 export default async function ScheduleFull(props: Props) {
@@ -41,6 +56,8 @@ export default async function ScheduleFull(props: Props) {
 		full: props.statusLabels?.full || 'Warteliste',
 	}
 
+	const noteHref = hrefFor(props.noteLink)
+
 	return (
 		<section
 			{...moduleProps(props)}
@@ -56,7 +73,7 @@ export default async function ScheduleFull(props: Props) {
 				/>
 
 				{(props.noteTitle || props.noteText) && (
-					<div className="bg-coral-tint border-coral-soft mt-12 grid grid-cols-[60px_1fr] items-center gap-6 rounded-card border p-8 max-sm:grid-cols-1">
+					<div className="bg-coral-tint border-coral-soft mt-12 grid grid-cols-[60px_1fr_auto] items-center gap-6 rounded-card border p-8 max-md:grid-cols-[60px_1fr] max-sm:grid-cols-1">
 						<div className="bg-coral text-paper grid size-15 place-items-center rounded-[18px]">
 							<Icon name="sparkle" size={26} />
 						</div>
@@ -72,6 +89,18 @@ export default async function ScheduleFull(props: Props) {
 								</p>
 							)}
 						</div>
+						{noteHref && (
+							<Button
+								href={noteHref}
+								external={props.noteLink?.type === 'external'}
+								variant="ink"
+								size="action"
+								withArrow
+								className="max-md:col-span-2 max-md:justify-self-start max-sm:col-span-1"
+							>
+								{props.noteLinkLabel || 'Kontakt aufnehmen'}
+							</Button>
+						)}
 					</div>
 				)}
 			</div>

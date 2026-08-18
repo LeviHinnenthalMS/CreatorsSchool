@@ -205,6 +205,9 @@ export const MODULES_QUERY = `
 	_type == 'schedule-preview' => {
 		link{ ${LINK_QUERY} }
 	},
+	_type == 'schedule-full' => {
+		noteLink{ ${LINK_QUERY} }
+	},
 	_type == 'info-cards' => {
 		cards[]{
 			...,

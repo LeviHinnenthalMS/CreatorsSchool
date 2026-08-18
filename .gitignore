@@ -50,3 +50,6 @@ public/google*.html
 
 public/admin/static
 .env*
+
+# sanity dataset backups
+/backups

@@ -39,6 +39,16 @@ export default defineType({
 			rows: 3,
 		}),
 		defineField({
+			name: 'noteLink',
+			title: 'Note box · link',
+			type: 'link',
+		}),
+		defineField({
+			name: 'noteLinkLabel',
+			title: 'Note box · link label',
+			type: 'string',
+		}),
+		defineField({
 			name: 'emptyText',
 			title: 'Text when no slots',
 			type: 'string',
