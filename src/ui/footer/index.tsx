@@ -51,7 +51,7 @@ export default async function Footer() {
 						<Link
 							href={homeHref}
 							aria-label={logo?.name || title}
-							className="block"
+							className="bg-canvas inline-block rounded-md p-2"
 						>
 							{logoImage ? (
 								<Img
@@ -142,7 +142,7 @@ export default async function Footer() {
 				<p className="text-canvas/50 text-small mt-8 flex items-center justify-start gap-2 leading-5 md:justify-center">
 					<span>Designed & entwickelt von</span>
 					<a
-						href="https://www.mustard-seed.de"
+						href="https://www.mustard-seed.de/?utm_source=creators-school&utm_medium=footer&utm_campaign=credit"
 						target="_blank"
 						rel="noopener"
 						aria-label="MustardSeed"
