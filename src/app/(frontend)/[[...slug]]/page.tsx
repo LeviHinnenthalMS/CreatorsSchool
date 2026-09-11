@@ -31,6 +31,7 @@ async function getPage(params: Params) {
 	return await fetchSanityLive<PAGE_QUERY_RESULT>({
 		query: PAGE_QUERY,
 		params: { slug, lang },
+		tags: ['page', `page:${slug}:${lang}`],
 	})
 }
 

@@ -23,7 +23,10 @@ export async function POST(req: NextRequest) {
 			return new NextResponse('Missing _type', { status: 400 })
 		}
 
-		revalidateTag('sanity', 'max')
+		// Scoped invalidation: purge only the tag matching the edited type.
+		// Fetches with the default `['sanity']` tag will fall back to their
+		// time-based revalidate window (1h) — trades a small staleness window
+		// for avoiding a cache stampede on every publish.
 		revalidateTag(body._type, 'max')
 
 		// `getCachedTranslations()` powers the proxy language lookup; any change

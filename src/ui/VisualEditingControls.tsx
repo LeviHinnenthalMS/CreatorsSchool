@@ -5,18 +5,20 @@ import { VisualEditing } from 'next-sanity/visual-editing'
 import DraftModeControls from './DraftModeControls'
 
 export default async function VisualEditingControls() {
-	const globalModules = await fetchSanityLive({
-		query: GLOBAL_MODULES_QUERY,
-	})
+	const isDraft = (await draftMode()).isEnabled
 
 	return (
 		<>
 			<SanityLive />
 
-			{(await draftMode()).isEnabled && (
+			{isDraft && (
 				<>
 					<VisualEditing />
-					<DraftModeControls globalModules={globalModules} />
+					<DraftModeControls
+						globalModules={await fetchSanityLive({
+							query: GLOBAL_MODULES_QUERY,
+						})}
+					/>
 				</>
 			)}
 		</>

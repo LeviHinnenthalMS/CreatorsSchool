@@ -68,8 +68,11 @@ export const config: ProxyConfig = {
 		// Exclude:
 		//  - _next/* (static + image optimizer)
 		//  - api/*, admin/* (Studio + Route Handlers — handle their own logic)
-		//  - Static-asset extensions (images, fonts, manifests, sitemap, robots, etc.)
-		//    — these never benefit from language redirection and add latency on every request.
-		'/((?!_next/|api/|admin/|.*\\.(?:ico|png|jpg|jpeg|gif|svg|webp|avif|woff2?|ttf|otf|eot|css|js|map|xml|txt|json|webmanifest)$).*)',
+		//  - Common bot-scanner targets (wp-*, xmlrpc, .env, .git, cgi-bin, phpmyadmin,
+		//    vendor). These are 100% garbage traffic on this stack and were previously
+		//    hitting the middleware + `getCachedTranslations()` on every scan.
+		//  - Files with common non-HTML extensions (images, fonts, manifests, sitemap,
+		//    robots, php/aspx/jsp — all pointless to proxy).
+		'/((?!_next/|api/|admin/|wp-|xmlrpc|cgi-bin/|phpmyadmin|vendor/|\\.env|\\.git|\\.well-known/|.*\\.(?:ico|png|jpg|jpeg|gif|svg|webp|avif|woff2?|ttf|otf|eot|css|js|map|xml|txt|json|webmanifest|php|aspx?|jsp)$).*)',
 	],
 }

@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { fetchSanity, fetchSanityLive } from './fetch'
 import { unstable_cache } from 'next/cache'
 import { defineQuery, groq } from 'next-sanity'
@@ -264,9 +265,10 @@ export const SITE_QUERY = defineQuery(groq`
 	}
 `)
 
-export async function getSite() {
+export const getSite = cache(async () => {
 	const site = await fetchSanityLive<SITE_QUERY_RESULT>({
 		query: SITE_QUERY,
+		tags: ['site'],
 	})
 
 	if (!site) {
@@ -277,7 +279,7 @@ export async function getSite() {
 	}
 
 	return site
-}
+})
 
 export const NAVIGATION_DOC_QUERY =
 	defineQuery(groq`*[_type == 'navigation' && language == $lang][0]{
@@ -288,6 +290,7 @@ export async function getNavigation(lang: string) {
 	return await fetchSanityLive<NAVIGATION_DOC_QUERY_RESULT>({
 		query: NAVIGATION_DOC_QUERY,
 		params: { lang },
+		tags: ['navigation'],
 	})
 }
 
@@ -307,6 +310,7 @@ export async function getFooter(lang: string) {
 	return await fetchSanityLive<FOOTER_QUERY_RESULT>({
 		query: FOOTER_QUERY,
 		params: { lang },
+		tags: ['footer'],
 	})
 }
 
@@ -483,6 +487,30 @@ export const SITEMAP_QUERY = defineQuery(groq`{
 				+ select(defined(language) && language != $defaultLang => language + '/', '')
 				+ 'blog/'
 				+ slug.current
+			)
+		}
+	},
+	'performances': *[
+		_type == 'performance' &&
+		defined(metadata.slug.current) &&
+		metadata.noIndex != true
+	]|order(startDate desc){
+		language,
+		'url': (
+			$baseUrl
+			+ select(defined(language) && language != $defaultLang => language + '/', '')
+			+ 'performances/'
+			+ metadata.slug.current
+		),
+		'lastModified': _updatedAt,
+		'priority': 0.7,
+		'alternates': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			language,
+			'url': (
+				$baseUrl
+				+ select(defined(language) && language != $defaultLang => language + '/', '')
+				+ 'performances/'
+				+ metadata.slug.current
 			)
 		}
 	},

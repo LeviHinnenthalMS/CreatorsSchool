@@ -8,6 +8,7 @@ import type { ANNOUNCEMENTS_QUERY_RESULT } from '@/sanity/types'
 export default async function Announcement() {
 	const announcements = await fetchSanityLive<ANNOUNCEMENTS_QUERY_RESULT>({
 		query: ANNOUNCEMENTS_QUERY,
+		tags: ['site', 'announcement'],
 	})
 
 	if (!announcements) return null
