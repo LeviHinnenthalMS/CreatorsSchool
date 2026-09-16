@@ -59,6 +59,7 @@ export default async function RootLayout({
 			'@type': 'WebSite',
 			'@id': `${BASE_URL}#website`,
 			name: siteName,
+			alternateName: 'creators-school.de',
 			url: BASE_URL,
 			publisher: { '@id': `${BASE_URL}#organization` },
 			inLanguage: 'de-DE',
