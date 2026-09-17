@@ -27,7 +27,7 @@ export default defineType({
 		defineField({
 			name: 'internal',
 			type: 'reference',
-			to: [{ type: 'page' }],
+			to: [{ type: 'page' }, { type: 'performance' }],
 			options: { filter: byLanguage },
 			hidden: ({ parent }) => parent?.type !== 'internal',
 		}),

@@ -270,26 +270,70 @@ export async function getGallery(lang: string) {
 
 // ── Performances ─────────────────────────────────────────
 
+const PERFORMANCE_BASE_FIELDS = `
+	_id, _type, _updatedAt, title, language, year, dates, startDate, venue,
+	description, lead, ticketInfo, badgeLabel, badgeSub, featured,
+	bigNumber, monthLabel,
+	image{ ${IMAGE_QUERY} }
+`
+
 export const FEATURED_PERFORMANCE_QUERY = groq`
 	*[_type == 'performance' && language == $lang && featured == true]
 		| order(startDate desc)[0]{
-		_id, title, year, dates, startDate, venue, description, lead,
-		ticketInfo, badgeLabel, badgeSub, featured, bigNumber, monthLabel,
-		image{ ${IMAGE_QUERY} }
+		${PERFORMANCE_BASE_FIELDS}
 	}
 `
 
 export const PERFORMANCE_BY_ID_QUERY = groq`
 	*[_type == 'performance' && _id == $id][0]{
-		_id, title, year, dates, startDate, venue, description, lead,
-		ticketInfo, badgeLabel, badgeSub, featured, bigNumber, monthLabel,
-		image{ ${IMAGE_QUERY} }
+		${PERFORMANCE_BASE_FIELDS}
+	}
+`
+
+export const PERFORMANCE_BY_SLUG_QUERY = groq`
+	*[_type == 'performance' && metadata.slug.current == $slug && language == $lang][0]{
+		${PERFORMANCE_BASE_FIELDS},
+		videoUrl,
+		videoDownloadUrl,
+		photos[]{
+			_key,
+			...,
+			'lqip': asset->metadata.lqip,
+			'altText': coalesce(alt[$lang], alt.de, alt.en),
+			'captionText': coalesce(caption[$lang], caption.de, caption.en),
+			'downloadUrl': asset->url,
+			'filename': asset->originalFilename,
+			span
+		},
+		photosZip{
+			'url': asset->url,
+			'filename': asset->originalFilename,
+			'size': asset->size
+		},
+		metadata {
+			...,
+			'ogimage': image.asset->url + '?w=1200&fit=crop&h=630&auto=format'
+		},
+		'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
+			'slug': 'performances/' + metadata.slug.current,
+			language
+		}
+	}
+`
+
+export const PERFORMANCE_SLUGS_QUERY = groq`
+	*[_type == 'performance' && defined(metadata.slug.current)]{
+		'slug': metadata.slug.current,
+		language
 	}
 `
 
 export type PerformanceDoc = {
 	_id: string
+	_type?: 'performance'
+	_updatedAt?: string
 	title?: string | null
+	language?: string | null
 	year?: number | null
 	dates?: string | null
 	startDate?: string | null
@@ -305,6 +349,42 @@ export type PerformanceDoc = {
 	image?: { asset?: unknown; alt?: string | null; lqip?: string | null } | null
 }
 
+export type EventPhoto = {
+	_key: string
+	_type?: string
+	asset?: unknown
+	crop?: unknown
+	hotspot?: unknown
+	lqip?: string | null
+	altText?: string | null
+	captionText?: string | null
+	downloadUrl?: string | null
+	filename?: string | null
+	span?: 'normal' | 'wide' | 'tall' | 'big' | null
+}
+
+export type PerformanceDetail = PerformanceDoc & {
+	videoUrl?: string | null
+	videoDownloadUrl?: string | null
+	photos?: EventPhoto[] | null
+	photosZip?: {
+		url?: string | null
+		filename?: string | null
+		size?: number | null
+	} | null
+	metadata?: {
+		slug?: { current?: string | null } | null
+		title?: string | null
+		description?: string | null
+		ogimage?: string | null
+		noIndex?: boolean | null
+	} | null
+	translations?: Array<{
+		slug?: string | null
+		language?: string | null
+	} | null> | null
+}
+
 export async function getFeaturedPerformance(lang: string) {
 	return await fetchSanityLive<PerformanceDoc | null>({
 		query: FEATURED_PERFORMANCE_QUERY,
@@ -316,6 +396,13 @@ export async function getPerformanceById(id: string) {
 	return await fetchSanityLive<PerformanceDoc | null>({
 		query: PERFORMANCE_BY_ID_QUERY,
 		params: { id },
+	})
+}
+
+export async function getPerformanceBySlug(slug: string, lang: string) {
+	return await fetchSanityLive<PerformanceDetail | null>({
+		query: PERFORMANCE_BY_SLUG_QUERY,
+		params: { slug, lang },
 	})
 }
 

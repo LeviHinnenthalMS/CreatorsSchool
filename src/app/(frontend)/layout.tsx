@@ -68,6 +68,9 @@ export default async function RootLayout({
 
 	return (
 		<Root>
+			<head>
+				<link rel="describedby" href="/llms.txt" type="text/plain" />
+			</head>
 			<body className="text-ink antialiased">
 				<JsonLd value={jsonLd} />
 				<GTMNoScript />

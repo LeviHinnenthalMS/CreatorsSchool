@@ -8,6 +8,11 @@ type ResolvableDoc = {
 	} | null
 }
 
+const TYPE_PREFIX: Record<string, string> = {
+	performance: 'performances/',
+	offering: 'angebote/',
+}
+
 export default function resolveUrl(
 	page?: ResolvableDoc | null,
 	{
@@ -22,7 +27,14 @@ export default function resolveUrl(
 ) {
 	const lang = language && language !== DEFAULT_LANG ? `/${language}` : ''
 	const slug = page?.metadata?.slug?.current
-	const path = slug === 'index' ? null : slug
+	const type = stegaClean(page?._type ?? '') as string
+	const prefix = TYPE_PREFIX[type] || ''
+	const rawPath = slug === 'index' ? null : slug
+	const path = rawPath
+		? prefix && !rawPath.startsWith(prefix)
+			? `${prefix}${rawPath}`
+			: rawPath
+		: null
 
 	return [
 		base && process.env.NEXT_PUBLIC_BASE_URL,

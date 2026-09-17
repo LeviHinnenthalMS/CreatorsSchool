@@ -1,4 +1,4 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { fetchPublished } from '@/sanity/lib/published'
 import { DEFAULT_LANG } from '@/lib/i18n'
 import { SITEMAP_QUERY } from '@/sanity/lib/queries'
 import type { MetadataRoute } from 'next'
@@ -13,8 +13,15 @@ type RawEntry = MetadataRoute.Sitemap[number] & {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const data = await fetchSanityLive<Record<string, RawEntry[]>>({
+	const data = await fetchPublished<Record<string, RawEntry[]>>({
 		query: SITEMAP_QUERY,
+		tags: [
+			'page',
+			'offering',
+			'blogPost',
+			'performance',
+			'translation.metadata',
+		],
 		params: {
 			baseUrl: `${BASE_URL.replace(/\/$/, '')}/`,
 			defaultLang: DEFAULT_LANG,

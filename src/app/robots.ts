@@ -7,11 +7,12 @@ export default function robots(): MetadataRoute.Robots {
 	}
 	return {
 		rules: {
+			// One shared group gives search and AI crawlers the same access.
+			// Bot-specific Allow groups would override these exclusions.
 			userAgent: '*',
-			allow: ['/', '/api/og'],
-			disallow: ['/admin', '/api'],
+			allow: ['/', '/api/og$', '/api/og?'],
+			disallow: ['/admin$', '/admin/', '/admin?', '/api$', '/api/', '/api?'],
 		},
 		sitemap: `${BASE_URL}/sitemap.xml`,
-		host: BASE_URL,
 	}
 }
