@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props) {
 
 export async function generateStaticParams() {
 	const slugs = await client.fetch<{ slug: string }[]>(PAGE_SLUGS_QUERY)
-	return slugs.map(({ slug }) => ({ slug: slug.split('/') }))
+	return [{ slug: [] }, ...slugs.map(({ slug }) => ({ slug: slug.split('/') }))]
 }
 
 async function getPage(params: Params) {

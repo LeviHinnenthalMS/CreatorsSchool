@@ -18,6 +18,10 @@ import WhatsAppFab from '@/ui/WhatsAppFab'
 import JsonLd from '@/ui/JsonLd'
 import '@/styles/app.css'
 
+// Cache public HTML as well as CMS fetches. Publishing still invalidates tagged
+// data; this also refreshes pages hourly if a webhook/live event is missed.
+export const revalidate = 3600
+
 export default async function RootLayout({
 	children,
 }: {
